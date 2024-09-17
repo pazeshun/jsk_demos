@@ -22,6 +22,23 @@ docker run -ti --rm \
     bailool/mc-calib-prod bash -c "cd /home/MC-Calib && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make -j10"
 ```
 
+```
+mkdir -p ~/ros/vzense/src/
+cd ~/ros/vzense/src/
+git clone https://github.com/Vzense/NebulaSDK
+git clone --single-branch https://github.com/iory/jsk_demos -b vzense
+cd ~/ros/vzense/src/NebulaSDK/ROS2
+touch CATKIN_IGNORE
+cd ~/ros/vzense/src/NebulaSDK/ROS/src/VzenseROS
+python install.py Ubuntu18.04
+cd ~/ros/vzense/src/NebulaSDK/ROS/src/VzenseROS_MultiCameras
+python install.py Ubuntu18.04
+cd ~/ros/vzense
+rosdep update
+rosdep install --from-paths -i -y -r .
+catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_WHITELIST_PACKAGES="VzenseROS" -DCATKIN_WHITELIST_PACKAGES="VzenseROS_MultiCameras"
+```
+
 ## キャリブレーションボードの準備
 
 キャリブレーションボードがない場合、以下の画像を印刷し、金属などの曲がりにくい面に貼り付ける：
