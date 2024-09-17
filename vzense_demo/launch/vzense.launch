@@ -17,7 +17,7 @@
 
   <node name="set_right_vzense_camera_initial_tf"
         pkg="dynamic_tf_publisher" type="tf_set.py"
-        args="0 1 0 0 0 0 1 left_vzense_camera_frame right_vzense_camera_frame 10"
+        args="0.40530814161838974 0.00019050782348557088 -0.019496325241734207 0.0008016287317887153 -0.09956586198867276 -0.004412404429784207 0.9950208677233744 left_vzense_camera_frame right_vzense_camera_frame 10"
         output="screen" clear_params="true" >
   </node>
 

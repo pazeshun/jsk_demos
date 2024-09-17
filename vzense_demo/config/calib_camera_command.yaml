@@ -1,0 +1,4 @@
+robot_command_buttons:
+  - name: "save_image"
+    type: std_srvs/Trigger
+    srv: "/data_collection_server/save_request"
