@@ -2,11 +2,12 @@
 
 ## 前準備
 
-1. `MC-Calib` リポジトリをクローンします：
+1. `MC-Calib` リポジトリをクローン：
    ```bash
    git clone https://github.com/rameau-fr/MC-Calib ~/MC-Calib
+   ```
 
-キャリブレーション用のDockerイメージを取得する：
+2. キャリブレーション用のDockerイメージを取得する：
 
 ```bash
 docker pull bailool/mc-calib-prod
@@ -25,7 +26,8 @@ docker run -ti --rm \
 
 キャリブレーションボードがない場合、以下の画像を印刷し、金属などの曲がりにくい面に貼り付ける：
 
-![]./calib_board/charuco_board_000.bmp
+![Calibration Board](./calib_board/charuco_board_000.bmp)
+
 
 ## 2つのカメラでチェッカーボードの画像を集める
 
