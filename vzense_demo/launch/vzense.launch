@@ -1,0 +1,98 @@
+<launch>
+
+  <arg name="left_camera_ip" default="192.168.1.101"/>
+  <arg name="right_camera_ip" default="192.168.1.102"/>
+
+  <group ns="camera" >
+    <node name="left_vzense_camera"
+          pkg="VzenseROS_MultiCameras" type="vzense_multicameras"
+          output="screen" required="true"
+          args="left_vzense_camera $(arg left_camera_ip)"
+          clear_params="true" >
+      <rosparam subst_value="true" >
+        RGBResloution: 0
+      </rosparam>
+    </node>
+    <group ns="left_vzense_camera" >
+
+      <node pkg="nodelet" type="nodelet" name="pointcloudxyzrgb_manager"
+            args="standalone depth_image_proc/point_cloud_xyzrgb"
+            clear_params="true" >
+        <remap from="depth_registered/image_rect" to="transformedDepth/image_raw"/>
+        <remap from="depth_registered/points" to="transformedDepth/points"/>
+        <remap from="rgb/image_rect_color" to="color/image_raw"/>
+        <remap from="rgb/camera_info" to="color/camera_info"/>
+      </node>
+
+      <node name="attention_clipper"
+            pkg="nodelet" type="nodelet"
+            args="standalone jsk_pcl/AttentionClipper"
+            clear_params="true" >
+        <remap from="~input/points" to="transformedDepth/points" />
+        <rosparam subst_value="true">
+          initial_pos: [0.0, 0.0, 0.0]
+          initial_rot: [0, 0, 0]
+          dimension_x: 10
+          dimension_y: 10
+          dimension_z: 10
+          frame_id: left_vzense_camera_color_frame
+        </rosparam>
+      </node>
+
+      <node name="extract_indices"
+            pkg="jsk_pcl_ros" type="extract_indices"
+            clear_params="true" >
+        <remap from="~input" to="transformedDepth/points" />
+        <remap from="~indices" to="attention_clipper/output/point_indices" />
+      </node>
+
+    </group>
+
+    <node name="right_vzense_camera"
+          pkg="VzenseROS_MultiCameras" type="vzense_multicameras"
+          output="screen" required="true"
+          args="right_vzense_camera $(arg right_camera_ip)"
+          clear_params="true" >
+      <rosparam subst_value="true" >
+        RGBResloution: 0
+      </rosparam>
+    </node>
+
+    <group ns="right_vzense_camera" >
+
+      <node pkg="nodelet" type="nodelet" name="pointcloudxyzrgb_manager"
+            args="standalone depth_image_proc/point_cloud_xyzrgb"
+            clear_params="true" >
+        <remap from="depth_registered/image_rect" to="transformedDepth/image_raw"/>
+        <remap from="depth_registered/points" to="transformedDepth/points"/>
+        <remap from="rgb/image_rect_color" to="color/image_raw"/>
+        <remap from="rgb/camera_info" to="color/camera_info"/>
+      </node>
+
+      <node name="attention_clipper"
+            pkg="nodelet" type="nodelet"
+            args="standalone jsk_pcl/AttentionClipper"
+            clear_params="true" >
+        <remap from="~input/points" to="transformedDepth/points" />
+        <rosparam subst_value="true">
+          initial_pos: [0.0, 0.0, 0.0]
+          initial_rot: [0, 0, 0]
+          dimension_x: 10
+          dimension_y: 10
+          dimension_z: 10
+          frame_id: right_vzense_camera_color_frame
+        </rosparam>
+      </node>
+
+      <node name="extract_indices"
+            pkg="jsk_pcl_ros" type="extract_indices"
+            clear_params="true" >
+        <remap from="~input" to="transformedDepth/points" />
+        <remap from="~indices" to="attention_clipper/output/point_indices" />
+      </node>
+
+    </group>
+
+  </group>
+
+</launch>
