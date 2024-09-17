@@ -3,6 +3,23 @@
   <arg name="left_camera_ip" default="192.168.1.101"/>
   <arg name="right_camera_ip" default="192.168.1.102"/>
 
+  <node name="dynamic_tf_publisher"
+        pkg="dynamic_tf_publisher" type="tf_publish.py"
+        output="screen" clear_params="true" >
+  </node>
+
+  <!-- <node name="set_left_vzense_camera_initial_tf" -->
+  <!--       pkg="dynamic_tf_publisher" type="tf_set.py" -->
+  <!--       args="0 0 0 0 0 0 1 world left_vzense_camera_frame 10" -->
+  <!--       output="screen" clear_params="true" > -->
+  <!-- </node> -->
+
+  <node name="set_right_vzense_camera_initial_tf"
+        pkg="dynamic_tf_publisher" type="tf_set.py"
+        args="0 1 0 0 0 0 1 left_vzense_camera_frame right_vzense_camera_frame 10"
+        output="screen" clear_params="true" >
+  </node>
+
   <group ns="camera" >
     <node name="left_vzense_camera"
           pkg="VzenseROS_MultiCameras" type="vzense_multicameras"
