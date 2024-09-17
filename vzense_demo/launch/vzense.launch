@@ -2,6 +2,7 @@
 
   <arg name="left_camera_ip" default="192.168.1.101"/>
   <arg name="right_camera_ip" default="192.168.1.102"/>
+  <arg name="gui" default="true"/>
 
   <node name="dynamic_tf_publisher"
         pkg="dynamic_tf_publisher" type="tf_publish.py"
@@ -110,6 +111,14 @@
 
     </group>
 
+  </group>
+
+
+  <group if="$(arg gui)" >
+    <node name="$(anon rviz)"
+          pkg="rviz" type="rviz"
+          args="-d $(find vzense_demo)/launch/config/config.rviz" >
+    </node>
   </group>
 
 </launch>
