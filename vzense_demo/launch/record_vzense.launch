@@ -1,0 +1,26 @@
+<launch>
+
+  <node name="$(anon rosbag_record)"
+        pkg="rosbag" type="record"
+        args="
+              /camera/left_vzense_camera/transformedDepth/image_raw/compressedDepth
+              /camera/left_vzense_camera/transformedDepth/camera_info
+              /camera/left_vzense_camera/color/image_raw/compressed
+              /camera/left_vzense_camera/color/camera_info
+              /camera/left_vzense_camera/depth/image_raw/compressedDepth
+              /camera/left_vzense_camera/depth/camera_info
+
+              /camera/right_vzense_camera/transformedDepth/image_raw/compressedDepth
+              /camera/right_vzense_camera/transformedDepth/camera_info
+              /camera/right_vzense_camera/color/image_raw/compressed
+              /camera/right_vzense_camera/color/camera_info
+              /camera/right_vzense_camera/depth/image_raw/compressedDepth
+              /camera/right_vzense_camera/depth/camera_info
+
+              /tf
+              /tf_static
+              /dynamic_tf_publisher/tf
+              ">
+  </node>
+
+</launch>
