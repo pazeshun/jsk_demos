@@ -35,6 +35,7 @@ python install.py Ubuntu18.04
 cd ~/ros/vzense/src/NebulaSDK/ROS/src/VzenseROS_MultiCameras
 python install.py Ubuntu18.04
 cd ~/ros/vzense
+source /opt/ros/noetic/setup.bash
 rosdep update
 rosdep install --from-paths -i -y -r .
 catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_WHITELIST_PACKAGES="VzenseROS" -DCATKIN_WHITELIST_PACKAGES="VzenseROS_MultiCameras"
