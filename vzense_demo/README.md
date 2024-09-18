@@ -84,22 +84,3 @@ docker run -ti --rm \
 ```
 rosrun vzense_demo set_calib_tf.py
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
