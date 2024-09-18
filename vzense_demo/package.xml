@@ -15,6 +15,8 @@
   <!-- ALPHABETICAL ORDER -->
 
   <!-- ALPHABETICAL ORDER -->
+  <exec_depend>jsk_pcl_ros</exec_depend>
+  <exec_depend>jsk_rviz_plugins</exec_depend>
   <!-- <exec_depend>realsense2_camera</exec_depend>
        <exec_depend>realsense2_camera</exec_depend> -->
   <!-- ALPHABETICAL ORDER -->
