@@ -71,6 +71,7 @@ def handle_calibration(req, text_pub):
 
 
 def handle_clear_data(req, text_pub):
+    global n_imgs
     rospy.loginfo("Received request to clear data.")
     publish_overlay_text(text_pub, "Received request to clear data.")
     rospack = rospkg.RosPack()
@@ -80,6 +81,7 @@ def handle_clear_data(req, text_pub):
     backup_path = Path(make_fancy_output_dir(target_path))
     run_command(f'mv {source_path}/* {backup_path}', shell=True)
     publish_overlay_text(text_pub, "Data cleared and backed up.")
+    n_imgs = 0
     return EmptyResponse()
 
 
