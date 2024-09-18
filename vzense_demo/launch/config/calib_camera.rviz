@@ -25,7 +25,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: RightPoints
+    SyncSource: ""
   - Class: jsk_rviz_plugin/RobotCommandInterfaceAction
     Name: RobotCommandInterfaceAction
   - Class: jsk_rviz_plugin/RobotCommandInterfaceAction
@@ -55,19 +55,50 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Class: jsk_rviz_plugin/OverlayImage
+    - Align Bottom: false
+      Background Alpha: 0.800000011920929
+      Background Color: 0; 0; 0
+      Class: jsk_rviz_plugin/OverlayText
       Enabled: true
-      Name: LeftColorCamera
-      Topic: /camera/left_vzense_camera/color/image_raw
+      Foreground Alpha: 0.800000011920929
+      Foreground Color: 25; 255; 240
+      Invert Shadow: false
+      Name: OverlayText
+      Overtake BG Color Properties: false
+      Overtake FG Color Properties: true
+      Overtake Position Properties: false
+      Topic: /rviz_overlay_text
       Value: true
-      alpha: 1
+      font: DejaVu Sans Mono
       height: 128
-      keep aspect ratio: true
       left: 0
-      overwrite alpha value: false
+      line width: 2
+      text size: 12
       top: 0
-      transport hint: raw
-      width: 640
+      width: 128
+    - Class: jsk_rviz_plugin/PieChart
+      Enabled: true
+      Name: Num Images
+      Topic: /num_calib_images
+      Value: true
+      auto color change: false
+      background color: 0; 0; 0
+      backround alpha: 0
+      clockwise rotate direction: true
+      foreground alpha: 0.699999988079071
+      foreground alpha 2: 0.4000000059604645
+      foreground color: 25; 255; 240
+      left: 128
+      max color: 255; 0; 0
+      max color change threthold: 0
+      max value: 100
+      med color: 255; 0; 0
+      med color change threthold: 0
+      min value: 0
+      show caption: true
+      size: 128
+      text size: 14
+      top: 128
     - Class: jsk_rviz_plugin/OverlayImage
       Enabled: true
       Name: RightColorCamera
@@ -81,6 +112,19 @@ Visualization Manager:
       top: 0
       transport hint: raw
       width: 640
+    - Class: jsk_rviz_plugin/OverlayImage
+      Enabled: true
+      Name: LeftColorCamera
+      Topic: /camera/left_vzense_camera/color/image_raw
+      Value: true
+      alpha: 1
+      height: 128
+      keep aspect ratio: true
+      left: 0
+      overwrite alpha value: false
+      top: 0
+      transport hint: raw
+      width: 640
     - Class: rviz/TF
       Enabled: true
       Filter (blacklist): ""
@@ -88,26 +132,10 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        left_vzense_camera_color_frame:
-          Value: false
-        left_vzense_camera_depth_frame:
-          Value: false
         left_vzense_camera_frame:
           Value: true
-        left_vzense_camera_transformedColor_frame:
-          Value: false
-        left_vzense_camera_transformedDepth_frame:
-          Value: false
-        right_vzense_camera_color_frame:
-          Value: false
-        right_vzense_camera_depth_frame:
-          Value: false
         right_vzense_camera_frame:
           Value: true
-        right_vzense_camera_transformedColor_frame:
-          Value: false
-        right_vzense_camera_transformedDepth_frame:
-          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -116,19 +144,8 @@ Visualization Manager:
       Show Names: true
       Tree:
         left_vzense_camera_frame:
-          left_vzense_camera_color_frame:
-            left_vzense_camera_depth_frame:
-              left_vzense_camera_transformedColor_frame:
-                {}
-            left_vzense_camera_transformedDepth_frame:
-              {}
           right_vzense_camera_frame:
-            right_vzense_camera_color_frame:
-              right_vzense_camera_depth_frame:
-                right_vzense_camera_transformedColor_frame:
-                  {}
-              right_vzense_camera_transformedDepth_frame:
-                {}
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz/Group
@@ -235,9 +252,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -1.1547967195510864
+      Pitch: -1.3047963380813599
       Target Frame: <Fixed Frame>
-      Yaw: 4.553588390350342
+      Yaw: 4.693588733673096
     Saved: ~
 Window Geometry:
   Displays:
