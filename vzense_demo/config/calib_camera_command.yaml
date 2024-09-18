@@ -2,3 +2,9 @@ robot_command_buttons:
   - name: "save_image"
     type: emptysrv
     srv: "/save_image_request"
+  - name: "calibration"
+    type: emptysrv
+    srv: "/calib"
+  - name: "clear data"
+    type: emptysrv
+    srv: "/clear_data"
