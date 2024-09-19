@@ -23,7 +23,7 @@ docker run -ti --rm \
 ```
 
 ```
-pip3 install -U pip && pip install pytest jupyter ipython pybsc scikit-robot
+pip3 install -U pip && pip install pytest jupyter ipython pybsc scikit-robot opencv-python==4.9.0.80
 mkdir -p ~/ros/vzense/src/
 cd ~/ros/vzense/src/
 git clone https://github.com/Vzense/NebulaSDK
