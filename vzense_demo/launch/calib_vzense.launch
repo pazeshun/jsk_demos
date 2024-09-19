@@ -29,22 +29,6 @@
   </node>
 
 
-  <group ns="camera" >
-    <group ns="left_vzense_camera" >
-      <node name="aruco_marker_detector"
-            pkg="vzense_demo" type="aruco_marker_detector.py"
-            clear_params="true" output="screen" >
-        <remap from="~image" to="color/image_raw" />
-      </node>
-    </group>
-    <group ns="right_vzense_camera" >
-      <node name="aruco_marker_detector"
-            pkg="vzense_demo" type="aruco_marker_detector.py"
-            clear_params="true" output="screen" >
-        <remap from="~image" to="color/image_raw" />
-      </node>
-    </group>
-  </group>
 
   <node name="rviz"
         pkg="rviz" type="rviz"
