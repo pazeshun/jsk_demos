@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="hand" default="rmmf_hand" />
+
+  <xacro:include filename="$(find rmmf_hand_ros)/robots/normal_finger_module.xacro"/>
+
+  <xacro:macro name="rmmf_hand_model_0" params="hand">
+
+    <link name="${hand}_base">
+      <visual>
+        <origin rpy="${pi/2} 0 ${-pi/2}" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://rmmf_hand_ros/meshes/visual/model_0_base.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="lightgrey">
+          <color rgba="0.5 0.5 0.5 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="${pi/2} 0 ${-pi/2}" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://rmmf_hand_ros/meshes/visual/model_0_base.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Normal finger module -->
+    <xacro:normal_finger_module
+        hand="${hand}"
+        finger="thumb"
+        connected_to="${hand}_base"
+        xyz="-0.023 -0.034 0.025"
+        rpy="0 0 ${-pi/2}"
+        base_joint_limit_lower="${-pi/2}"
+        base_joint_limit_upper="1.194971"
+    />
+
+    <xacro:normal_finger_module
+        hand="${hand}"
+        finger="index"
+        connected_to="${hand}_base"
+        xyz="0.047 -0.034 0.025"
+        rpy="0 0 0"
+        base_joint_limit_lower="${-pi/4}"
+        base_joint_limit_upper="${pi/4}"
+    />
+
+  </xacro:macro>
+
+</robot>

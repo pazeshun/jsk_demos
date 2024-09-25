@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="K_ARM_with_hand">
+
+  <xacro:include filename="$(find k_arm_models)/models/k_arm.urdf"/>
+
+  <xacro:include filename="$(find vzense_demo)/model/rmmf_hand_model.xacro"/>
+
+  <xacro:rmmf_hand_model_0 hand="RARM_hand">
+  </xacro:rmmf_hand_model_0>
+
+  <joint name="RARM_hand_joint" type="fixed">
+    <parent link="RARM_LINK6"/>
+    <child link="RARM_hand_base"/>
+    <origin xyz="0 0 -0.06" rpy="0 -3.141592653589793 0"/>
+  </joint>
+
+</robot>
