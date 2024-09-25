@@ -41,6 +41,21 @@ rosdep install --from-paths -i -y -r .
 catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_WHITELIST_PACKAGES="VzenseROS" -DCATKIN_WHITELIST_PACKAGES="VzenseROS_MultiCameras"
 ```
 
+
+## realsense setup (optinal)
+
+```
+git clone https://github.com/IntelRealSense/librealsense.git
+cd librealsense/
+sudo apt install -y git libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev
+sudo apt install -y libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev
+sudo apt install -y cmake
+./scripts/setup_udev_rules.sh
+mkdir build && cd build
+cmake ../ -DCMAKE_BUILD_TYPE=release -DBUILD_EXAMPLES=false -DBUILD_GRAPHICAL_EXAMPLES=false
+sudo make clean && make && sudo make install
+```
+
 ## キャリブレーションボードの準備
 
 キャリブレーションボードがない場合、以下の画像を印刷し、金属などの曲がりにくい面に貼り付ける：
