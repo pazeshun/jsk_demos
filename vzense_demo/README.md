@@ -35,8 +35,6 @@ python install.py Ubuntu18.04
 cd ~/ros/vzense/src/NebulaSDK/ROS/src/VzenseROS_MultiCameras
 python install.py Ubuntu18.04
 cd ~/ros/vzense
-cp ~/ros/vzense/src/jsk_demos/vzense_demo/noetic.rosinstall ~/ros/vzense/src/.rosinstall
-wstool up src
 source /opt/ros/noetic/setup.bash
 rosdep update
 rosdep install --from-paths -i -y -r .
