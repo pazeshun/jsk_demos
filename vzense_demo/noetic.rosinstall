@@ -1,0 +1,77 @@
+- git:
+    local-name: hrpsys
+    # uri: https://github.com/fkanehiro/hrpsys-base
+    uri: https://github.com/kirohy/hrpsys-base
+    version: fix_20.04
+
+- git:
+    local-name: rtm-ros-robotics/rtmros_common
+    # uri: https://github.com/start-jsk/rtmros_common
+    uri: https://github.com/kirohy/rtmros_common
+    version: fix_20.04
+
+- git:
+    local-name: rtm-ros-robotics/rtmros_tutorials
+    # uri: https://github.com/start-jsk/rtmros_tutorials
+    uri: https://github.com/kirohy/rtmros_tutorials
+    version: fix_20.04
+
+- git:
+    local-name: rtm-ros-robotics/rtmros_choreonoid
+    # uri: https://github.com/start-jsk/rtmros_common
+    uri: https://github.com/kirohy/rtmros_choreonoid
+    version: fix_20.04
+
+- git:
+    local-name: rtm-ros-robotics/rtmros_hrp2
+    uri: git@github.com:start-jsk/rtmros_hrp2
+
+- git:
+    local-name: jsk-ros-pkg/jsk_model_tools
+    uri: https://github.com/jsk-ros-pkg/jsk_model_tools
+
+- git:
+    local-name: multisense_ros
+    uri: https://github.com/Naoki-Hiraoka/multisense_ros
+    version: 3.4.9_fixed
+
+- git:
+    local-name: choreonoid
+    uri: https://github.com/choreonoid/choreonoid
+    version: release-1.7
+
+- git:
+    local-name: jsk-ros-pkg/trans_system
+    # uri: git@github.com:jsk-ros-pkg/trans_system
+    uri: git@github.com:kirohy/trans_system
+- git:
+    local-name: rmmf_hand_ros
+    uri: git@gitlab.jsk.imi.i.u-tokyo.ac.jp:hasegawa/rmmf_hand_ros.git
+    version: master
+- git:
+    local-name: FA-I-sensor
+    uri: https://github.com/RoboticMaterials/FA-I-sensor.git
+    version: master
+- git:
+    local-name: dynamixel-workbench
+    uri: https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
+    version: master
+- git:
+    local-name: sensor_pointcloud
+    uri: https://github.com/eliotlim/sensor_pointcloud.git
+    version: master
+- git:
+    local-name: wrpps_ros
+    uri: git@gitlab.jsk.imi.i.u-tokyo.ac.jp:hasegawa/wrpps_ros.git
+- git:
+    local-name: realsense-ros
+    uri: https://github.com/IntelRealSense/realsense-ros
+    version: ros1-legacy
+- git:
+    local-name: ros-perception/image_pipeline
+    uri: https://github.com/ros-perception/image_pipeline
+    version: noetic
+- git:
+    local-name: ros-perception/image_transport_plugins
+    uri: https://github.com/ros-perception/image_transport_plugins
+    version: noetic-devel
