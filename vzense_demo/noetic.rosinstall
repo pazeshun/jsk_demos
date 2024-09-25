@@ -64,6 +64,9 @@
     local-name: wrpps_ros
     uri: git@gitlab.jsk.imi.i.u-tokyo.ac.jp:hasegawa/wrpps_ros.git
 - git:
+    local-name: k_arm_models
+    uri: git@gitlab.jsk.imi.i.u-tokyo.ac.jp:kbt-project/k-arm_models.git
+- git:
     local-name: realsense-ros
     uri: https://github.com/IntelRealSense/realsense-ros
     version: ros1-legacy
