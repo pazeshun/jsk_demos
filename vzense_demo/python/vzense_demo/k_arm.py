@@ -30,10 +30,15 @@ class KARM(RobotModelFromURDF):
         super(KARM, self).__init__(*args, **kwargs)
         self.name = 'karm'
 
+        # self.rarm_end_coords = CascadedCoords(
+        #     parent=self.RARM_hand_base,
+        #     name='rarm_end_coords',
+        #     pos=[0.015, -0.04, 0.2])
         self.rarm_end_coords = CascadedCoords(
-            parent=self.RARM_hand_base,
+            parent=self.RARM_LINK3,
             name='rarm_end_coords',
-            pos=[0.015, -0.04, 0.2])
+            pos=[-0.015, -0.04, -0.52]).rotate(
+                np.pi / 2.0, 'y').rotate(np.pi / 2.0, 'x')
 
     @cached_property
     def rarm(self):
@@ -43,9 +48,9 @@ class KARM(RobotModelFromURDF):
             self.RARM_LINK1,
             self.RARM_LINK2,
             self.RARM_LINK3,
-            self.RARM_LINK4,
-            self.RARM_LINK5,
-            self.RARM_LINK6,
+            # self.RARM_LINK4,
+            # self.RARM_LINK5,
+            # self.RARM_LINK6,
         ]
         rarm_joints = []
         for link in rarm_links:
@@ -54,6 +59,11 @@ class KARM(RobotModelFromURDF):
         r = RobotModel(link_list=rarm_links, joint_list=rarm_joints)
         r.end_coords = self.rarm_end_coords
         return r
+
+    def reset_pose(self):
+        self.RARM_JOINT0.joint_angle(0.8)
+        self.RARM_JOINT1.joint_angle(-0.5)
+        self.RARM_JOINT3.joint_angle(-1.3)
 
     def init_pose(self):
         self.angle_vector(np.zeros_like(self.angle_vector()))
@@ -80,8 +90,15 @@ if __name__ == '__main__':
     from skrobot.model import Axis
     robot_model = KARM()
     robot_model.init_pose()
+    robot_model.rotate(- np.pi / 2.0, 'y')
+    # robot_model.rotate(np.pi / 2.0, 'x', 'world')
+    robot_model.rotate(-np.pi / 2.0, 'x', 'world')
     viewer = TrimeshSceneViewer()
     viewer.add(robot_model)
     viewer.show()
     rarm_end_coords_axis = Axis.from_coords(robot_model.rarm_end_coords)
     viewer.add(rarm_end_coords_axis)
+
+    rarm_target_coords = Axis()
+    viewer.add(rarm_target_coords)
+    # rarm_target_coords.newcoords(coords.copy_worldcoords().translate((-0.2, 0.1, 0.1)))
