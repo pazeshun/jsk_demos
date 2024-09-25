@@ -52,7 +52,7 @@ sudo apt install -y libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev
 sudo apt install -y cmake
 ./scripts/setup_udev_rules.sh
 mkdir build && cd build
-cmake ../ -DCMAKE_BUILD_TYPE=release -DBUILD_EXAMPLES=false -DBUILD_GRAPHICAL_EXAMPLES=false
+cmake ../ -DCMAKE_BUILD_TYPE=release -DBUILD_EXAMPLES=true -DBUILD_GRAPHICAL_EXAMPLES=true
 sudo make clean && make && sudo make install
 ```
 
