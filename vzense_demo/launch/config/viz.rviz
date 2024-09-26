@@ -7,11 +7,14 @@ Panels:
         - /Global Options1
         - /Status1
         - /TF1/Frames1
+        - /Points1
         - /Points1/RightPoints1
         - /Points1/LeftPoints1
+        - /RobotModel1
+        - /RobotModel1/Links1
         - /InteractiveMarkers1
       Splitter Ratio: 0.5
-    Tree Height: 839
+    Tree Height: 1079
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -29,7 +32,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: RightPoints
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -82,12 +85,62 @@ Visualization Manager:
       transport hint: raw
       width: 640
     - Class: rviz/TF
-      Enabled: false
+      Enabled: true
       Filter (blacklist): ""
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        BODY:
+          Value: true
+        RARM_LINK0:
+          Value: false
+        RARM_LINK1:
+          Value: false
+        RARM_LINK2:
+          Value: false
+        RARM_LINK3:
+          Value: false
+        RARM_LINK4:
+          Value: false
+        RARM_LINK5:
+          Value: false
+        RARM_LINK6:
+          Value: false
+        RARM_hand_base:
+          Value: false
+        RARM_hand_index:
+          Value: false
+        RARM_hand_index_base:
+          Value: false
+        RARM_hand_index_base_horn:
+          Value: false
+        RARM_hand_thumb:
+          Value: false
+        RARM_hand_thumb_base:
+          Value: false
+        RARM_hand_thumb_base_horn:
+          Value: false
+        left_vzense_camera_color_frame:
+          Value: false
+        left_vzense_camera_depth_frame:
+          Value: false
+        left_vzense_camera_frame:
+          Value: true
+        left_vzense_camera_transformedColor_frame:
+          Value: false
+        left_vzense_camera_transformedDepth_frame:
+          Value: false
+        right_vzense_camera_color_frame:
+          Value: false
+        right_vzense_camera_depth_frame:
+          Value: false
+        right_vzense_camera_frame:
+          Value: true
+        right_vzense_camera_transformedColor_frame:
+          Value: false
+        right_vzense_camera_transformedDepth_frame:
+          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -95,9 +148,39 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        left_vzense_camera_frame:
+          BODY:
+            RARM_LINK0:
+              RARM_LINK1:
+                RARM_LINK2:
+                  RARM_LINK3:
+                    RARM_LINK4:
+                      RARM_LINK5:
+                        RARM_LINK6:
+                          RARM_hand_base:
+                            RARM_hand_index_base_horn:
+                              RARM_hand_index_base:
+                                RARM_hand_index:
+                                  {}
+                            RARM_hand_thumb_base_horn:
+                              RARM_hand_thumb_base:
+                                RARM_hand_thumb:
+                                  {}
+          left_vzense_camera_color_frame:
+            left_vzense_camera_depth_frame:
+              left_vzense_camera_transformedColor_frame:
+                {}
+            left_vzense_camera_transformedDepth_frame:
+              {}
+          right_vzense_camera_frame:
+            right_vzense_camera_color_frame:
+              right_vzense_camera_depth_frame:
+                right_vzense_camera_transformedColor_frame:
+                  {}
+              right_vzense_camera_transformedDepth_frame:
+                {}
       Update Interval: 0
-      Value: false
+      Value: true
     - Class: rviz/Group
       Displays:
         - Alpha: 1
@@ -148,7 +231,7 @@ Visualization Manager:
           Position Transformer: XYZ
           Queue Size: 10
           Selectable: true
-          Size (Pixels): 1
+          Size (Pixels): 2
           Size (m): 0.009999999776482582
           Style: Points
           Topic: /camera/left_vzense_camera/extract_indices/output
@@ -163,12 +246,12 @@ Visualization Manager:
       Collision Enabled: false
       Enabled: true
       Links:
-        All Links Enabled: true
+        All Links Enabled: false
         BODY:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
@@ -249,18 +332,18 @@ Visualization Manager:
       Visual Enabled: true
     - Class: rviz/InteractiveMarkers
       Enable Transparency: true
-      Enabled: true
+      Enabled: false
       Name: InteractiveMarkers
       Show Axes: true
       Show Descriptions: true
       Show Visual Aids: true
       Update Topic: /marker_6dof_for_robot_to_camera/update
-      Value: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: BODY
+    Fixed Frame: left_vzense_camera_frame
     Frame Rate: 30
   Name: root
   Tools:
@@ -284,7 +367,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.47099494934082
+      Distance: 5.387168884277344
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -292,25 +375,25 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.047767996788025
-        Y: -1.5108776092529297
-        Z: -0.050861749798059464
+        X: 0.7786634564399719
+        Y: 1.466102957725525
+        Z: 3.1282894611358643
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.32520416378974915
+      Pitch: -0.9347967505455017
       Target Frame: <Fixed Frame>
-      Yaw: 3.895397901535034
+      Yaw: 4.430393695831299
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1136
+  Height: 1376
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000002db000003d2fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000003d2000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000360052006f0062006f00740043006f006d006d0061006e00640049006e00740065007200660061006300650041006300740069006f006e0200000048000002f80000015600000157fb000000360052006f0062006f00740043006f006d006d0061006e00640049006e00740065007200660061006300650041006300740069006f006e0000000298000001770000000000000000000000010000010f000003d2fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000003d2000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007380000003efc0100000002fb0000000800540069006d0065010000000000000738000003bc00fffffffb0000000800540069006d0065010000000000000450000000000000000000000457000003d200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000002db000004c2fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000004c2000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000360052006f0062006f00740043006f006d006d0061006e00640049006e00740065007200660061006300650041006300740069006f006e0200000048000002f80000015600000157fb000000360052006f0062006f00740043006f006d006d0061006e00640049006e00740065007200660061006300650041006300740069006f006e0000000298000001770000000000000000000000010000010f000003d2fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000003d2000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000009b80000003efc0100000002fb0000000800540069006d00650100000000000009b8000003bc00fffffffb0000000800540069006d00650100000000000004500000000000000000000006d7000004c200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -319,6 +402,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1848
+  Width: 2488
   X: 72
   Y: 27
