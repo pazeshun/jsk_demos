@@ -1,7 +1,7 @@
 <launch>
 
-  <arg name="left_camera_ip" default="192.168.1.101"/>
-  <arg name="right_camera_ip" default="192.168.1.102"/>
+  <arg name="left_camera_ip" default="192.168.96.129"/>
+  <arg name="right_camera_ip" default="192.168.96.127"/>
   <arg name="gui" default="true"/>
 
   <node name="dynamic_tf_publisher"
