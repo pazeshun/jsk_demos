@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
+import numpy as np
 from sensor_msgs.msg import JointState
 
 
@@ -15,7 +16,7 @@ class JointStatesMerger:
 
         self.joint_state_1 = None
         self.joint_state_2 = JointState()
-        self.joint_state_2.position = [0, 0, 0, 0]
+        self.joint_state_2.position = [- np.pi / 2.0, 0, 0, 0]
         self.joint_state_2.name = ['RARM_hand_thumb_base_joint',
                                    'RARM_hand_thumb_joint',
                                    'RARM_hand_index_base_joint',
