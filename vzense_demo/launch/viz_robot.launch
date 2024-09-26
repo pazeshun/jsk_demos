@@ -1,0 +1,25 @@
+<launch>
+
+  <arg name="gui" default="true"/>
+
+  <param name="robot_description_viz" textfile="$(find vzense_demo)/model/robot_model.urdf" />
+
+  <node name="joint_states_merger"
+        pkg="vzense_demo" type="joint_states_appender.py">
+  </node>
+
+  <node name="robot_state_publisher_viz"
+        pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="publish_frequency" value="50.0" />
+    <remap from="joint_states" to="concat_joint_states" />
+    <remap from="robot_description" to="robot_description_viz" />
+  </node>
+
+  <group if="$(arg gui)" >
+    <node name="$(anon rviz)"
+          pkg="rviz" type="rviz"
+          args="-d $(find vzense_demo)/launch/config/viz.rviz" >
+    </node>
+  </group>
+
+</launch>
