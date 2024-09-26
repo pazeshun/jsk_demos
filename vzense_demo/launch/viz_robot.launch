@@ -29,10 +29,10 @@
       object_type: none
       publish_tf: true
       tf_frame: BODY
-      initial_x: 0.5
-      initial_y: 0
-      initial_z: 0
-      initial_orientation: [0, 0, 0, 1]
+      initial_x: 0.834
+      initial_y: 0.285
+      initial_z: 0.869
+      initial_orientation: [0.077, 0.919, 0.049, 0.384]
     </rosparam>
   </node>
 
