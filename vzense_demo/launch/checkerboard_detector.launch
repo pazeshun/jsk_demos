@@ -1,6 +1,7 @@
 <launch>
 
-  <arg name="camera" default="rarm" />
+  <arg name="gui" default="true"/>
+  <arg name="camera" default="rarm_hand_camera" />
   <arg name="INPUT_IMAGE" default="/$(arg camera)/color/image_raw" />
   <arg name="INPUT_CAMERA_INFO" default="/$(arg camera)/color/camera_info" />
 
@@ -40,6 +41,13 @@
       <param name="use_simple_tf" value="true" />
     </node>
 
+  </group>
+
+  <group if="$(arg gui)" >
+    <node name="$(anon rviz)"
+          pkg="rviz" type="rviz"
+          args="-d $(find vzense_demo)/launch/config/hand_camera_calib.rviz" >
+    </node>
   </group>
 
 </launch>
