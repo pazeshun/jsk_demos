@@ -29,6 +29,7 @@
           clear_params="true" >
       <rosparam subst_value="true" >
         RGBResloution: 0
+        WorkMode: 1
       </rosparam>
     </node>
     <group ns="left_vzense_camera" >
@@ -73,6 +74,7 @@
           clear_params="true" >
       <rosparam subst_value="true" >
         RGBResloution: 0
+        WorkMode: 1
       </rosparam>
     </node>
 
