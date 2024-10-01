@@ -117,13 +117,19 @@ class KARMROSRobotInterface(ROSRobotInterfaceBase):
 
 if __name__ == '__main__':
     from skrobot.viewers import TrimeshSceneViewer
+    from skrobot.viewers import PyrenderViewer
     from skrobot.model import Axis
     robot_model = KARM()
+
+    for j in robot_model.joint_list:
+        if j.max_joint_velocity == 0.0:
+            j.max_joint_velocity = np.deg2rad(5)
+
     robot_model.init_pose()
     robot_model.rotate(- np.pi / 2.0, 'y')
     # robot_model.rotate(np.pi / 2.0, 'x', 'world')
     robot_model.rotate(-np.pi / 2.0, 'x', 'world')
-    viewer = TrimeshSceneViewer()
+    viewer = PyrenderViewer()
     viewer.add(robot_model)
     viewer.show()
     rarm_end_coords_axis = Axis.from_coords(robot_model.rarm_end_coords)
@@ -133,3 +139,4 @@ if __name__ == '__main__':
     viewer.add(rarm_target_coords)
 
     ri = KARMROSRobotInterface(robot_model)
+    robot_model.angle_vector(ri.angle_vector())

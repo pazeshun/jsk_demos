@@ -1,0 +1,41 @@
+<launch>
+
+  <arg name="save_dir" default="$(find vzense_demo)/data_camera_and_robot" />
+
+  <include file="$(find vzense_demo)/launch/vzense.launch" >
+    <arg name="gui" value="false" />
+  </include>
+
+  <node name="save_request_node"
+        pkg="vzense_demo" type="save_request_node.py"
+        clear_params="true" output="screen" >
+    <rosparam>
+      results_path: robot_and_camera_calib_results
+      data_path: data_camera_and_robot
+    </rosparam>
+  </node>
+
+  <node name="data_collection_server"
+        pkg="jsk_data" type="data_collection_server.py"
+        clear_params="true" output="screen" >
+    <rosparam subst_value="true">
+      save_dir: $(arg save_dir)
+      topics:
+      - name: /rarm_hand_camera/color/image_raw
+        msg_class: sensor_msgs/Image
+        fname: right.jpg
+        savetype: ColorImage
+      - name: /camera/left_vzense_camera/color/image_raw
+        msg_class: sensor_msgs/Image
+        fname: left.jpg
+        savetype: ColorImage
+    </rosparam>
+  </node>
+
+  <!-- <node name="rviz" -->
+  <!--       pkg="rviz" type="rviz" -->
+  <!--       args="-d $(find vzense_demo)/launch/config/calib_camera_and_robot.rviz" > -->
+  <!--   <rosparam command="load" file="$(find vzense_demo)/config/calib_camera_command.yaml" /> -->
+  <!-- </node> -->
+
+</launch>

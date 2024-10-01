@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import argparse
+
 from pathlib import Path
 import shutil
 from pybsc import run_command
@@ -8,15 +10,20 @@ import rospkg
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--results-path', default='results_path')
+    parser.add_argument('--data-path', default='data_path')
+    args = parser.parse_args()
+
     rospack = rospkg.RosPack()
     package_path = Path(rospack.get_path('vzense_demo'))
-    target_path = package_path / 'calib_results' / 'Images'
+    target_path = package_path / args.results_path / 'Images'
     run_command(f'rm -rf {target_path}', shell=True)
     makedirs(target_path)
     makedirs(target_path / 'Cam_001')
     makedirs(target_path / 'Cam_002')
     img_count = 0
-    for i, dir_path in enumerate((package_path / 'data').glob('*')):
+    for i, dir_path in enumerate((package_path / args.data_path).glob('*')):
         if not dir_path.is_dir():
             continue
         left_image_path = dir_path / 'left.jpg'

@@ -44,5 +44,6 @@ if __name__ == '__main__':
     set_tf(coords.translation,
            list(coords.quaternion[1:]) + [coords.quaternion[0]],
            'left_vzense_camera_frame',
-           'right_vzense_camera_frame',
+           # 'right_vzense_camera_frame',
+           'rarm_hand_camera_color_optical_frame',
            10)

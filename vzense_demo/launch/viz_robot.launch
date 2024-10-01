@@ -25,14 +25,14 @@
   <node name="marker_6dof_for_robot_to_camera"
         pkg="jsk_interactive_marker" type="marker_6dof" >
     <rosparam>
-      frame_id: left_vzense_camera_frame
+      frame_id: RARM_LINK3
       object_type: none
       publish_tf: true
-      tf_frame: BODY
-      initial_x: 0.834
-      initial_y: 0.285
-      initial_z: 0.869
-      initial_orientation: [0.077, 0.919, 0.049, 0.384]
+      tf_frame: rarm_hand_camera_link
+      initial_x: -0.089
+      initial_y: 0.0
+      initial_z: -0.317
+      initial_orientation: [7.07106781e-01,  4.32978028e-17, -7.07106781e-01, 4.32978028e-17]
     </rosparam>
   </node>
 
