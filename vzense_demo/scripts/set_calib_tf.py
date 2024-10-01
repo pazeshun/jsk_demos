@@ -57,7 +57,7 @@ if __name__ == '__main__':
         set_tf(coords.translation,
                list(coords.quaternion[1:]) + [coords.quaternion[0]],
                'left_vzense_camera_frame',
-               'right_vzense_camera_frame',
+               args.to_frame_id,
                100)
     else:
         tf_listener = tf.TransformListener()
