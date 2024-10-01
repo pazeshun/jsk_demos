@@ -108,6 +108,8 @@ def main():
     data_path = rospy.get_param('~data_path', 'data')
     calib_yaml_path = rospy.get_param('~calib_yaml_path', 'calib_param_two_vzense.yaml')
     to_frame_id = rospy.get_param('~to_frame_id', 'right_vzense_camera_frame')
+    print('==============================')
+    print(to_frame_id)
 
     for i, dir_path in enumerate((package_path / data_path).glob('*')):
         if not dir_path.is_dir():
