@@ -83,7 +83,7 @@ if __name__ == '__main__':
                 return None
             return (translation, quaternion_xyzw)
 
-
+        print('set tf: left_vzense_camera_frame -> BODY')
         translation, quaternion_xyzw = lookup_transform(args.to_frame_id, 'BODY')
         hand_camera_to_body = Coordinates(pos=translation, rot=xyzw2wxyz(quaternion_xyzw))
         left_camera_to_body = coords.copy_worldcoords().transform(hand_camera_to_body)
