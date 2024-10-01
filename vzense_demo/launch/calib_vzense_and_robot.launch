@@ -14,6 +14,7 @@
       data_path: data_camera_and_robot
       calib_yaml_path: calib_param_two_vzense.yaml
       to_frame_id: rarm_hand_camera_color_optical_frame
+      for_robot: true
     </rosparam>
   </node>
 
