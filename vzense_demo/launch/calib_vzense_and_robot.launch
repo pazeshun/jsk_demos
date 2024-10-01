@@ -12,6 +12,7 @@
     <rosparam>
       results_path: robot_and_camera_calib_results
       data_path: data_camera_and_robot
+      calib_yaml_path: calib_param_vzense_and_robot_hand_camera.yaml
     </rosparam>
   </node>
 

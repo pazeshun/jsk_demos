@@ -140,3 +140,4 @@ if __name__ == '__main__':
 
     ri = KARMROSRobotInterface(robot_model)
     robot_model.angle_vector(ri.angle_vector())
+    viewer.redraw()

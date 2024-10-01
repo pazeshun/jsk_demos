@@ -13,6 +13,7 @@ from jsk_rviz_plugins.msg import OverlayText  # jsk_rviz_plugins for OverlayText
 n_imgs = 0
 data_path = 'data'
 results_path = 'calib_results'
+calib_yaml_path = 'calib_param_two_vzense.yaml'
 
 
 # Function to publish text to the OverlayText topic
@@ -65,10 +66,11 @@ def handle_save_image_request(req, text_pub):
 def handle_calibration(req, text_pub):
     global results_path
     global data_path
+    global calib_yaml_path
     rospy.loginfo("Received request to calibration.")
     publish_overlay_text(text_pub, "Received request for calibration.")
     run_command(f'rosrun vzense_demo aggregate_calib_images.py --data-path {data_path} --results-path {results_path}', shell=True)
-    run_command(f'docker run -ti --rm --volume="$HOME/MC-Calib:/home/MC-Calib" --volume="$HOME/MC-Calib/data:/home/MC-Calib/data" --volume="$(rospack find vzense_demo)/config/calib_param_two_vzense.yaml:/home/MC-Calib/configs/calib_param_two_vzense.yaml" --volume="$(rospack find vzense_demo)/{results_path}:/home/MC-Calib/data/vzense_data" bailool/mc-calib-prod bash -c "cd /home/MC-Calib/build && ./apps/calibrate/calibrate ../configs/calib_param_two_vzense.yaml"', shell=True)
+    run_command(f'docker run -ti --rm --volume="$HOME/MC-Calib:/home/MC-Calib" --volume="$HOME/MC-Calib/data:/home/MC-Calib/data" --volume="$(rospack find vzense_demo)/config/{calib_yaml_path}:/home/MC-Calib/configs/calib_param_two_vzense.yaml" --volume="$(rospack find vzense_demo)/{results_path}:/home/MC-Calib/data/vzense_data" bailool/mc-calib-prod bash -c "cd /home/MC-Calib/build && ./apps/calibrate/calibrate ../configs/calib_param_two_vzense.yaml"', shell=True)
     run_command('rosrun vzense_demo set_calib_tf.py', shell=True)
     publish_overlay_text(text_pub, "Calibration completed.")
     return EmptyResponse()
@@ -94,12 +96,14 @@ def main():
     global n_imgs
     global data_path
     global results_path
+    global calib_yaml_path
     rospack = rospkg.RosPack()
     package_path = Path(rospack.get_path('vzense_demo'))
 
     rospy.init_node('save_request_node')
     results_path = rospy.get_param('~results_path', 'calib_results')
     data_path = rospy.get_param('~data_path', 'data')
+    calib_yaml_path = rospy.get_param('~calib_yaml_path', 'calib_param_two_vzense.yaml')
 
     for i, dir_path in enumerate((package_path / data_path).glob('*')):
         if not dir_path.is_dir():
