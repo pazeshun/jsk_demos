@@ -63,7 +63,7 @@ if __name__ == '__main__':
         rospy.sleep(2.0)
 
         def lookup_transform(from_frame_id, to_frame_id, stamp=None,
-                             timeout=4.0):
+                             timeout=10.0):
             if stamp is None:
                 stamp = rospy.Time.now()
             try:
@@ -80,7 +80,7 @@ if __name__ == '__main__':
                     tf2_ros.ExtrapolationException,
                     tf2_ros.TransformException,
                     rospy.exceptions.ROSTimeMovedBackwardsException):
-                return None
+                return None, None
             return (translation, quaternion_xyzw)
 
         print('set tf: left_vzense_camera_frame -> BODY')
