@@ -11,7 +11,7 @@ import rospkg
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--results-path', default='results_path')
+    parser.add_argument('--results-path', default='calib_results')
     parser.add_argument('--data-path', default='data_path')
     args = parser.parse_args()
 

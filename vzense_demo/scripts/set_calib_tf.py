@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 
+import argparse
+
+import tf
+import tf2_ros
 import cv2
 import sys
 from skrobot.coordinates import Coordinates
+from skrobot.coordinates.math import xyzw2wxyz
+from skrobot.coordinates.math import wxyz2xyzw
 import rospkg
 from pathlib import Path
 import rospy
@@ -28,9 +34,14 @@ def set_tf(pos, q, parent, child, freq):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--results-path', default='calib_results')
+    parser.add_argument('--to-frame-id', default='right_vzense_camera_frame')
+    args = parser.parse_args()
+
     rospy.init_node('set_calib_tf')
     rospack = rospkg.RosPack()
-    file_path = Path(rospack.get_path('vzense_demo')) / 'calib_results/Results/calibrated_cameras_data.yml'
+    file_path = Path(rospack.get_path('vzense_demo')) / f'{args.results_path}/Results/calibrated_cameras_data.yml'
     if not file_path.exists():
         print(f'{file_path} not found')
         sys.exit(1)
@@ -41,9 +52,43 @@ if __name__ == '__main__':
     print("Camera 1 pose matrix:")
     print(camera_1_pose_matrix)
     coords = Coordinates(camera_1_pose_matrix)
-    set_tf(coords.translation,
-           list(coords.quaternion[1:]) + [coords.quaternion[0]],
-           'left_vzense_camera_frame',
-           # 'right_vzense_camera_frame',
-           'rarm_hand_camera_color_optical_frame',
-           10)
+    if args.to_frame_id == 'right_vzense_camera_frame':
+        set_tf(coords.translation,
+               list(coords.quaternion[1:]) + [coords.quaternion[0]],
+               'left_vzense_camera_frame',
+               'right_vzense_camera_frame',
+               100)
+    else:
+        tf_listener = tf.TransformListener()
+        rospy.sleep(2.0)
+
+        def lookup_transform(from_frame_id, to_frame_id, stamp=None,
+                             timeout=4.0):
+            if stamp is None:
+                stamp = rospy.Time.now()
+            try:
+                tf_listener.waitForTransform(
+                    from_frame_id, to_frame_id, stamp,
+                    rospy.Duration(timeout))
+                (translation, quaternion_xyzw) = tf_listener.lookupTransform(
+                    from_frame_id, to_frame_id, stamp)
+            except (tf.LookupException,
+                    tf.ConnectivityException,
+                    tf.ExtrapolationException,
+                    tf2_ros.LookupException,
+                    tf2_ros.ConnectivityException,
+                    tf2_ros.ExtrapolationException,
+                    tf2_ros.TransformException,
+                    rospy.exceptions.ROSTimeMovedBackwardsException):
+                return None
+            return (translation, quaternion_xyzw)
+
+
+        translation, quaternion_xyzw = lookup_transform(args.to_frame_id, 'BODY')
+        hand_camera_to_body = Coordinates(pos=translation, rot=xyzw2wxyz(quaternion_xyzw))
+        left_camera_to_body = coords.copy_worldcoords().transform(hand_camera_to_body)
+        set_tf(coords.translation,
+               wxyz2xyzw(left_camera_to_body.quaternion),
+               'left_vzense_camera_frame',
+               'BODY',
+               100)
