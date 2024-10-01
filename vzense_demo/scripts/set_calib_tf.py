@@ -37,6 +37,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--results-path', default='calib_results')
     parser.add_argument('--to-frame-id', default='right_vzense_camera_frame')
+    parser.add_argument('--for-robot', action='store_true')
     args = parser.parse_args()
 
     rospy.init_node('set_calib_tf')
@@ -52,7 +53,7 @@ if __name__ == '__main__':
     print("Camera 1 pose matrix:")
     print(camera_1_pose_matrix)
     coords = Coordinates(camera_1_pose_matrix)
-    if args.to_frame_id == 'right_vzense_camera_frame':
+    if args.for_robot is not True:
         set_tf(coords.translation,
                list(coords.quaternion[1:]) + [coords.quaternion[0]],
                'left_vzense_camera_frame',
