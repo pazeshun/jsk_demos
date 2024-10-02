@@ -117,7 +117,7 @@ def main():
     to_frame_id = rospy.get_param('~to_frame_id', 'right_vzense_camera_frame')
     for_robot = rospy.get_param('~for_robot', None)
     print('==============================')
-    print(to_frame_id)
+    print(to_frame_id, for_robot)
 
     for i, dir_path in enumerate((package_path / data_path).glob('*')):
         if not dir_path.is_dir():
