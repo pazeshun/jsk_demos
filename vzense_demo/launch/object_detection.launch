@@ -6,7 +6,7 @@
   <arg name="input_depth_image" default="/camera/left_vzense_camera/transformedDepth/image_raw" />
   <arg name="input_cloud" default="/camera/left_vzense_camera/transformedDepth/points" />
   <arg name="depth_threshold" default="1.5"/>
-  <arg name="model_file" default="2024-10-02-grape.pt" />
+  <arg name="model_file" default="2024-10-02-grape_ncnn_model" />
 
 
   <!-- filter background as mask based on depth_threshold -->
