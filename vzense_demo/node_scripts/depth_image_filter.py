@@ -53,7 +53,7 @@ class DepthImageFilter(ConnectionBasedTransport):
         mask = (mask).astype(np.uint8)
 
         out_depth = np.zeros(depth.shape)
-        out_depth[np.where(mask != 255)] = depth[np.where(mask != 255)]
+        out_depth[np.where(mask == 255)] = depth[np.where(mask == 255)]
         out_depth = out_depth.astype(np.float32)
         # Convert back to ROS Image message
         out_img_msg = bridge.cv2_to_imgmsg(
