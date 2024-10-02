@@ -2,7 +2,8 @@
 
   <arg name="gui" default="false" />
 
-  <arg name="INPUT_CLOUD" value="/camera/left_vzense_camera/extract_indices/output" />
+  <arg name="input_cloud" value="/camera/left_vzense_camera/transformedDepth/points" />
+  <arg name="manager" default="/camera/left_vzense_camera/vzense_manager" />
 
   <!--Extracting blue objects -->
   <arg name="h_max" default="-94" />
@@ -12,15 +13,11 @@
   <arg name="i_max" default="255" />
   <arg name="i_min" default="0" />
 
-  <node name="hsi_filter_manager"
-        pkg="nodelet" type="nodelet"
-        args="manager"/>
-
   <node name="hsi_color_filter"
         pkg="nodelet" type="nodelet"
-        args="load jsk_pcl/HSIColorFilter hsi_filter_manager"
+        args="load jsk_pcl/hsicolorfilter $(arg manager)"
         respawn="true">
-    <remap from="~input" to="$(arg INPUT_CLOUD)" />
+    <remap from="~input" to="$(arg input_cloud)" />
     <rosparam>
       use_indices: false
       keep_organized: true
@@ -35,7 +32,7 @@
 
   <node name="euclidean_clustering"
         pkg="nodelet" type="nodelet"
-        args="load jsk_pcl/EuclideanClustering hsi_filter_manager"
+        args="load jsk_pcl/EuclideanClustering $(arg manager)"
         output="screen">
     <remap from="~input" to="hsi_color_filter/output" />
     <rosparam>
@@ -47,7 +44,7 @@
 
   <node name="cluster_decomposer"
         pkg="nodelet" type="nodelet"
-        args="load jsk_pcl/ClusterPointIndicesDecomposerZAxis hsi_filter_manager"
+        args="load jsk_pcl/ClusterPointIndicesDecomposerZAxis $(arg manager)"
         output="screen" clear_params="true">
     <remap from="~input" to="hsi_color_filter/output" />
     <remap from="~target" to="euclidean_clustering/output" />
