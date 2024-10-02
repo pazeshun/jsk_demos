@@ -34,7 +34,7 @@ class DepthImageFilter(ConnectionBasedTransport):
     def callback(self, depth_img_msg):
         bridge = self.bridge
 
-        supported_encodings = {'16UC1', '32FC1'}
+        supported_encodings = {'16UC1', '32FC1', '64FC1'}
         if depth_img_msg.encoding not in supported_encodings:
             rospy.logwarn('Unsupported depth image encoding: {0}'
                           .format(depth_img_msg.encoding))
