@@ -129,7 +129,7 @@
       multi: true
       tolerance: 0.03
       min_size: 10
-      downsample_enable: false
+      downsample_enable: true
       approximate_sync: true
       queue_size: 100
       cluster_filter: 1
