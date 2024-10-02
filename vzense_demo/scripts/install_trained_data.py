@@ -31,6 +31,14 @@ def main():
         md5='4fe9135727ee321a99fd71bc2008abe2',
     )
 
+    download_data(
+        pkg_name=PKG,
+        path='trained_data/yolo8/2024-10-02-grape_ncnn_model.tar.gz',
+        url='https://drive.google.com/uc?id=1LSbBJGGAQ1cyATdHh8rcDNvwGYluSo-e',  # NOQA
+        md5='ed42640dc0c7e8d5599a8110e552650e',
+        extract=True,
+    )
+
 
 if __name__ == '__main__':
     main()
