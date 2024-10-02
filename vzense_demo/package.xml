@@ -12,12 +12,15 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <!-- ALPHABETICAL ORDER -->
+  <build_depend>message_generation</build_depend>
   <!-- ALPHABETICAL ORDER -->
 
   <!-- ALPHABETICAL ORDER -->
+  <exec_depend>dynamic_reconfigure</exec_depend>
   <exec_depend>jsk_pcl_ros</exec_depend>
   <exec_depend>jsk_rviz_plugins</exec_depend>
   <exec_depend>jsk_topic_tools</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
   <!-- <exec_depend>realsense2_camera</exec_depend>
        <exec_depend>realsense2_camera</exec_depend> -->
   <!-- ALPHABETICAL ORDER -->
