@@ -3,6 +3,7 @@
   <arg name="left_camera_ip" default="192.168.96.129"/>
   <arg name="right_camera_ip" default="192.168.96.127"/>
   <arg name="gui" default="true"/>
+  <arg name="depth_threshold" default="1.5"/>
 
   <node name="dynamic_tf_publisher"
         pkg="dynamic_tf_publisher" type="tf_publish.py"
@@ -34,10 +35,20 @@
     </node>
     <group ns="left_vzense_camera" >
 
+      <node name="depth_image_filter"
+            pkg="vzense_demo" type="depth_image_filter.py"
+            output="screen" respawn="true">
+        <remap from="~input" to="transformedDepth/image_raw" />
+        <remap from="~output" to="transformedDepth/filtered/image_raw" />
+        <rosparam subst_value="true" >
+          threshold: $(arg depth_threshold)
+        </rosparam>
+      </node>
+
       <node pkg="nodelet" type="nodelet" name="pointcloudxyzrgb_manager"
             args="standalone depth_image_proc/point_cloud_xyzrgb"
             clear_params="true" >
-        <remap from="depth_registered/image_rect" to="transformedDepth/image_raw"/>
+        <remap from="depth_registered/image_rect" to="transformedDepth/filtered/image_raw"/>
         <remap from="depth_registered/points" to="transformedDepth/points"/>
         <remap from="rgb/image_rect_color" to="color/image_raw"/>
         <remap from="rgb/camera_info" to="color/camera_info"/>
