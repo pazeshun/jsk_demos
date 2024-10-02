@@ -1,0 +1,21 @@
+<launch>
+
+  <group ns="left_vzense_camera" >
+    <include file="$(find vzense_demo)/launch/object_detection.launch" >
+      <arg name="input_image" default="/camera/left_vzense_camera/color/image_raw" />
+      <arg name="input_depth_image" default="/camera/left_vzense_camera/transformedDepth/image_raw" />
+      <arg name="input_cloud" default="/camera/left_vzense_camera/transformedDepth/points" />
+      <arg name="manager" default="/camera/left_vzense_camera/vzense_manager" />
+    </include>
+  </group>
+
+  <group ns="right_vzense_camera" >
+    <include file="$(find vzense_demo)/launch/object_detection.launch" >
+      <arg name="input_image" default="/camera/right_vzense_camera/color/image_raw" />
+      <arg name="input_depth_image" default="/camera/right_vzense_camera/transformedDepth/image_raw" />
+      <arg name="input_cloud" default="/camera/right_vzense_camera/transformedDepth/points" />
+      <arg name="manager" default="/camera/right_vzense_camera/vzense_manager" />
+    </include>
+  </group>
+
+</launch>

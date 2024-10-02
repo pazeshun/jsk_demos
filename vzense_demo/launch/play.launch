@@ -53,7 +53,7 @@
             output="screen" respawn="true">
         <remap from="~input" to="transformedDepth/image_raw" />
         <remap from="~output" to="transformedDepth/filtered/image_raw" />
-        <remap from="~output/mask" to="color/image_raw/mask" />
+        <remap from="~output/mask" to="transformedDepth/image_raw/mask" />
         <rosparam subst_value="true" >
           threshold: $(arg depth_threshold)
         </rosparam>
@@ -110,6 +110,7 @@
             output="screen" respawn="true">
         <remap from="~input" to="transformedDepth/image_raw" />
         <remap from="~output" to="transformedDepth/filtered/image_raw" />
+        <remap from="~output/mask" to="transformedDepth/image_raw/mask" />
         <rosparam subst_value="true" >
           threshold: $(arg depth_threshold)
         </rosparam>
