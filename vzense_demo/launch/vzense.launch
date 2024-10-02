@@ -53,30 +53,8 @@
         <remap from="rgb/image_rect_color" to="color/image_raw"/>
         <remap from="rgb/camera_info" to="color/camera_info"/>
         <rosparam>
-          queue_size: 300
+          queue_size: 30
         </rosparam>
-      </node>
-
-      <node name="attention_clipper"
-            pkg="nodelet" type="nodelet"
-            args="standalone jsk_pcl/AttentionClipper"
-            clear_params="true" >
-        <remap from="~input/points" to="transformedDepth/points" />
-        <rosparam subst_value="true">
-          initial_pos: [0.0, 0.0, 0.0]
-          initial_rot: [0, 0, 0]
-          dimension_x: 10
-          dimension_y: 10
-          dimension_z: 10
-          frame_id: left_vzense_camera_color_frame
-        </rosparam>
-      </node>
-
-      <node name="extract_indices"
-            pkg="jsk_pcl_ros" type="extract_indices"
-            clear_params="true" >
-        <remap from="~input" to="transformedDepth/points" />
-        <remap from="~indices" to="attention_clipper/output/point_indices" />
       </node>
 
     </group>
@@ -111,28 +89,9 @@
         <remap from="depth_registered/points" to="transformedDepth/points"/>
         <remap from="rgb/image_rect_color" to="color/image_raw"/>
         <remap from="rgb/camera_info" to="color/camera_info"/>
-      </node>
-
-      <node name="attention_clipper"
-            pkg="nodelet" type="nodelet"
-            args="standalone jsk_pcl/AttentionClipper"
-            clear_params="true" >
-        <remap from="~input/points" to="transformedDepth/points" />
-        <rosparam subst_value="true">
-          initial_pos: [0.0, 0.0, 0.0]
-          initial_rot: [0, 0, 0]
-          dimension_x: 10
-          dimension_y: 10
-          dimension_z: 10
-          frame_id: right_vzense_camera_color_frame
+        <rosparam>
+          queue_size: 30
         </rosparam>
-      </node>
-
-      <node name="extract_indices"
-            pkg="jsk_pcl_ros" type="extract_indices"
-            clear_params="true" >
-        <remap from="~input" to="transformedDepth/points" />
-        <remap from="~indices" to="attention_clipper/output/point_indices" />
       </node>
 
     </group>
