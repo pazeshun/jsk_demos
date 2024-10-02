@@ -13,10 +13,24 @@
   <arg name="i_max" default="255" />
   <arg name="i_min" default="0" />
 
+
+  <!-- <node name="voxel_grid" -->
+  <!--       pkg="nodelet" type="nodelet" -->
+  <!--       args="load pcl/VoxelGrid $(arg manager)"> -->
+  <!--   <remap from="~input" to="$(arg input_cloud)"/> -->
+  <!--   <rosparam> -->
+  <!--     filter_field_name: z -->
+  <!--     filter_limit_min: 0.0 -->
+  <!--     filter_limit_max: 5.0 -->
+  <!--     leaf_size: 0.02 -->
+  <!--   </rosparam> -->
+  <!-- </node> -->
+
   <node name="hsi_color_filter"
         pkg="nodelet" type="nodelet"
         args="load jsk_pcl/HSIColorFilter $(arg manager)"
         respawn="true">
+    <!-- <remap from="~input" to="voxel_grid/output" /> -->
     <remap from="~input" to="$(arg input_cloud)" />
     <rosparam>
       use_indices: false

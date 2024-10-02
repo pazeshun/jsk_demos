@@ -1,0 +1,60 @@
+<launch>
+
+  <arg name="gui" default="true" />
+
+  <arg name="manager" value="/camera/left_vzense_camera/vzense_manager" />
+  <arg name="depth_threshold" default="1.5"/>
+
+  <include file="$(find vzense_demo)/launch/hsi_color.launch" >
+  </include>
+
+  <node name="marker_6dof_for_robot_to_camera"
+        pkg="jsk_interactive_marker" type="marker_6dof" >
+    <rosparam>
+      frame_id: left_vzense_camera_frame
+      object_type: none
+      publish_tf: true
+      tf_frame: dummy_frame
+      initial_x: 0.310
+      initial_y: -0.645
+      initial_z: 0.716
+      initial_orientation: [-0.585, 0.000, 0.000, 0.811]
+    </rosparam>
+  </node>
+
+  <node name="virtual_camera_mono"
+        pkg="jsk_perception" type="virtual_camera_mono">
+    <remap from="image" to="/camera/left_vzense_camera/color/image_raw"/>
+    <rosparam>
+      frame_id: dummy_frame
+      child_frame_id: virtual_camera_frame
+      initial_pos: [0.0, 0.0, 0.0]
+      initial_rot: [0, 0, 0, 1]
+    </rosparam>
+  </node>
+
+  <node name="depth_image_creator"
+        pkg="nodelet" type="nodelet"
+        args="load jsk_pcl/DepthImageCreator $(arg manager)"
+        respawn="true" >
+    <remap from="~input" to="/hsi_color_filter/output" />
+    <remap from="~info" to="/virtual_camera_mono/camera_info" />
+    <rosparam>
+      use_approximate: true
+      max_queue_size: 100
+      max_pub_queue_size: 1
+      max_sub_queue_size: 1
+    </rosparam>
+  </node>
+
+  <node name="box_fitting_node"
+        pkg="vzense_demo" type="box_fitting_node.py"
+        output="screen" respawn="true">
+    <remap from="~input" to="depth_image_creator/output" />
+    <rosparam subst_value="true" >
+      threshold: $(arg depth_threshold)
+    </rosparam>
+  </node>
+
+
+</launch>
