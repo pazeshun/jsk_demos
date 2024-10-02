@@ -10,17 +10,6 @@
   <arg name="manager" default="/camera/left_vzense_camera/vzense_manager" />
 
 
-  <!-- filter background as mask based on depth_threshold -->
-  <node name="depth_image_filter"
-        pkg="jsk_perception" type="depth_image_filter.py"
-        output="screen" respawn="true">
-    <remap from="~input" to="$(arg input_depth_image)" />
-    <remap from="~output/mask" to="$(arg input_depth_image)/mask" />
-    <rosparam subst_value="true" >
-      threshold: $(arg depth_threshold)
-    </rosparam>
-  </node>
-
   <!-- morphology operation on mask to handle transparent bottle and other noisy pixels -->
   <node name="morphology_close" pkg="opencv_apps" type="morphology" >
     <remap from="image" to="$(arg input_depth_image)/mask" />
@@ -107,7 +96,7 @@
   <node name="tile_image_2x1"
         pkg="vzense_demo" type="tile_image.py"
         output="screen">
-    <remap from="~output" to="~output_cpu" />
+    <remap from="~output" to="~output" />
     <rosparam subst_value="true">
       input_topics: [$(arg input_image), /yolo8]
       shape: [1, 2]
@@ -162,7 +151,7 @@
   <group if="$(arg gui)">
     <node name="image_view0"
           pkg="image_view" type="image_view" >
-      <remap from="image" to="/tile_image_2x1/output_cpu" />
+      <remap from="image" to="/tile_image_2x1/output" />
     </node>
   </group>
 

@@ -18,6 +18,8 @@ class DepthImageFilter(ConnectionBasedTransport):
         self.srv = Server(Config, self.config_callback)
         self.pub_image = self.advertise(
             '~output', Image, queue_size=1)
+        self.pub_mask = self.advertise(
+            '~output/mask', Image, queue_size=1)
 
     def subscribe(self):
         self.sub = rospy.Subscriber('~input', Image, self.callback,
@@ -60,6 +62,10 @@ class DepthImageFilter(ConnectionBasedTransport):
             out_depth, encoding='32FC1')
         out_img_msg.header = depth_img_msg.header
         self.pub_image.publish(out_img_msg)
+
+        mask_msg = bridge.cv2_to_imgmsg(mask, encoding='mono8')
+        mask_msg.header = depth_img_msg.header
+        self.pub_mask.publish(mask_msg)
 
 
 if __name__ == '__main__':
