@@ -3,15 +3,66 @@
   <arg name="gui" default="true" />
   <arg name="device" default="-1" />
   <arg name="input_image" default="/camera/left_vzense_camera/color/image_raw" />
+  <arg name="input_depth_image" default="/camera/left_vzense_camera/transformedDepth/image_raw" />
   <arg name="input_cloud" default="/camera/left_vzense_camera/transformedDepth/points" />
+  <arg name="depth_threshold" default="1.5"/>
   <arg name="model_file" default="2024-10-02-grape.pt" />
+
+
+  <!-- filter background as mask based on depth_threshold -->
+  <node name="depth_image_filter"
+        pkg="jsk_perception" type="depth_image_filter.py"
+        output="screen" respawn="true">
+    <remap from="~input" to="$(arg input_depth_image)" />
+    <remap from="~output/mask" to="$(arg input_depth_image)/mask" />
+    <rosparam subst_value="true" >
+      threshold: $(arg depth_threshold)
+    </rosparam>
+  </node>
+
+  <!-- morphology operation on mask to handle transparent bottle and other noisy pixels -->
+  <node name="morphology_close" pkg="opencv_apps" type="morphology" >
+    <remap from="image" to="$(arg input_depth_image)/mask" />
+    <remap from="~image" to="$(arg input_depth_image)/mask/close_operation" />
+    <param name="use_camera_info" value="false" />
+    <param name="debug_view" value="false" />
+    <param name="queue_size" value="10" />
+    <param name="morph_operator" value="1" />
+    <param name="morph_element" value="0" />
+    <param name="morph_size" value="40" />
+  </node>
+  <node name="morphology_open" pkg="opencv_apps" type="morphology" >
+    <remap from="image" to="$(arg input_depth_image)/mask/close_operation" />
+    <remap from="~image" to="$(arg input_depth_image)/mask/open_operation" />
+    <param name="use_camera_info" value="false" />
+    <param name="debug_view" value="false" />
+    <param name="queue_size" value="10" />
+    <param name="morph_operator" value="0" />
+    <param name="morph_element" value="0" />
+    <param name="morph_size" value="40" />
+  </node>
+
+  <!-- use filtered mask to extract foreground rgb image -->
+  <node name="apply_mask_image"
+        pkg="nodelet" type="nodelet"
+        args="standalone jsk_perception/ApplyMaskImage">
+    <remap from="~input" to="$(arg input_image)" />
+    <remap from="~input/mask" to="$(arg input_depth_image)/mask/open_operation" />
+    <remap from="~output" to="$(arg input_image)/depth_filtered" />
+    <remap from="~output/mask" to="$(arg input_image)/depth_filtered/mask" />
+    <rosparam>
+      approximate_sync: true
+      clip: false
+      cval: 0
+    </rosparam>
+  </node>
 
   <node name="object_detection"
         pkg="vzense_demo" type="object_detection.py"
         output="screen"
         clear_params="true"
         required="false">
-    <remap from="~input" to="$(arg input_image)" />
+    <remap from="~input" to="$(arg input_image)/depth_filtered" />
     <rosparam subst_value="true">
       model_path: $(find vzense_demo)/trained_data/yolo8/$(arg model_file)
       score_thresh: 0.7
