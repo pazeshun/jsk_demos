@@ -116,5 +116,5 @@ pip3 install ultralytics torch
 カメラを立ち上げ、物体検出ノードを立ち上げて
 ```
 roslaunch vzense_demo vzense.launch
-
+roslaunch vzense_demo object_detection.launch
 ```
