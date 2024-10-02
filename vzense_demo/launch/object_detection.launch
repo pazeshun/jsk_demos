@@ -2,10 +2,10 @@
 
   <arg name="gui" default="true" />
   <arg name="device" default="-1" />
+  <arg name="model_file" default="2024-10-02-grape_ncnn_model" />
   <arg name="input_image" default="/camera/left_vzense_camera/color/image_raw" />
   <arg name="input_depth_image" default="/camera/left_vzense_camera/transformedDepth/image_raw" />
   <arg name="input_cloud" default="/camera/left_vzense_camera/transformedDepth/points" />
-  <arg name="model_file" default="2024-10-02-grape_ncnn_model" />
   <arg name="manager" default="/camera/left_vzense_camera/vzense_manager" />
 
   <!-- morphology operation on mask to handle transparent bottle and other noisy pixels -->
