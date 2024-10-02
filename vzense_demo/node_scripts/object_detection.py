@@ -93,7 +93,7 @@ class ObjectDetectionNode(ConnectionBasedTransport):
 
     def callback(self, msg):
         if abs(msg.header.stamp - rospy.Time.now()).to_sec() > 1.0:
-           return
+            return
         bridge = self.bridge
         encoding = self.encoding
         im = bridge.imgmsg_to_cv2(
