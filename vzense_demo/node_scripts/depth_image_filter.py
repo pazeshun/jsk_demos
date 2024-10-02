@@ -54,7 +54,7 @@ class DepthImageFilter(ConnectionBasedTransport):
         mask[mask_idx] = 255
         mask = (mask).astype(np.uint8)
 
-        out_depth = np.zeros(depth.shape)
+        out_depth = np.full(depth.shape, np.nan)
         out_depth[np.where(mask == 255)] = depth[np.where(mask == 255)]
         out_depth = out_depth.astype(np.float32)
         # Convert back to ROS Image message
