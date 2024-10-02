@@ -50,13 +50,14 @@ class DepthImageFilter(ConnectionBasedTransport):
         if self.negative is True:
             mask_idx = np.logical_not(mask_idx)
         mask[mask_idx] = 255
-
         mask = (mask).astype(np.uint8)
-        depth[mask] = float('nan')
-        depth = depth.astype(np.float32)
+
+        out_depth = depth.copy()
+        out_depth[np.where(mask == 255)] = float('nan')
+        out_depth = out_depth.astype(np.float32)
         # Convert back to ROS Image message
         out_img_msg = bridge.cv2_to_imgmsg(
-            depth, encoding='32FC1')
+            out_depth, encoding='32FC1')
         out_img_msg.header = depth_img_msg.header
         self.pub_image.publish(out_img_msg)
 

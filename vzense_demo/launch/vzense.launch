@@ -52,6 +52,9 @@
         <remap from="depth_registered/points" to="transformedDepth/points"/>
         <remap from="rgb/image_rect_color" to="color/image_raw"/>
         <remap from="rgb/camera_info" to="color/camera_info"/>
+        <rosparam>
+          queue_size: 300
+        </rosparam>
       </node>
 
       <node name="attention_clipper"
