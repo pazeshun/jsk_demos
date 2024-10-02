@@ -99,3 +99,22 @@ docker run -ti --rm \
 ```
 rosrun vzense_demo set_calib_tf.py
 ```
+
+
+## 物体認識
+
+vzense_demoを更新して`catkin bt`する。
+```
+git pull
+rosdep install --from-paths -i -y -r .
+catkin bt
+pip3 install ultralytics torch
+```
+
+[こちらのリンク](https://drive.google.com/uc?id=1ie5H1A8ffTDm1mUycFcsYBs8wV-vA2yr)からモデルファイルをdownloadしてきて、`trained_data/yolo8/`以下に置く。
+
+カメラを立ち上げ、物体検出ノードを立ち上げて
+```
+roslaunch vzense_demo vzense.launch
+
+```
