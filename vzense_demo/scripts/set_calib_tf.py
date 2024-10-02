@@ -88,7 +88,7 @@ if __name__ == '__main__':
         translation, quaternion_xyzw = lookup_transform('BODY', args.to_frame_id)
         body_to_hand_camera = Coordinates(pos=translation, rot=xyzw2wxyz(quaternion_xyzw))
         left_camera_to_body = coords.copy_worldcoords().transform(body_to_hand_camera.inverse_transformation())
-        set_tf(coords.translation,
+        set_tf(left_camera_to_body.translation,
                wxyz2xyzw(left_camera_to_body.quaternion),
                'left_vzense_camera_frame',
                'BODY',
