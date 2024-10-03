@@ -1,10 +1,13 @@
 <launch>
 
   <arg name="save_dir" default="$(find vzense_demo)/data" />
+  <arg name="launch_camera" default="true" />
 
-  <include file="$(find vzense_demo)/launch/vzense.launch" >
-    <arg name="gui" value="false" />
-  </include>
+  <group if="$(arg launch_camera)" >
+    <include file="$(find vzense_demo)/launch/vzense.launch" >
+      <arg name="gui" value="false" />
+    </include>
+  </group>
 
   <node name="save_request_node"
         pkg="vzense_demo" type="save_request_node.py"
