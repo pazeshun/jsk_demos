@@ -18,6 +18,47 @@ from geometry_msgs.msg import Vector3
 from geometry_msgs.msg import Quaternion
 
 
+launch_file_template = """<launch>
+
+  <arg name="{from_frame}_frame_id" default="/{from_frame_id}" />
+  <arg name="{to_frame}_frame_id" default="/{to_frame_id}" />
+  <node name="{from_frame}_to_{to_frame}_static_transform_publisher"
+        pkg="tf" type="static_transform_publisher"
+        args="{x} {y} {z}
+              {q_x} {q_y} {q_z} {q_w}
+              $(arg {from_frame}_frame_id) $(arg {to_frame}_frame_id) 100" />
+
+</launch>
+"""
+
+
+def write_launch_from_pose(
+        coords, from_frame_id, to_frame_id, filename):
+    """
+
+    Write launch file from pose
+
+    Parameters
+    ----------
+    pose : np.ndarray or list
+        [x, y, z, q_x, q_y, q_z, q_w]
+    """
+    s = launch_file_template.format(from_frame=from_frame_id,
+                                    to_frame=to_frame_id,
+                                    from_frame_id=from_frame_id,
+                                    to_frame_id=to_frame_id,
+                                    x=coords.translation[0],
+                                    y=coords.translation[1],
+                                    z=coords.translation[2],
+                                    q_x=coords.quaternion[1],
+                                    q_y=coords.quaternion[2],
+                                    q_z=coords.quaternion[3],
+                                    q_w=coords.quaternion[0])
+    with open(filename, 'w') as f:
+        f.write(s)
+
+
+
 def set_tf(pos, q, parent, child, freq):
     rospy.wait_for_service('/set_dynamic_tf')
     try:
@@ -42,7 +83,8 @@ if __name__ == '__main__':
 
     rospy.init_node('set_calib_tf')
     rospack = rospkg.RosPack()
-    file_path = Path(rospack.get_path('vzense_demo')) / f'{args.results_path}/Results/calibrated_cameras_data.yml'
+    package_path = Path(rospack.get_path('vzense_demo'))
+    file_path = package_path / f'{args.results_path}/Results/calibrated_cameras_data.yml'
     if not file_path.exists():
         print(f'{file_path} not found')
         sys.exit(1)
@@ -59,6 +101,12 @@ if __name__ == '__main__':
                'left_vzense_camera_frame',
                args.to_frame_id,
                100)
+        write_launch_from_pose(
+            coords,
+            'left_vzense_camera_frame',
+            args.to_frame_id,
+            package_path / 'launch' / 'config.launch'
+        )
     else:
         tf_listener = tf.TransformListener()
         rospy.sleep(2.0)
