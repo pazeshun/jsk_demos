@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from scipy import stats
 import cv_bridge
 from dynamic_reconfigure.server import Server
 from jsk_perception.cfg import DepthImageFilterConfig as Config
@@ -76,8 +77,16 @@ class BoxFittingNode(ConnectionBasedTransport):
             rospy.logwarn("No valid points found in the depth image.")
             return
 
+        # 外れ値を除去する（Zスコアで外れ値を検出）
+        z_scores = stats.zscore(points, axis=0)
+        filtered_points = points[(np.abs(z_scores) < 2).all(axis=1)]
+
+        if len(filtered_points) == 0:
+            rospy.logwarn("No valid points after outlier removal.")
+            return
+
         # 点群に最小外接矩形をフィッティングする
-        rect = cv2.minAreaRect(points)
+        rect = cv2.minAreaRect(filtered_points)
 
         # rectの出力は ((center_y, center_x), (幅, 高さ), 角度) の形式
         (center_y, center_x), (width, height), angle = rect
