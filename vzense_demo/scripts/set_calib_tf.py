@@ -20,8 +20,8 @@ from geometry_msgs.msg import Quaternion
 
 launch_file_template = """<launch>
 
-  <arg name="{from_frame}_frame_id" default="/{from_frame_id}" />
-  <arg name="{to_frame}_frame_id" default="/{to_frame_id}" />
+  <arg name="{from_frame}_frame_id" default="{from_frame_id}" />
+  <arg name="{to_frame}_frame_id" default="{to_frame_id}" />
   <node name="{from_frame}_to_{to_frame}_static_transform_publisher"
         pkg="tf" type="static_transform_publisher"
         args="{x} {y} {z}
