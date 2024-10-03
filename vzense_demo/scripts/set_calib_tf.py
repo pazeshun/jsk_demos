@@ -141,3 +141,9 @@ if __name__ == '__main__':
                'left_vzense_camera_frame',
                'BODY',
                100)
+        write_launch_from_pose(
+            left_camera_to_body,
+            'left_vzense_camera_frame',
+            'BODY',
+            package_path / 'launch' / 'right_roobt_config.launch'
+        )
