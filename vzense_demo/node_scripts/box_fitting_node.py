@@ -28,6 +28,8 @@ class BoxFittingNode(ConnectionBasedTransport):
         self.bridge = cv_bridge.CvBridge()
         self.srv = Server(Config, self.config_callback)
         self.pub_pose = self.advertise('~box_pose', PoseStamped, queue_size=1)
+        self.pub_mask = self.advertise(
+            '~output/mask', Image, queue_size=1)
 
     def subscribe(self):
         self.sub = rospy.Subscriber('/depth_image_creator/output', Image, self.callback, queue_size=1, buff_size=2**24)
@@ -61,6 +63,11 @@ class BoxFittingNode(ConnectionBasedTransport):
         # モルフォロジー変換でノイズを除去する
         kernel = np.ones((3, 3), np.uint8)
         binary_cleaned = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+
+        if self.pub_mask.get_num_connections() > 0:
+            mask_msg = bridge.cv2_to_imgmsg(binary_cleaned, encoding='mono8')
+            mask_msg.header = depth_img_msg.header
+            self.pub_mask.publish(mask_msg)
 
         # ノイズ除去後の画像の非ゼロ（点がある）部分の座標を取得
         points = np.column_stack(np.where(binary_cleaned > 0))

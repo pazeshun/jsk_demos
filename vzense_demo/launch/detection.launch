@@ -3,6 +3,7 @@
   <arg name="gui" default="true" />
   <arg name="device" default="-1" />
   <arg name="model_file" default="2024-10-02-grape_ncnn_model" />
+  <arg name="score_thresh" default="0.5" />
 
   <group ns="/camera/left_vzense_camera" >
     <include file="$(find vzense_demo)/launch/object_detection.launch" >
@@ -13,6 +14,7 @@
       <arg name="gui" default="$(arg gui)" />
       <arg name="device" default="$(arg device)" />
       <arg name="model_file" default="$(arg model_file)" />
+      <arg name="score_thresh" default="$(arg score_thresh)" />
     </include>
   </group>
 
@@ -25,6 +27,7 @@
       <arg name="gui" default="$(arg gui)" />
       <arg name="device" default="$(arg device)" />
       <arg name="model_file" default="$(arg model_file)" />
+      <arg name="score_thresh" default="$(arg score_thresh)" />
     </include>
   </group>
 
