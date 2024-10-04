@@ -9,11 +9,14 @@ import numpy as np
 import rospy
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import PoseStamped
+from jsk_recognition_msgs.msg import BoundingBoxArray
+from jsk_recognition_msgs.msg import BoundingBox
 import cv2
 from cameramodels import PinholeCameraModel
 from skrobot.coordinates.math import rotation_matrix_from_axis
 from skrobot.coordinates.math import wxyz2xyzw
 from skrobot.coordinates.math import matrix2quaternion
+from skrobot.coordinates.base import Coordinates
 
 
 class BoxFittingNode(ConnectionBasedTransport):
@@ -31,6 +34,8 @@ class BoxFittingNode(ConnectionBasedTransport):
         self.pub_pose = self.advertise('~box_pose', PoseStamped, queue_size=1)
         self.pub_mask = self.advertise(
             '~output/mask', Image, queue_size=1)
+        self.pub_boxes = self.advertise('~output/boxes', BoundingBoxArray,
+                                        queue_size=1)
 
     def subscribe(self):
         self.sub = rospy.Subscriber('/depth_image_creator/output', Image, self.callback, queue_size=1, buff_size=2**24)
@@ -70,6 +75,9 @@ class BoxFittingNode(ConnectionBasedTransport):
             mask_msg.header = depth_img_msg.header
             self.pub_mask.publish(mask_msg)
 
+        if self.pub_pose.get_num_connections() == 0 and self.pub_boxes.get_num_connections() == 0:
+            return
+
         # ノイズ除去後の画像の非ゼロ（点がある）部分の座標を取得
         points = np.column_stack(np.where(binary_cleaned > 0))
 
@@ -90,7 +98,6 @@ class BoxFittingNode(ConnectionBasedTransport):
 
         # rectの出力は ((center_y, center_x), (幅, 高さ), 角度) の形式
         (center_y, center_x), (width, height), angle = rect
-        angle = - angle
 
         # 有効な深度値を取得（空間に対応する大きな深度を除外）
         valid_depths = depth[binary_cleaned > 0]
@@ -115,6 +122,17 @@ class BoxFittingNode(ConnectionBasedTransport):
         # 最も近い深度のピクセル位置を特定する
         nearest_pixel_idx = np.where(np.isclose(depth, z_nearest, atol=0.01))  # 最も近い深度に近いピクセルを取得
         z = z_nearest
+
+        box_x = (width / self.cm.fx) * z  # 実際の奥行き（z）でスケーリング
+        box_y = (height / self.cm.fy) * z  # 実際の奥行き（z）でスケーリング
+
+        # 長い方をx軸に、短い方をy軸に設定するため、widthとheightを比較
+        if box_x > box_y:
+            angle += 90
+        else:
+            box_x, box_y = box_y, box_x
+        rospy.loginfo(f'Box width: {box_x} height: {box_y}')
+        angle = - angle
 
         # 2Dのピクセル座標を3D座標に変換 (カメラモデルを使用)
         point_3d = self.cm.project_pixel_to_3d_ray((center_x, center_y))
@@ -142,26 +160,53 @@ class BoxFittingNode(ConnectionBasedTransport):
         # 回転行列を求める
         rotation_matrix = rotation_matrix_from_axis(first_axis=direction_vector, second_axis=z_axis, axes='xz')
 
-        # 回転行列をクオータニオンに変換する
+        real_box_x = 0.5
+        real_box_y = 0.3
+        real_box_z = 0.3
+
+        if (box_x - real_box_x) > 0.1 or (box_y - real_box_y) > 0.1:
+            rospy.logwarn('Estimated box is invalid.')
+            return
+
+        coords = Coordinates(pos=point_3d, rot=rotation_matrix)
+        coords.translate((0, 0, real_box_z / 2.0), 'local')
+        rotation_matrix = coords.rotation
+        point_3d = coords.translation
+
         quaternion = wxyz2xyzw(matrix2quaternion(rotation_matrix))
 
-        # PoseStampedメッセージを作成
-        pose_msg = PoseStamped()
-        pose_msg.header = depth_img_msg.header  # タイムスタンプとフレームIDを一致させる
-
-        # 位置 (3D座標)
-        pose_msg.pose.position.x = point_3d[0]
-        pose_msg.pose.position.y = point_3d[1]
-        pose_msg.pose.position.z = point_3d[2]
-
-        # 姿勢 (クオータニオン)
-        pose_msg.pose.orientation.x = quaternion[0]
-        pose_msg.pose.orientation.y = quaternion[1]
-        pose_msg.pose.orientation.z = quaternion[2]
-        pose_msg.pose.orientation.w = quaternion[3]
+        if self.pub_boxes.get_num_connections() > 0:
+            boxes_msg = BoundingBoxArray(header=depth_img_msg.header)
+            box_msg = BoundingBox(header=depth_img_msg.header)
+            box_msg.pose.position.x = point_3d[0]
+            box_msg.pose.position.y = point_3d[1]
+            box_msg.pose.position.z = point_3d[2]
+            box_msg.pose.orientation.x = quaternion[0]
+            box_msg.pose.orientation.y = quaternion[1]
+            box_msg.pose.orientation.z = quaternion[2]
+            box_msg.pose.orientation.w = quaternion[3]
+            box_msg.dimensions.x = real_box_x
+            box_msg.dimensions.y = real_box_y
+            box_msg.dimensions.z = real_box_z
+            boxes_msg.boxes.append(box_msg)
+            self.pub_boxes.publish(boxes_msg)
 
         # PoseStampedをパブリッシュ
-        self.pub_pose.publish(pose_msg)
+        if self.pub_pose.get_num_connections() > 0:
+            # PoseStampedメッセージを作成
+            pose_msg = PoseStamped(header=depth_img_msg.header)
+
+            # 位置 (3D座標)
+            pose_msg.pose.position.x = point_3d[0]
+            pose_msg.pose.position.y = point_3d[1]
+            pose_msg.pose.position.z = point_3d[2]
+
+            # 姿勢 (クオータニオン)
+            pose_msg.pose.orientation.x = quaternion[0]
+            pose_msg.pose.orientation.y = quaternion[1]
+            pose_msg.pose.orientation.z = quaternion[2]
+            pose_msg.pose.orientation.w = quaternion[3]
+            self.pub_pose.publish(pose_msg)
 
         # デバッグ用
         rospy.loginfo(f'Center 3D: {point_3d}, Angle: {angle} degrees')
