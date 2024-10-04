@@ -92,8 +92,29 @@ class BoxFittingNode(ConnectionBasedTransport):
         (center_y, center_x), (width, height), angle = rect
         angle = - angle
 
-        # 深度画像から中心点の深度を取得
-        z = np.mean(depth[binary_cleaned > 0])
+        # 有効な深度値を取得（空間に対応する大きな深度を除外）
+        valid_depths = depth[binary_cleaned > 0]
+        valid_depths = valid_depths[valid_depths < self.depth_threshold]  # 空間の深度を除去
+
+        if len(valid_depths) > 0:
+            # ヒストグラムを生成（深度の分布を把握）
+            hist, bin_edges = np.histogram(valid_depths, bins=50, range=(np.min(valid_depths), np.max(valid_depths)))
+
+            # 一定の頻度以上の深度を採用（例: ヒストグラム内の点数が100以上の範囲を選択）
+            significant_bins = bin_edges[:-1][hist > 100]  # 100個以上の点がある深度を採用
+            if len(significant_bins) > 0:
+                # 最も近い深度範囲の下限を取得
+                z_nearest = significant_bins[0]
+            else:
+                rospy.logwarn("No significant depth values found.")
+                return
+        else:
+            rospy.logwarn("No valid depths found.")
+            return
+
+        # 最も近い深度のピクセル位置を特定する
+        nearest_pixel_idx = np.where(np.isclose(depth, z_nearest, atol=0.01))  # 最も近い深度に近いピクセルを取得
+        z = z_nearest
 
         # 2Dのピクセル座標を3D座標に変換 (カメラモデルを使用)
         point_3d = self.cm.project_pixel_to_3d_ray((center_x, center_y))
