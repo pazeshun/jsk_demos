@@ -90,8 +90,28 @@ class KARMROSRobotInterface(ROSRobotInterfaceBase):
             ],
         )
 
+
+    @property
+    def larm_controller(self):
+        return dict(
+            controller_type='larm_controller',
+            controller_action='larm_controller/follow_joint_trajectory_action',  # NOQA
+            controller_state='larm_controller/state',
+            action_type=control_msgs.msg.FollowJointTrajectoryAction,
+            joint_names=[
+                "LARM_JOINT0",
+                "LARM_JOINT1",
+                "LARM_JOINT2",
+                "LARM_JOINT3",
+                "LARM_JOINT4",
+                "LARM_JOINT5",
+                "LARM_JOINT6",
+            ],
+        )
+
     def default_controller(self):
-        return [self.rarm_controller]
+        return [self.rarm_controller,
+                self.larm_controller]
 
     def move_hand(self, target_pos, tm, wait_tm):
         rospy.loginfo('Current joint position: {}'.format(self.jnt_pos))
