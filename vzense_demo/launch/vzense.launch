@@ -27,6 +27,37 @@
     </node>
 
     <group ns="left_vzense_camera" >
+      <group ns="color" >
+        <group ns="image_raw" >
+          <rosparam param="disable_pub_plugins">
+            - 'image_transport/compressedDepth'
+            - 'image_transport/theora'
+          </rosparam>
+        </group>
+      </group>  <!-- end of color ns -->
+
+      <group ns="depth" >
+        <group ns="image_raw" >
+          <rosparam param="disable_pub_plugins">
+            - 'image_transport/compressed'
+            - 'image_transport/theora'
+          </rosparam>
+          <param name="compressedDepth/format" value="rvl" />
+          <param name="compressedDepth/png_level" value="9" />
+        </group>
+      </group>  <!-- end of depth ns -->
+
+      <group ns="transformedDepth" >
+        <group ns="image_raw" >
+          <rosparam param="disable_pub_plugins">
+            - 'image_transport/compressed'
+            - 'image_transport/theora'
+          </rosparam>
+          <param name="compressedDepth/format" value="rvl" />
+          <param name="compressedDepth/png_level" value="9" />
+        </group>
+      </group>  <!-- end of transformedDepth ns -->
+
       <node name="$(arg manager)"
             pkg="nodelet" type="nodelet"
             args="manager"/>
@@ -64,6 +95,38 @@
     </node>
 
     <group ns="right_vzense_camera" >
+      <group ns="color" >
+        <group ns="image_raw" >
+          <rosparam param="disable_pub_plugins">
+            - 'image_transport/compressedDepth'
+            - 'image_transport/theora'
+          </rosparam>
+        </group>
+      </group>  <!-- end of color ns -->
+
+      <group ns="depth" >
+        <group ns="image_raw" >
+          <rosparam param="disable_pub_plugins">
+            - 'image_transport/compressed'
+            - 'image_transport/theora'
+          </rosparam>
+          <param name="compressedDepth/format" value="rvl" />
+          <param name="compressedDepth/png_level" value="9" />
+        </group>
+      </group>  <!-- end of depth ns -->
+
+      <group ns="transformedDepth" >
+        <group ns="image_raw" >
+          <rosparam param="disable_pub_plugins">
+            - 'image_transport/compressed'
+            - 'image_transport/theora'
+          </rosparam>
+          <param name="compressedDepth/format" value="rvl" />
+          <param name="compressedDepth/png_level" value="9" />
+        </group>
+      </group>  <!-- end of transformedDepth ns -->
+
+
       <node name="$(arg manager)"
             pkg="nodelet" type="nodelet"
             args="manager"/>
