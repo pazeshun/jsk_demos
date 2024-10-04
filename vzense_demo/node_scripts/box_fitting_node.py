@@ -37,6 +37,9 @@ class BoxFittingNode(ConnectionBasedTransport):
         self.pub_boxes = self.advertise('~output/boxes', BoundingBoxArray,
                                         queue_size=1)
 
+        self.pub_right_hook_pose = self.advertise('~right_hook_pose', PoseStamped, queue_size=1)
+        self.pub_left_hook_pose = self.advertise('~left_hook_pose', PoseStamped, queue_size=1)
+
     def subscribe(self):
         self.sub = rospy.Subscriber('/depth_image_creator/output', Image, self.callback, queue_size=1, buff_size=2**24)
 
@@ -175,7 +178,7 @@ class BoxFittingNode(ConnectionBasedTransport):
 
         quaternion = wxyz2xyzw(matrix2quaternion(rotation_matrix))
 
-        if self.pub_boxes.get_num_connections() > 0:
+        if self.pub_boxes.get_num_connections() > 0 or self.pub_right_hook_pose.get_num_connections() > 0 or self.pub_left_hook_pose.get_num_connections() > 0:
             boxes_msg = BoundingBoxArray(header=depth_img_msg.header)
             box_msg = BoundingBox(header=depth_img_msg.header)
             box_msg.pose.position.x = point_3d[0]
@@ -190,6 +193,32 @@ class BoxFittingNode(ConnectionBasedTransport):
             box_msg.dimensions.z = real_box_z
             boxes_msg.boxes.append(box_msg)
             self.pub_boxes.publish(boxes_msg)
+
+            offset_z = - 0.07
+            right_hook_coords = Coordinates(pos=point_3d, rot=rotation_matrix)
+            right_hook_coords.translate((real_box_x / 2.0, 0, offset_z), 'local')
+            right_hook_coords.rotate(np.pi, 'z')
+            pose_msg = PoseStamped(header=depth_img_msg.header)
+            pose_msg.pose.position.x = right_hook_coords.translation[0]
+            pose_msg.pose.position.y = right_hook_coords.translation[1]
+            pose_msg.pose.position.z = right_hook_coords.translation[2]
+            pose_msg.pose.orientation.x = right_hook_coords.quaternion[1]
+            pose_msg.pose.orientation.y = right_hook_coords.quaternion[2]
+            pose_msg.pose.orientation.z = right_hook_coords.quaternion[3]
+            pose_msg.pose.orientation.w = right_hook_coords.quaternion[0]
+            self.pub_right_hook_pose.publish(pose_msg)
+
+            left_hook_coords = Coordinates(pos=point_3d, rot=rotation_matrix)
+            left_hook_coords.translate((- real_box_x / 2.0, 0, offset_z), 'local')
+            pose_msg = PoseStamped(header=depth_img_msg.header)
+            pose_msg.pose.position.x = left_hook_coords.translation[0]
+            pose_msg.pose.position.y = left_hook_coords.translation[1]
+            pose_msg.pose.position.z = left_hook_coords.translation[2]
+            pose_msg.pose.orientation.x = left_hook_coords.quaternion[1]
+            pose_msg.pose.orientation.y = left_hook_coords.quaternion[2]
+            pose_msg.pose.orientation.z = left_hook_coords.quaternion[3]
+            pose_msg.pose.orientation.w = left_hook_coords.quaternion[0]
+            self.pub_left_hook_pose.publish(pose_msg)
 
         # PoseStampedをパブリッシュ
         if self.pub_pose.get_num_connections() > 0:
