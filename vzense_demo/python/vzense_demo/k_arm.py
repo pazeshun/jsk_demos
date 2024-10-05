@@ -57,7 +57,7 @@ class KARM(RobotModelFromURDF):
 
         self.larm_elbow_end_coords = CascadedCoords(
             parent=self.LARM_LINK4,
-            name='larm_elbow_end_coords', pos=(0, -0.08, -0.02)).rotate(-np.pi / 2.0, 'z').rotate(np.pi / 2.0, 'x')
+            name='larm_elbow_end_coords', pos=(0, 0.08, -0.02)).rotate(np.pi / 2.0, 'z').rotate(np.pi / 2.0, 'x')
 
     @cached_property
     def rarm(self):

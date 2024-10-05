@@ -147,8 +147,6 @@ if __name__ == '__main__':
 
     robot_model.init_pose()
     robot_model.rotate(- np.pi / 2.0, 'y')
-    # robot_model.rotate(np.pi / 2.0, 'x', 'world')
-    robot_model.rotate(-np.pi / 2.0, 'x', 'world')
     viewer = PyrenderViewer()
     viewer.add(robot_model)
     viewer.show()
