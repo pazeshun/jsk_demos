@@ -9,6 +9,8 @@ import sys
 from skrobot.coordinates import Coordinates
 from skrobot.coordinates.math import xyzw2wxyz
 from skrobot.coordinates.math import wxyz2xyzw
+from skrobot.coordinates import midcoords
+from skrobot.coordinates.math import rotation_matrix_from_axis
 import rospkg
 from pathlib import Path
 import rospy
@@ -18,22 +20,17 @@ from geometry_msgs.msg import Vector3
 from geometry_msgs.msg import Quaternion
 
 
-launch_file_template = """<launch>
-
-  <arg name="{from_frame}_frame_id" default="{from_frame_id}" />
-  <arg name="{to_frame}_frame_id" default="{to_frame_id}" />
-  <node name="{from_frame}_to_{to_frame}_static_transform_publisher"
+launch_file_template = """  <node name="{from_frame}_to_{to_frame}_static_transform_publisher"
         pkg="tf" type="static_transform_publisher"
         args="{x} {y} {z}
               {q_x} {q_y} {q_z} {q_w}
-              $(arg {from_frame}_frame_id) $(arg {to_frame}_frame_id) 100" />
-
-</launch>
+              {from_frame} {to_frame} 100" />
 """
 
 
 def write_launch_from_pose(
-        coords, from_frame_id, to_frame_id, filename):
+        coords, from_frame_id, to_frame_id, filename,
+        mid_coords=None, mid_coords_from_frame_id=None, mid_coords_to_frame_id=None):
     """
 
     Write launch file from pose
@@ -43,17 +40,28 @@ def write_launch_from_pose(
     pose : np.ndarray or list
         [x, y, z, q_x, q_y, q_z, q_w]
     """
-    s = launch_file_template.format(from_frame=from_frame_id,
-                                    to_frame=to_frame_id,
-                                    from_frame_id=from_frame_id,
-                                    to_frame_id=to_frame_id,
-                                    x=coords.translation[0],
-                                    y=coords.translation[1],
-                                    z=coords.translation[2],
-                                    q_x=coords.quaternion[1],
-                                    q_y=coords.quaternion[2],
-                                    q_z=coords.quaternion[3],
-                                    q_w=coords.quaternion[0])
+    s = '<launch>\n'
+    s += launch_file_template.format(from_frame=from_frame_id,
+                                     to_frame=to_frame_id,
+                                     x=coords.translation[0],
+                                     y=coords.translation[1],
+                                     z=coords.translation[2],
+                                     q_x=coords.quaternion[1],
+                                     q_y=coords.quaternion[2],
+                                     q_z=coords.quaternion[3],
+                                     q_w=coords.quaternion[0])
+    if mid_coords is not None:
+        s += '\n'
+        s += launch_file_template.format(from_frame=mid_coords_from_frame_id,
+                                         to_frame=mid_coords_to_frame_id,
+                                         x=mid_coords.translation[0],
+                                         y=mid_coords.translation[1],
+                                         z=mid_coords.translation[2],
+                                         q_x=mid_coords.quaternion[1],
+                                         q_y=mid_coords.quaternion[2],
+                                         q_z=mid_coords.quaternion[3],
+                                         q_w=mid_coords.quaternion[0])
+    s += '</launch>'
     with open(filename, 'w') as f:
         f.write(s)
 
@@ -101,11 +109,24 @@ if __name__ == '__main__':
                'left_vzense_camera_frame',
                args.to_frame_id,
                100)
+        camera_midcoords = midcoords(0.5, Coordinates(), coords)
+        rot = rotation_matrix_from_axis(
+            - coords.translation, - coords.y_axis, axes='yz')
+        camera_midcoords = Coordinates(pos=camera_midcoords.translation,
+                                       rot=rot)
+        set_tf(camera_midcoords.translation,
+               list(camera_midcoords.quaternion[1:]) + [camera_midcoords.quaternion[0]],
+               'left_vzense_camera_frame',
+               'camera_mid_frame',
+               100)
         write_launch_from_pose(
             coords,
             'left_vzense_camera_frame',
             args.to_frame_id,
-            package_path / 'launch' / 'config.launch'
+            package_path / 'launch' / 'config.launch',
+            mid_coords=camera_midcoords,
+            mid_coords_from_frame_id='left_vzense_camera_frame',
+            mid_coords_to_frame_id='camera_mid_frame',
         )
     else:
         tf_listener = tf.TransformListener()

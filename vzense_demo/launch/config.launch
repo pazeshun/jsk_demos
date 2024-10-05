@@ -1,11 +1,13 @@
 <launch>
-
-  <arg name="left_vzense_camera_frame_frame_id" default="left_vzense_camera_frame" />
-  <arg name="right_vzense_camera_frame_frame_id" default="right_vzense_camera_frame" />
   <node name="left_vzense_camera_frame_to_right_vzense_camera_frame_static_transform_publisher"
         pkg="tf" type="static_transform_publisher"
-        args="1.1480941628868016 -0.3434672505143339 0.7330592905766944
-              0.04171201231208427 -0.5619231643372399 -0.22119963365357453 0.7959731072603046
-              $(arg left_vzense_camera_frame_frame_id) $(arg right_vzense_camera_frame_frame_id) 100" />
+        args="1.1480941628861585 -0.3434672505142992 0.7330592905778042
+              0.041712012312097986 -0.5619231643379077 -0.22119963365352183 0.795973107259847
+              left_vzense_camera_frame right_vzense_camera_frame 100" />
 
+  <node name="left_vzense_camera_frame_to_camera_mid_frame_static_transform_publisher"
+        pkg="tf" type="static_transform_publisher"
+        args="0.5740470814430793 -0.1717336252571496 0.3665296452889021
+              -0.3227987769120568 0.710436675047821 -0.5230232285382511 -0.34282266958370966
+              left_vzense_camera_frame camera_mid_frame 100" />
 </launch>
