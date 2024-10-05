@@ -1,0 +1,9 @@
+<launch>
+
+  <node name="rviz"
+        pkg="rviz" type="rviz"
+        args="-d $(find vzense_demo)/launch/config/calib_camera_and_robot.rviz" >
+    <rosparam command="load" file="$(find vzense_demo)/config/calib_camera_command.yaml" />
+  </node>
+
+</launch>
