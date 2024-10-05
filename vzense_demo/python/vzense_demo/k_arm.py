@@ -51,6 +51,14 @@ class KARM(RobotModelFromURDF):
             pos=[-0.015, -0.04, -0.52]).rotate(
                 np.pi / 2.0, 'y').rotate(np.pi / 2.0, 'x')
 
+        self.rarm_elbow_end_coords = CascadedCoords(
+            parent=self.RARM_LINK4,
+            name='rarm_elbow_end_coords', pos=(0, -0.08, -0.02)).rotate(-np.pi / 2.0, 'z').rotate(np.pi / 2.0, 'x')
+
+        self.larm_elbow_end_coords = CascadedCoords(
+            parent=self.LARM_LINK4,
+            name='larm_elbow_end_coords', pos=(0, -0.08, -0.02)).rotate(-np.pi / 2.0, 'z').rotate(np.pi / 2.0, 'x')
+
     @cached_property
     def rarm(self):
         rarm_links = [
@@ -130,8 +138,12 @@ if __name__ == '__main__':
     rarm_end_coords_axis = Axis.from_coords(robot_model.rarm_end_coords)
     viewer.add(rarm_end_coords_axis)
 
+    rarm_elbow_end_coords_axis = Axis.from_coords(robot_model.rarm_elbow_end_coords)
+    viewer.add(rarm_elbow_end_coords_axis)
+
     larm_end_coords_axis = Axis.from_coords(robot_model.larm_end_coords)
     viewer.add(larm_end_coords_axis)
+
 
     rarm_target_coords = Axis()
     viewer.add(rarm_target_coords)
