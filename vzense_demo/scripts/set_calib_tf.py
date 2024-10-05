@@ -20,11 +20,12 @@ from geometry_msgs.msg import Vector3
 from geometry_msgs.msg import Quaternion
 
 
-launch_file_template = """  <node name="{from_frame}_to_{to_frame}_static_transform_publisher"
-        pkg="tf" type="static_transform_publisher"
+launch_file_template = """  <node name="set_{from_frame}_to_{to_frame}_tf"
+        pkg="dynamic_tf_publisher" type="tf_set.py"
         args="{x} {y} {z}
               {q_x} {q_y} {q_z} {q_w}
-              {from_frame} {to_frame} 100" />
+              {from_frame} {to_frame} 100"
+        output="screen" clear_params="true" />
 """
 
 
