@@ -144,7 +144,6 @@ if __name__ == '__main__':
     larm_end_coords_axis = Axis.from_coords(robot_model.larm_end_coords)
     viewer.add(larm_end_coords_axis)
 
-
     rarm_target_coords = Axis()
     viewer.add(rarm_target_coords)
     # rarm_target_coords.newcoords(coords.copy_worldcoords().translate((-0.2, 0.1, 0.1)))
