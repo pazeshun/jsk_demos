@@ -32,7 +32,7 @@
       initial_x: -0.089
       initial_y: 0.0
       initial_z: -0.317
-      initial_orientation: [7.07106781e-01,  4.32978028e-17, -7.07106781e-01, 4.32978028e-17]
+      initial_orientation: [-8.65956056e-17,  7.07106781e-01,  8.65956056e-17,  7.07106781e-01]
     </rosparam>
   </node>
 
