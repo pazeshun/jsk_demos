@@ -1,14 +1,15 @@
 <launch>
-  <node name="left_vzense_camera_frame_to_right_vzense_camera_frame_static_transform_publisher"
-        pkg="tf" type="static_transform_publisher"
-        args="1.1480941628861585 -0.3434672505142992 0.7330592905778042
-              0.041712012312097986 -0.5619231643379077 -0.22119963365352183 0.795973107259847
-              left_vzense_camera_frame right_vzense_camera_frame 100" />
+  <node name="set_left_vzense_camera_frame_to_right_vzense_camera_frame_tf"
+        pkg="dynamic_tf_publisher" type="tf_set.py"
+        args="1.1480941628867998 -0.34346725051433474 0.7330592905766985
+              0.041712012312085205 -0.5619231643372422 -0.22119963365357417 0.7959731072603029
+              left_vzense_camera_frame right_vzense_camera_frame 100"
+        output="screen" clear_params="true" />
 
-  <node name="left_vzense_camera_frame_to_camera_mid_frame_static_transform_publisher"
-        pkg="tf" type="static_transform_publisher"
-        args="0.5740470814430793 -0.1717336252571496 0.3665296452889021
-              -0.3227987769120568 0.710436675047821 -0.5230232285382511 -0.34282266958370966
-              left_vzense_camera_frame camera_mid_frame 100" />
-
+  <node name="set_left_vzense_camera_frame_to_camera_mid_frame_tf"
+        pkg="dynamic_tf_publisher" type="tf_set.py"
+        args="0.5740470814433999 -0.17173362525716737 0.36652964528834925
+              -0.32279877691240144 0.7104366750477397 -0.5230232285380225 -0.3428226695839024
+              left_vzense_camera_frame camera_mid_frame 100"
+        output="screen" clear_params="true" />
 </launch>

@@ -2,6 +2,7 @@
 
   <arg name="save_dir" default="$(find vzense_demo)/data" />
   <arg name="launch_camera" default="true" />
+  <arg name="gui" default="true" />
 
   <group if="$(arg launch_camera)" >
     <include file="$(find vzense_demo)/launch/vzense.launch" >
@@ -31,12 +32,12 @@
     </rosparam>
   </node>
 
-
-
-  <node name="rviz"
-        pkg="rviz" type="rviz"
-        args="-d $(find vzense_demo)/launch/config/calib_camera.rviz" >
-    <rosparam command="load" file="$(find vzense_demo)/config/calib_camera_command.yaml" />
-  </node>
+  <group if="$(arg gui)" >
+    <node name="$(anon rviz)"
+          pkg="rviz" type="rviz"
+          args="-d $(find vzense_demo)/launch/config/calib_camera.rviz" >
+      <rosparam command="load" file="$(find vzense_demo)/config/calib_camera_command.yaml" />
+    </node>
+  </group>
 
 </launch>

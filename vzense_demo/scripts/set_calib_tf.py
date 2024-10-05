@@ -62,7 +62,7 @@ def write_launch_from_pose(
                                          q_y=mid_coords.quaternion[2],
                                          q_z=mid_coords.quaternion[3],
                                          q_w=mid_coords.quaternion[0])
-    s += '</launch>'
+    s += '</launch>\n'
     with open(filename, 'w') as f:
         f.write(s)
 
