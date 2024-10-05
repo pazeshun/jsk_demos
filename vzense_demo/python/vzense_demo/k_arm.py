@@ -45,6 +45,12 @@ class KARM(RobotModelFromURDF):
             pos=[-0.015, -0.04, -0.52]).rotate(
                 np.pi / 2.0, 'y').rotate(np.pi / 2.0, 'x')
 
+        self.larm_end_coords = CascadedCoords(
+            parent=self.LARM_LINK3,
+            name='larm_end_coords',
+            pos=[-0.015, -0.04, -0.52]).rotate(
+                np.pi / 2.0, 'y').rotate(np.pi / 2.0, 'x')
+
     @cached_property
     def rarm(self):
         rarm_links = [
@@ -63,6 +69,26 @@ class KARM(RobotModelFromURDF):
                 rarm_joints.append(link.joint)
         r = RobotModel(link_list=rarm_links, joint_list=rarm_joints)
         r.end_coords = self.rarm_end_coords
+        return r
+
+    @cached_property
+    def larm(self):
+        larm_links = [
+            self.BODY,
+            self.LARM_LINK0,
+            self.LARM_LINK1,
+            self.LARM_LINK2,
+            self.LARM_LINK3,
+            # self.LARM_LINK4,
+            # self.LARM_LINK5,
+            # self.LARM_LINK6,
+        ]
+        larm_joints = []
+        for link in larm_links:
+            if hasattr(link, 'joint') and link.joint is not None:
+                larm_joints.append(link.joint)
+        r = RobotModel(link_list=larm_links, joint_list=larm_joints)
+        r.end_coords = self.larm_end_coords
         return r
 
     def reset_pose(self):
@@ -91,18 +117,21 @@ class KARM(RobotModelFromURDF):
 
 
 if __name__ == '__main__':
-    from skrobot.viewers import TrimeshSceneViewer
+    from skrobot.viewers import PyrenderViewer
     from skrobot.model import Axis
     robot_model = KARM()
     robot_model.init_pose()
     robot_model.rotate(- np.pi / 2.0, 'y')
     # robot_model.rotate(np.pi / 2.0, 'x', 'world')
     robot_model.rotate(-np.pi / 2.0, 'x', 'world')
-    viewer = TrimeshSceneViewer()
+    viewer = PyrenderViewer()
     viewer.add(robot_model)
     viewer.show()
     rarm_end_coords_axis = Axis.from_coords(robot_model.rarm_end_coords)
     viewer.add(rarm_end_coords_axis)
+
+    larm_end_coords_axis = Axis.from_coords(robot_model.larm_end_coords)
+    viewer.add(larm_end_coords_axis)
 
     rarm_target_coords = Axis()
     viewer.add(rarm_target_coords)

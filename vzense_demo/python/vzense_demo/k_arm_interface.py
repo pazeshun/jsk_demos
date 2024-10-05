@@ -155,6 +155,9 @@ if __name__ == '__main__':
     rarm_end_coords_axis = Axis.from_coords(robot_model.rarm_end_coords)
     viewer.add(rarm_end_coords_axis)
 
+    larm_end_coords_axis = Axis.from_coords(robot_model.larm_end_coords)
+    viewer.add(larm_end_coords_axis)
+
     rarm_target_coords = Axis()
     viewer.add(rarm_target_coords)
 

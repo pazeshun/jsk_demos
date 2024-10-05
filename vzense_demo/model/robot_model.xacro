@@ -14,4 +14,13 @@
     <origin xyz="0 0 -0.06" rpy="0 -3.141592653589793 0"/>
   </joint>
 
+  <xacro:rmmf_hand_model_0 hand="LARM_hand">
+  </xacro:rmmf_hand_model_0>
+
+  <joint name="LARM_hand_joint" type="fixed">
+    <parent link="LARM_LINK6"/>
+    <child link="LARM_hand_base"/>
+    <origin xyz="0 0 -0.06" rpy="0 -3.141592653589793 0"/>
+  </joint>
+
 </robot>
