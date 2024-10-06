@@ -121,9 +121,7 @@ class KARMROSRobotInterface(ROSRobotInterfaceBase):
 
     def __init__(self, *args, **kwargs):
         super(KARMROSRobotInterface, self).__init__(*args, **kwargs)
-        # self.init_hand()
-
-        # self.stop_grasp()
+        self.rhand = HandInterface('rhand')
 
     @property
     def rarm_controller(self):
