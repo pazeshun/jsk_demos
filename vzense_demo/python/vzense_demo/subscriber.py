@@ -50,7 +50,9 @@ class TopicSubscriber(object):
             self.unsubscribe()
 
     def wait_message(self):
+        sub_start = False
         if self.sub is None:
+            sub_start = True
             self.subscribe()
         rate = rospy.Rate(10)
         start = datetime.datetime.now()
@@ -66,9 +68,13 @@ class TopicSubscriber(object):
                 rospy.logwarn('Topic {} not received for {} seconds'.
                               format(self.topic_name, dt))
                 cur_start = datetime.datetime.now()
+        if sub_start:
+            self.unsubscribe()
 
     def wait_new_message(self):
+        sub_start = False
         if self.sub is None:
+            sub_start = True
             self.subscribe()
         rate = rospy.Rate(10)
         start = datetime.datetime.now()
@@ -93,4 +99,6 @@ class TopicSubscriber(object):
                 rospy.logwarn('Topic {} not received for {} seconds'.
                               format(self.topic_name, dt))
                 cur_start = datetime.datetime.now()
+        if sub_start:
+            self.unsubscribe()
         return self.msg
