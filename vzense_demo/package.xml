@@ -21,8 +21,11 @@
   <exec_depend>jsk_rviz_plugins</exec_depend>
   <exec_depend>jsk_topic_tools</exec_depend>
   <exec_depend>message_runtime</exec_depend>
-  <!-- <exec_depend>realsense2_camera</exec_depend>
-       <exec_depend>realsense2_camera</exec_depend> -->
+  <exec_depend>realsense2_camera</exec_depend>
+  <exec_depend>k_arm_ros_bridge_tutorials</exec_depend>
+  <exec_depend>rmmf_hand_ros</exec_depend>
+  <exec_depend>VzenseROS_MultiCameras</exec_depend>
+  <exec_depend>opencv_apps</exec_depend>
   <!-- ALPHABETICAL ORDER -->
 
 </package>
