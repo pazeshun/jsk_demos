@@ -41,7 +41,7 @@
     <arg name="gui" default="$(arg gui)" />
   </include>
 
-  <group if="$(arg launch)" >
+  <group if="$(arg launch_rhand)" >
     <include file="$(find rmmf_hand_ros)/launch/model_0.launch" >
       <arg name="hand" default="rhand" />
       <arg name="motor_port" default="$(arg rhand_motor_port)" />
