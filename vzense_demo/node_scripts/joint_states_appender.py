@@ -26,13 +26,16 @@ class JointStatesMerger:
         ]
 
         self.joint_state_1_sub = rospy.Subscriber('/joint_states',
-                                                  JointState, self.joint_state_1_callback)
+                                                  JointState, self.joint_state_1_callback,
+                                                  queue_size=1)
         self.joint_state_2_sub = rospy.Subscriber('/rhand/joint_states',
-                                                  JointState, self.joint_state_2_callback)
+                                                  JointState, self.joint_state_2_callback,
+                                                  queue_size=1)
         self.joint_state_3_sub = rospy.Subscriber('/lhand/joint_states',
-                                                  JointState, self.joint_state_3_callback)
+                                                  JointState, self.joint_state_3_callback,
+                                                  queue_size=1)
         self.joint_states_pub = rospy.Publisher('/concat_joint_states',
-                                                JointState, queue_size=10)
+                                                JointState, queue_size=1)
 
     def joint_state_1_callback(self, msg):
         self.joint_state_1 = msg
