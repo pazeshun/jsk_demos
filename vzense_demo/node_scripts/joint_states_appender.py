@@ -25,6 +25,8 @@ class JointStatesMerger:
             'lhand_index_joint',
         ]
 
+        self.joint_states_pub = rospy.Publisher('/concat_joint_states',
+                                                JointState, queue_size=1)
         self.joint_state_1_sub = rospy.Subscriber('/joint_states',
                                                   JointState, self.joint_state_1_callback,
                                                   queue_size=1)
@@ -34,8 +36,6 @@ class JointStatesMerger:
         self.joint_state_3_sub = rospy.Subscriber('/lhand/joint_states',
                                                   JointState, self.joint_state_3_callback,
                                                   queue_size=1)
-        self.joint_states_pub = rospy.Publisher('/concat_joint_states',
-                                                JointState, queue_size=1)
 
     def joint_state_1_callback(self, msg):
         self.joint_state_1 = msg
@@ -43,11 +43,9 @@ class JointStatesMerger:
 
     def joint_state_2_callback(self, msg):
         self.joint_state_2 = msg
-        self.publish_merged_joint_states()
 
     def joint_state_3_callback(self, msg):
         self.joint_state_3 = msg
-        self.publish_merged_joint_states()
 
     def publish_merged_joint_states(self):
         if self.joint_state_1 is None or self.joint_state_2 is None or self.joint_state_3 is None:
