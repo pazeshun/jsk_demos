@@ -16,12 +16,18 @@ class JointStatesMerger:
 
         self.joint_state_1 = None
         self.joint_state_2 = JointState()
-        self.joint_state_2.position = [- np.pi / 2.0, 0, 0, 0]
-        self.joint_state_2.name = ['RARM_hand_thumb_base_joint',
-                                   'RARM_hand_thumb_joint',
-                                   'RARM_hand_index_base_joint',
-                                   'RARM_hand_index_joint',
-                                   ]
+        self.joint_state_2.position = [- np.pi / 2.0, 0, 0, 0,
+                                       - np.pi / 2.0, 0, 0, 0]
+        self.joint_state_2.name = [
+            'RARM_hand_thumb_base_joint',
+            'RARM_hand_thumb_joint',
+            'RARM_hand_index_base_joint',
+            'RARM_hand_index_joint',
+            'LARM_hand_thumb_base_joint',
+            'LARM_hand_thumb_joint',
+            'LARM_hand_index_base_joint',
+            'LARM_hand_index_joint',
+        ]
 
     def joint_state_1_callback(self, msg):
         self.joint_state_1 = msg

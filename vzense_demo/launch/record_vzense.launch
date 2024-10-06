@@ -20,6 +20,12 @@
               /tf
               /tf_static
               /dynamic_tf_publisher/tf
+
+              /joint_states
+              /concat_joint_states
+              /motor_states
+              /motor_states/board_vin
+              /motor_states_low/board_vin
               ">
   </node>
 
