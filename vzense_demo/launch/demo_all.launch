@@ -1,3 +1,31 @@
 <launch>
 
+  <arg name="left_camera_ip" default="192.168.96.129"/>
+  <arg name="right_camera_ip" default="192.168.96.127"/>
+  <arg name="depth_threshold" default="1.5"/>
+
+  <arg name="gui" default="false" />
+  <arg name="device" default="-1" />
+  <arg name="model_file_pt" default="2024-10-02-grape.pt" />
+  <arg name="model_file_ncnn" default="2024-10-02-grape_ncnn_model" />
+  <param name="model_file" value="$(eval 'arg.device == -1' ? arg.model_file_ncnn : arg.model_file_pt)" />
+  <arg name="score_thresh" default="0.5" />
+
+  <include file="$(find vzense_demo)/launch/vzense.launch" >
+    <arg name="gui" default="$(arg gui)" />
+    <arg name="right_camera_ip" default="$(arg right_camera_ip)" />
+    <arg name="left_camera_ip" default="$(arg left_camera_ip)" />
+  </include>
+
+  <include file="$(find vzense_demo)/launch/detection.launch" >
+    <arg name="gui" default="$(arg gui)" />
+    <arg name="device" default="$(arg device)" />
+    <arg name="model_file" default="$(arg model_file)" />
+    <arg name="score_thresh" default="$(arg score_thresh)" />
+  </include>
+
+  <include file="$(find vzense_demo)/launch/viz_robot.launch" >
+    <arg name="gui" default="$(arg gui)" />
+  </include>
+
 </launch>
