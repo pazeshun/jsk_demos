@@ -100,9 +100,15 @@ class KARM(RobotModelFromURDF):
         return r
 
     def reset_pose(self):
-        self.RARM_JOINT0.joint_angle(0.8)
-        self.RARM_JOINT1.joint_angle(-0.5)
-        self.RARM_JOINT3.joint_angle(-1.3)
+        self.RARM_JOINT0.joint_angle(0.5855967)
+        self.RARM_JOINT1.joint_angle(-1.5)
+        self.RARM_JOINT2.joint_angle(1.46)
+        self.RARM_JOINT3.joint_angle(-2.0)
+
+        self.LARM_JOINT0.joint_angle(0.5855967)
+        self.LARM_JOINT1.joint_angle(1.5)
+        self.LARM_JOINT2.joint_angle(-1.46)
+        self.LARM_JOINT3.joint_angle(-2.0)
 
     def init_pose(self):
         self.angle_vector(np.zeros_like(self.angle_vector()))
