@@ -7,15 +7,6 @@ from sensor_msgs.msg import JointState
 
 class JointStatesMerger:
     def __init__(self):
-        self.joint_state_1_sub = rospy.Subscriber('/joint_states',
-                                                  JointState, self.joint_state_1_callback)
-        self.joint_state_2_sub = rospy.Subscriber('/rhand/joint_states',
-                                                  JointState, self.joint_state_2_callback)
-        self.joint_state_3_sub = rospy.Subscriber('/lhand/joint_states',
-                                                  JointState, self.joint_state_3_callback)
-        self.joint_states_pub = rospy.Publisher('/concat_joint_states',
-                                                JointState, queue_size=10)
-
         self.joint_state_1 = None
         self.joint_state_2 = JointState()
         self.joint_state_2.position = [- np.pi / 2.0, 0, 0, 0]
@@ -33,6 +24,15 @@ class JointStatesMerger:
             'lhand_index_base_joint',
             'lhand_index_joint',
         ]
+
+        self.joint_state_1_sub = rospy.Subscriber('/joint_states',
+                                                  JointState, self.joint_state_1_callback)
+        self.joint_state_2_sub = rospy.Subscriber('/rhand/joint_states',
+                                                  JointState, self.joint_state_2_callback)
+        self.joint_state_3_sub = rospy.Subscriber('/lhand/joint_states',
+                                                  JointState, self.joint_state_3_callback)
+        self.joint_states_pub = rospy.Publisher('/concat_joint_states',
+                                                JointState, queue_size=10)
 
     def joint_state_1_callback(self, msg):
         self.joint_state_1 = msg
