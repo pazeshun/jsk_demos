@@ -16,7 +16,9 @@ from vzense_demo.k_arm import KARM
 class HandInterface(object):
 
     def __init__(self, hand='rhand'):
+        rospy.loginfo('Waiting {} startup'.format(hand))
         self.init_hand(hand)
+        rospy.loginfo('Waiting {} initialization end.'.format(hand))
 
     def init_hand(self, hand):
         self.hand = hand
