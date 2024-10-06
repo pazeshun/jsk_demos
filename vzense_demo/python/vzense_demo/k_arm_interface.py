@@ -11,31 +11,25 @@ from skrobot.interfaces.ros.base import ROSRobotInterfaceBase
 from vzense_demo.k_arm import KARM
 
 
-class KARMROSRobotInterface(ROSRobotInterfaceBase):
+class HandInterface(object):
 
-    def __init__(self, *args, **kwargs):
-        super(KARMROSRobotInterface, self).__init__(*args, **kwargs)
-        # self.init_hand()
+    def __init__(self, hand='rhand'):
+        self.init_hand(hand)
 
-        # self.stop_grasp()
-
-    def init_hand(self):
-        self.hand = rospy.get_param('~hand', 'rmmf_hand')
-
+    def init_hand(self, hand):
+        self.hand = hand
         self.jnt_names = []
         for finger in ['thumb', 'index']:
             self.jnt_names.append(
                 '{}_{}_base_joint'.format(self.hand, finger))
             self.jnt_names.append(
                 '{}_{}_joint'.format(self.hand, finger))
-
         self.jnt_pos = None
         self.rarm_traj_pub = rospy.Publisher(
             '{}/joint_trajectory'.format(self.hand),
             JointTrajectory,
             queue_size=1,
         )
-
         self.enable_int_pubs = []
         self.enable_tof_pubs = []
         for finger in ['thumb', 'index']:
@@ -58,7 +52,6 @@ class KARMROSRobotInterface(ROSRobotInterfaceBase):
                         latch=True,
                     )
                 )
-
         set_init_i_srv_names = []
         for finger in ['thumb', 'index']:
             for pos in ['tip', 'root']:
@@ -71,6 +64,46 @@ class KARMROSRobotInterface(ROSRobotInterfaceBase):
             rospy.wait_for_service(srv_name)
             self.set_init_i_srvs.append(
                 rospy.ServiceProxy(srv_name, Trigger))
+
+    def move_hand(self, target_pos, time=1, wait_time=0):
+        rospy.loginfo('Current joint position: {}'.format(self.jnt_pos))
+        rospy.loginfo('Target joint position: {}'.format(target_pos))
+        traj_msg = JointTrajectory()
+        traj_msg.header.stamp = rospy.Time(0)  # Immediate execution
+        traj_msg.joint_names = self.jnt_names
+        traj_msg.points.append(
+            JointTrajectoryPoint(
+                positions=target_pos,
+                time_from_start=rospy.Duration(time),
+            )
+        )
+        self.rarm_traj_pub.publish(traj_msg)
+        if wait_time > 0:
+            rospy.sleep(wait_time)
+
+    def start_grasp(self, time=1, wait_time=0,
+                    angle=90):
+        angle = max(min(angle, 130), 0)
+        self.move_hand([-np.pi/2, np.deg2rad(angle), 0, np.deg2rad(angle)],
+                       time=time, wait_time=wait_time)
+
+    def stop_grasp(self, time=1, wait_time=0):
+        self.move_hand([-np.pi/2, 0, 0, 0],
+                       time=time, wait_time=wait_time)
+
+    def grasp_box_pose(self):
+        self.move_hand([0, 0, -np.deg2rad(30), 0], wait_time=5)
+        # self.move_hand([0, np.deg2rad(150), -np.deg2rad(30), np.deg2rad(0)], wait_time=4)
+        self.move_hand([0, np.deg2rad(150), -np.deg2rad(30), np.deg2rad(130)], wait_time=0)
+
+
+class KARMROSRobotInterface(ROSRobotInterfaceBase):
+
+    def __init__(self, *args, **kwargs):
+        super(KARMROSRobotInterface, self).__init__(*args, **kwargs)
+        # self.init_hand()
+
+        # self.stop_grasp()
 
     @property
     def rarm_controller(self):
@@ -112,21 +145,6 @@ class KARMROSRobotInterface(ROSRobotInterfaceBase):
     def default_controller(self):
         return [self.rarm_controller,
                 self.larm_controller]
-
-    def move_hand(self, target_pos, tm, wait_tm):
-        rospy.loginfo('Current joint position: {}'.format(self.jnt_pos))
-        rospy.loginfo('Target joint position: {}'.format(target_pos))
-        traj_msg = JointTrajectory()
-        traj_msg.header.stamp = rospy.Time(0)  # Immediate execution
-        traj_msg.joint_names = self.jnt_names
-        traj_msg.points.append(
-            JointTrajectoryPoint(
-                positions=target_pos,
-                time_from_start=rospy.Duration(tm),
-            )
-        )
-        self.rarm_traj_pub.publish(traj_msg)
-        rospy.sleep(wait_tm)
 
     def start_grasp(self):
         self.move_hand([-np.pi/2, np.pi/2, 0, np.pi/2], 1, 5)
