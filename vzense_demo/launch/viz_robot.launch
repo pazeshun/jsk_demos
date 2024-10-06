@@ -21,8 +21,8 @@
   <node name="body_world_to_body_static_transform_publisher"
         pkg="tf" type="static_transform_publisher"
         args="0 0 0
-              0 0.70710678 0 0.70710678
-              BODY_world BODY 100" />
+              0 -0.70710678 0 0.70710678
+              BODY BODY_world 100" />
 
   <!-- <group if="$(arg gui)" > -->
   <!--   <node name="$(anon rviz)" -->
