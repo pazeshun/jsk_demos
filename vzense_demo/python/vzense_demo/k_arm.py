@@ -30,10 +30,10 @@ class KARM(RobotModelFromURDF):
         super(KARM, self).__init__(*args, **kwargs)
         self.name = 'karm'
 
-        self.RARM_JOINT0.min_angle = -1.0
-        self.RARM_JOINT0.max_angle = 1.0
-        self.RARM_JOINT1.min_angle = -1.1
-        self.RARM_JOINT1.max_angle = 0.2
+        # self.RARM_JOINT0.min_angle = -1.0
+        # self.RARM_JOINT0.max_angle = 1.0
+        # self.RARM_JOINT1.min_angle = -1.1
+        # self.RARM_JOINT1.max_angle = 0.2
 
         # self.rarm_end_coords = CascadedCoords(
         #     parent=self.RARM_hand_base,
