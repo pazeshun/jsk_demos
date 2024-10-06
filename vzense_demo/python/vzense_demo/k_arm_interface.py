@@ -2,6 +2,8 @@ import actionlib
 import control_msgs.msg
 from std_msgs.msg import Bool
 from std_srvs.srv import Trigger
+from std_srvs.srv import SetBool
+from std_srvs.srv import SetBoolRequest
 
 import rospy
 import numpy as np
@@ -95,6 +97,24 @@ class HandInterface(object):
         self.move_hand([0, 0, -np.deg2rad(30), 0], wait_time=5)
         # self.move_hand([0, np.deg2rad(150), -np.deg2rad(30), np.deg2rad(0)], wait_time=4)
         self.move_hand([0, np.deg2rad(150), -np.deg2rad(30), np.deg2rad(130)], wait_time=0)
+
+    def servo_on(self):
+        service_name = "{}/servo_state_manager/servo".format(self.hand)
+        rospy.loginfo('{} servo on called. waiting service {}'.format(self.hand, service_name))
+        rospy.wait_for_service(service_name)
+        service = rospy.ServiceProxy(service_name, SetBool)
+        ret = service(SetBoolRequest(data=True))
+        rospy.loginfo('{} servo on successfully called'.format(self.hand))
+        return ret
+
+    def servo_off(self):
+        service_name = "{}/servo_state_manager/servo".format(self.hand)
+        rospy.loginfo('{} servo off called. waiting service {}'.format(self.hand, service_name))
+        rospy.wait_for_service(service_name)
+        service = rospy.ServiceProxy(service_name, SetBool)
+        ret = service(SetBoolRequest(data=False))
+        rospy.loginfo('{} servo off successfully called'.format(self.hand))
+        return ret
 
 
 class KARMROSRobotInterface(ROSRobotInterfaceBase):
