@@ -13,6 +13,9 @@
 
   <arg name="score_thresh" default="0.5" />
 
+  <arg name="launch_rhand" default="true" />
+  <arg name="launch_lhand" default="false" />
+
   <include file="$(find vzense_demo)/launch/vzense.launch" >
     <arg name="gui" default="$(arg gui)" />
     <arg name="right_camera_ip" default="$(arg right_camera_ip)" />
@@ -29,5 +32,17 @@
   <include file="$(find vzense_demo)/launch/viz_robot.launch" >
     <arg name="gui" default="$(arg gui)" />
   </include>
+
+  <group if="$(arg launch_rhand)" >
+    <include file="$(find rmmf_hand_ros)/launch/model_0.launch" >
+      <arg name="hand" default="rhand" />
+    </include>
+  </group>
+
+  <group if="$(arg launch_lhand)" >
+    <include file="$(find rmmf_hand_ros)/launch/model_0.launch" >
+      <arg name="hand" default="lhand" />
+    </include>
+  </group>
 
 </launch>
