@@ -7,6 +7,9 @@
     <arg name="gui" value="false" />
   </include>
 
+  <include file="$(find vzense_demo)/launch/launch_d405.launch" >
+  </include>
+
   <node name="save_request_node"
         pkg="vzense_demo" type="save_request_node.py"
         clear_params="true" output="screen" >
