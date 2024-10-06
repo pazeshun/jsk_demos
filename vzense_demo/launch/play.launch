@@ -128,4 +128,8 @@
     </group>
   </group>
 
+  <include file="$(find vzense_demo)/launch/viz_robot.launch" >
+    <arg name="gui" default="false" />
+  </include>
+
 </launch>

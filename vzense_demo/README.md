@@ -118,3 +118,17 @@ pip3 install ultralytics torch
 roslaunch vzense_demo vzense.launch
 roslaunch vzense_demo object_detection.launch
 ```
+
+## rosbagを取って再生する
+
+### 取得
+
+```
+roslaunch vzense_demo record_vzense.launch
+```
+
+### 再生
+
+```
+roslaunch vzense_demo play.launch bagpath:=<ABSOLUTEPATH OF ROSBAG>
+```
