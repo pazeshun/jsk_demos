@@ -33,6 +33,10 @@
     <arg name="gui" default="$(arg gui)" />
   </include>
 
+  <include file="$(find vzense_demo)/launch/box_fitting.launch" >
+    <arg name="gui" default="$(arg gui)" />
+  </include>
+
   <group if="$(arg launch_rhand)" >
     <include file="$(find rmmf_hand_ros)/launch/model_0.launch" >
       <arg name="hand" default="rhand" />
