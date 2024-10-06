@@ -8,7 +8,9 @@
   <arg name="device" default="-1" />
   <arg name="model_file_pt" default="2024-10-02-grape.pt" />
   <arg name="model_file_ncnn" default="2024-10-02-grape_ncnn_model" />
-  <param name="model_file" value="$(eval 'arg.device == -1' ? arg.model_file_ncnn : arg.model_file_pt)" />
+  <arg name="model_file" value="$(arg model_file_ncnn)" if="$(eval device == -1)"/>
+  <arg name="model_file" value="$(arg model_file_pt)" if="$(eval device >= 0)"/>
+
   <arg name="score_thresh" default="0.5" />
 
   <include file="$(find vzense_demo)/launch/vzense.launch" >
