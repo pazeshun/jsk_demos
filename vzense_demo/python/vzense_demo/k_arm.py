@@ -106,7 +106,8 @@ class KARM(RobotModelFromURDF):
 
     def init_pose(self):
         self.angle_vector(np.zeros_like(self.angle_vector()))
-        self.RARM_hand_thumb_base_joint.joint_angle(-np.pi / 2.0)
+        self.rhand_thumb_base_joint.joint_angle(-np.pi / 2.0)
+        self.lhand_thumb_base_joint.joint_angle(-np.pi / 2.0)
         return self.angle_vector()
 
     def _urdf(self):
