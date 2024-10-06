@@ -50,6 +50,8 @@ class TopicSubscriber(object):
             self.unsubscribe()
 
     def wait_message(self):
+        if self.sub is None:
+            self.subscribe()
         rate = rospy.Rate(10)
         start = datetime.datetime.now()
         cur_start = start
@@ -66,6 +68,8 @@ class TopicSubscriber(object):
                 cur_start = datetime.datetime.now()
 
     def wait_new_message(self):
+        if self.sub is None:
+            self.subscribe()
         rate = rospy.Rate(10)
         start = datetime.datetime.now()
         cur_start = start
