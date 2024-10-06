@@ -46,6 +46,7 @@
       <arg name="hand" default="rhand" />
       <arg name="motor_port" default="$(arg rhand_motor_port)" />
       <arg name="sensor_port" default="$(arg rhand_sensor_port)" />
+      <arg name="hand_serial" default="1" />
     </include>
   </group>
 
@@ -54,6 +55,7 @@
       <arg name="hand" default="lhand" />
       <arg name="motor_port" default="$(arg lhand_motor_port)" />
       <arg name="sensor_port" default="$(arg lhand_sensor_port)" />
+      <arg name="hand_serial" default="2" />
     </include>
   </group>
 
