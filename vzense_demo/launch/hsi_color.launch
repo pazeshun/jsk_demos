@@ -44,30 +44,30 @@
     <param name="i_limit_min" value="$(arg i_min)" />
   </node>
 
-  <node name="euclidean_clustering"
-        pkg="nodelet" type="nodelet"
-        args="load jsk_pcl/EuclideanClustering $(arg manager)"
-        output="screen">
-    <remap from="~input" to="hsi_color_filter/output" />
-    <rosparam>
-      tolerance: 0.02
-      min_size: 730
-      max_size: 50000000
-    </rosparam>
-  </node>
+  <!-- <node name="euclidean_clustering" -->
+  <!--       pkg="nodelet" type="nodelet" -->
+  <!--       args="load jsk_pcl/EuclideanClustering $(arg manager)" -->
+  <!--       output="screen"> -->
+  <!--   <remap from="~input" to="hsi_color_filter/output" /> -->
+  <!--   <rosparam> -->
+  <!--     tolerance: 0.02 -->
+  <!--     min_size: 730 -->
+  <!--     max_size: 50000000 -->
+  <!--   </rosparam> -->
+  <!-- </node> -->
 
-  <node name="cluster_decomposer"
-        pkg="nodelet" type="nodelet"
-        args="load jsk_pcl/ClusterPointIndicesDecomposerZAxis $(arg manager)"
-        output="screen" clear_params="true">
-    <remap from="~input" to="hsi_color_filter/output" />
-    <remap from="~target" to="euclidean_clustering/output" />
-    <remap from="~debug_output" to="debug_output" />
-    <remap from="~boxes" to="boxes" />
-    <rosparam>
-      use_pca: true
-    </rosparam>
-  </node>
+  <!-- <node name="cluster_decomposer" -->
+  <!--       pkg="nodelet" type="nodelet" -->
+  <!--       args="load jsk_pcl/ClusterPointIndicesDecomposerZAxis $(arg manager)" -->
+  <!--       output="screen" clear_params="true"> -->
+  <!--   <remap from="~input" to="hsi_color_filter/output" /> -->
+  <!--   <remap from="~target" to="euclidean_clustering/output" /> -->
+  <!--   <remap from="~debug_output" to="debug_output" /> -->
+  <!--   <remap from="~boxes" to="boxes" /> -->
+  <!--   <rosparam> -->
+  <!--     use_pca: true -->
+  <!--   </rosparam> -->
+  <!-- </node> -->
 
   <group if="$(arg gui)">
     <node name="image_view0"
