@@ -22,6 +22,8 @@
               /dynamic_tf_publisher/tf
 
               /joint_states
+              /rhand/joint_states
+              /lhand/joint_states
               /concat_joint_states
               /motor_states
               /motor_states/board_vin

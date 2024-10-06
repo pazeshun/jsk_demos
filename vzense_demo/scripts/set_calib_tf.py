@@ -167,5 +167,5 @@ if __name__ == '__main__':
             left_camera_to_body,
             'left_vzense_camera_frame',
             'BODY',
-            package_path / 'launch' / 'right_roobt_config.launch'
+            package_path / 'launch' / 'right_robot_config.launch'
         )

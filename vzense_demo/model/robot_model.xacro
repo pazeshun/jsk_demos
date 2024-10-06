@@ -5,21 +5,21 @@
 
   <xacro:include filename="$(find vzense_demo)/model/rmmf_hand_model.xacro"/>
 
-  <xacro:rmmf_hand_model_0 hand="RARM_hand">
+  <xacro:rmmf_hand_model_0 hand="rhand">
   </xacro:rmmf_hand_model_0>
 
-  <joint name="RARM_hand_joint" type="fixed">
+  <joint name="rhand_joint" type="fixed">
     <parent link="RARM_LINK6"/>
-    <child link="RARM_hand_base"/>
+    <child link="rhand_base"/>
     <origin xyz="0 0 -0.06" rpy="0 -3.141592653589793 1.5707963267948966"/>
   </joint>
 
-  <xacro:rmmf_hand_model_0 hand="LARM_hand">
+  <xacro:rmmf_hand_model_0 hand="lhand">
   </xacro:rmmf_hand_model_0>
 
-  <joint name="LARM_hand_joint" type="fixed">
+  <joint name="lhand_joint" type="fixed">
     <parent link="LARM_LINK6"/>
-    <child link="LARM_hand_base"/>
+    <child link="lhand_base"/>
     <origin xyz="0 0 -0.06" rpy="0 -3.141592653589793 1.5707963267948966"/>
   </joint>
 
