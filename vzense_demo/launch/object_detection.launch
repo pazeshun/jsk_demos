@@ -10,7 +10,9 @@
   <arg name="score_thresh" default="0.5" />
 
   <!-- morphology operation on mask to handle transparent bottle and other noisy pixels -->
-  <node name="morphology_close" pkg="opencv_apps" type="morphology" >
+  <node name="morphology_close"
+        pkg="nodelet" type="nodelet"
+        args="load opencv_apps/morphology $(arg manager)" >
     <remap from="image" to="$(arg input_depth_image)/mask" />
     <remap from="~image" to="$(arg input_depth_image)/mask/close_operation" />
     <param name="use_camera_info" value="false" />
@@ -20,7 +22,10 @@
     <param name="morph_element" value="0" />
     <param name="morph_size" value="40" />
   </node>
-  <node name="morphology_open" pkg="opencv_apps" type="morphology" >
+
+  <node name="morphology_open"
+        pkg="nodelet" type="nodelet"
+        args="load opencv_apps/morphology $(arg manager)" >
     <remap from="image" to="$(arg input_depth_image)/mask/close_operation" />
     <remap from="~image" to="$(arg input_depth_image)/mask/open_operation" />
     <param name="use_camera_info" value="false" />
