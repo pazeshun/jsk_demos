@@ -1,6 +1,7 @@
 <launch>
 
   <arg name="save_dir" default="$(find vzense_demo)/data_camera_and_robot" />
+  <arg name="gui" default="true" />
 
   <include file="$(find vzense_demo)/launch/vzense.launch" >
     <arg name="gui" value="false" />
@@ -35,12 +36,6 @@
     </rosparam>
   </node>
 
-  <node name="rviz"
-        pkg="rviz" type="rviz"
-        args="-d $(find vzense_demo)/launch/config/calib_camera_and_robot.rviz" >
-    <rosparam command="load" file="$(find vzense_demo)/config/calib_camera_command.yaml" />
-  </node>
-
   <node name="marker_6dof_for_robot_to_camera"
         pkg="jsk_interactive_marker" type="marker_6dof" >
     <rosparam>
@@ -55,5 +50,12 @@
     </rosparam>
   </node>
 
+  <group if="$(arg gui)" >
+    <node name="rviz"
+          pkg="rviz" type="rviz"
+          args="-d $(find vzense_demo)/launch/config/calib_camera_and_robot.rviz" >
+      <rosparam command="load" file="$(find vzense_demo)/config/calib_camera_command.yaml" />
+    </node>
+  </group>
 
 </launch>

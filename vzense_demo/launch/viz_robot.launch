@@ -15,6 +15,9 @@
     <remap from="robot_description" to="robot_description_viz" />
   </node>
 
+  <include file="$(find vzense_demo)/launch/right_robot_config.launch" >
+  </include>
+
   <!-- <group if="$(arg gui)" > -->
   <!--   <node name="$(anon rviz)" -->
   <!--         pkg="rviz" type="rviz" -->
