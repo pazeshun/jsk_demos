@@ -72,6 +72,67 @@ def calibrated_angle_vector(target_angles, time=10.0):
     ri.wait_interpolation()  # ロボットの関節指令の補間が終わるまで待つ。
 
 
+def send_robot(send_time=10.0, move=False):
+    viewer.redraw()
+    if move is True:
+        ri.angle_vector(robot_model.angle_vector(), send_time)
+        ri.wait_interpolation()
+    else:
+        time.sleep(1.0)
+
+
+def move_box(send_time=10.0, move=False):
+    robot_model.init_pose()
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-70))
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.LARM_JOINT1.joint_angle(np.deg2rad(70))
+    robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
+    send_robot(send_time=send_time, move=move)
+
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.RARM_JOINT1.joint_angle(np.deg2rad(0))
+    robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
+    robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-90))
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.LARM_JOINT1.joint_angle(np.deg2rad(0))
+    robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
+    robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-90))
+    pre_hook_pose = robot_model.angle_vector()
+    send_robot(send_time=send_time, move=move)
+
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(0))
+    robot_model.RARM_JOINT1.joint_angle(np.deg2rad(0))
+    robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
+    robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-90))
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(0))
+    robot_model.LARM_JOINT1.joint_angle(np.deg2rad(0))
+    robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
+    robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-90))
+    send_robot(send_time=send_time, move=move)
+
+    hook_pose = robot_model.angle_vector()
+    robot_model.rarm.inverse_kinematics(
+        robot_model.rarm_elbow_end_coords.copy_worldcoords().translate((0, -0.0, 0.1), wrt='world'),
+        move_target=robot_model.rarm_elbow_end_coords,
+        stop=100,
+        rotation_axis='x',
+        revert_if_fail=False)
+    robot_model.larm.inverse_kinematics(
+        robot_model.larm_elbow_end_coords.copy_worldcoords().translate((0, 0, 0.1), wrt='world'),
+        move_target=robot_model.larm_elbow_end_coords,
+        stop=100,
+        rotation_axis='x',
+        revert_if_fail=False)
+    send_robot(send_time=send_time, move=move)
+
+    robot_model.angle_vector(hook_pose)
+    send_robot(send_time=send_time, move=move)
+
+    robot_model.angle_vector(pre_hook_pose)
+    send_robot(send_time=send_time, move=move)
+
+
 viewer.redraw()  # viewerを更新する（viewerをクリックしても更新される)
 
 
