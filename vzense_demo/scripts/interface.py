@@ -92,6 +92,8 @@ def move_box(send_time=10.0, move=False, step_by_step=True):
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     if move and step_by_step:
         input('Send Angle vector? [Enter]')
+    if move is True:
+        ri.rhand.grasp_box_pose()
     send_robot(send_time=send_time, move=move)
 
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
