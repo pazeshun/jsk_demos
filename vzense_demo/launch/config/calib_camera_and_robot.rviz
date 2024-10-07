@@ -109,7 +109,7 @@ Visualization Manager:
     - Class: jsk_rviz_plugin/OverlayImage
       Enabled: true
       Name: RightColorCamera
-      Topic: /camera/left_vzense_camera/color/image_raw
+      Topic: /remote/right_vzense_camera/color/image_raw
       Value: true
       alpha: 1
       height: 128
@@ -117,7 +117,7 @@ Visualization Manager:
       left: 640
       overwrite alpha value: false
       top: 0
-      transport hint: compressed
+      transport hint: raw
       width: 640
     - Class: jsk_rviz_plugin/OverlayImage
       Enabled: true
@@ -210,33 +210,33 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        left_vzense_camera_frame:
-          BODY:
-            LARM_LINK0:
-              LARM_LINK1:
-                LARM_LINK2:
-                  LARM_LINK3:
-                    LARM_LINK4:
-                      LARM_LINK5:
-                        LARM_LINK6:
-                          {}
-            RARM_LINK0:
-              RARM_LINK1:
-                RARM_LINK2:
-                  RARM_LINK3:
-                    RARM_LINK4:
-                      RARM_LINK5:
-                        RARM_LINK6:
-                          {}
-                    rarm_hand_camera_link:
-                      rarm_hand_camera_aligned_depth_to_color_frame:
-                        rarm_hand_camera_color_optical_frame:
-                          {}
-                      rarm_hand_camera_color_frame:
+        BODY:
+          LARM_LINK0:
+            LARM_LINK1:
+              LARM_LINK2:
+                LARM_LINK3:
+                  LARM_LINK4:
+                    LARM_LINK5:
+                      LARM_LINK6:
                         {}
-                      rarm_hand_camera_depth_frame:
-                        rarm_hand_camera_depth_optical_frame:
-                          {}
+          RARM_LINK0:
+            RARM_LINK1:
+              RARM_LINK2:
+                RARM_LINK3:
+                  RARM_LINK4:
+                    RARM_LINK5:
+                      RARM_LINK6:
+                        {}
+                  rarm_hand_camera_link:
+                    rarm_hand_camera_aligned_depth_to_color_frame:
+                      rarm_hand_camera_color_optical_frame:
+                        {}
+                    rarm_hand_camera_color_frame:
+                      {}
+                    rarm_hand_camera_depth_frame:
+                      rarm_hand_camera_depth_optical_frame:
+                        {}
+        left_vzense_camera_frame:
           camera_mid_frame:
             {}
           left_vzense_camera_color_frame:
@@ -363,39 +363,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        LARM_hand_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LARM_hand_index:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LARM_hand_index_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LARM_hand_index_base_horn:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LARM_hand_thumb:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LARM_hand_thumb_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LARM_hand_thumb_base_horn:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         Link Tree Style: Links in Alphabetic Order
         RARM_LINK0:
           Alpha: 1
@@ -432,36 +399,69 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        RARM_hand_base:
+        lhand_base:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RARM_hand_index:
+        lhand_index:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RARM_hand_index_base:
+        lhand_index_base:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RARM_hand_index_base_horn:
+        lhand_index_base_horn:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        RARM_hand_thumb:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RARM_hand_thumb_base:
+        lhand_thumb:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RARM_hand_thumb_base_horn:
+        lhand_thumb_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lhand_thumb_base_horn:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rhand_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rhand_index:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rhand_index_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rhand_index_base_horn:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rhand_thumb:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rhand_thumb_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rhand_thumb_base_horn:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -499,7 +499,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.603614091873169
+      Distance: 4.710387706756592
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
