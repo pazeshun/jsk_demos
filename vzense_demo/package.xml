@@ -26,6 +26,7 @@
   <exec_depend>rmmf_hand_ros</exec_depend>
   <exec_depend>VzenseROS_MultiCameras</exec_depend>
   <exec_depend>opencv_apps</exec_depend>
+  <exec_depend>jsk_perception</exec_depend>
   <!-- ALPHABETICAL ORDER -->
 
 </package>
