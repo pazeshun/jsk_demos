@@ -61,15 +61,17 @@ def ri2ir():
     robot_model.angle_vector(ri.angle_vector())
 
 
-def calibrated_angle_vector(target_angles, time=10.0):
+def calibrated_angle_vector(target_angles, time=10.0, move=False):
     target_angles = np.array(target_angles)
     robot_model.angle_vector(target_angles)
-    ri.angle_vector(robot_model.angle_vector(), time)
-    ri.wait_interpolation()
+    if move is True:
+        ri.angle_vector(robot_model.angle_vector(), time)
+        ri.wait_interpolation()
     current_angles = ri.angle_vector()
     target_angles += target_angles - current_angles
-    ri.angle_vector(target_angles, time)  # robot_modelの姿勢を関節角度指令として実機に送る。
-    ri.wait_interpolation()  # ロボットの関節指令の補間が終わるまで待つ。
+    if move is True:
+        ri.angle_vector(target_angles, time)  # robot_modelの姿勢を関節角度指令として実機に送る。
+        ri.wait_interpolation()  # ロボットの関節指令の補間が終わるまで待つ。
 
 
 def send_robot(send_time=10.0, move=False):
