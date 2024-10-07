@@ -54,6 +54,10 @@ if use_ri:
     ri = KARMROSRobotInterface(robot_model)  # 実機との接続処理
     boxes_sub = BoundingBoxArraySubscriber('/box_fitting_node/output/boxes',
                                            start=False)
+    left_boxes_sub = BoundingBoxArraySubscriber('/camera/left_vzense_camera/object_detection/output/boxes',
+                                                start=False)  # ぶどうの認識器
+    right_boxes_sub = BoundingBoxArraySubscriber('/camera/right_vzense_camera/object_detection/output/boxes',
+                                                 start=False)  # ぶどうの認識器
     robot_model.angle_vector(ri.angle_vector())  # 実機の関節角度をrobot_model (viewerにうつっているもの)に反映させる。
 
 

@@ -142,7 +142,7 @@
     <rosparam>
       align_boxes: true
       align_boxes_with_plane: false
-      target_frame_id: camera_mid_frame
+      target_frame_id: BODY_world
       force_to_flip_z_axis: false
       approximate_sync: true
       queue_size: 100
