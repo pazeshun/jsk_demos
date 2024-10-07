@@ -22,6 +22,9 @@ class BoundingBoxArraySubscriber(TopicSubscriber):
             start=start,
             wait=wait)
 
-    def to_coords(self):
+    def to_coords(self, timeout=10.0):
+        msg = self.wait_new_message(timeout=timeout)
+        if msg is None:
+            return None
         return [BoundingBox.from_ros_message(box)
                 for box in self.msg.boxes]

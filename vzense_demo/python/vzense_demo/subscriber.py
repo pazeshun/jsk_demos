@@ -11,7 +11,7 @@ class TopicSubscriber(object):
                  one_shot=False,
                  start=True,
                  wait=False,
-                 warn_timeout=10.0,
+                 warn_timeout=5.0,
                  hook=None):
         self.hook = hook or []
         self.msg = None
@@ -71,7 +71,7 @@ class TopicSubscriber(object):
         if sub_start:
             self.unsubscribe()
 
-    def wait_new_message(self):
+    def wait_new_message(self, timeout=10.0):
         sub_start = False
         if self.sub is None:
             sub_start = True
@@ -99,6 +99,8 @@ class TopicSubscriber(object):
                 rospy.logwarn('Topic {} not received for {} seconds'.
                               format(self.topic_name, dt))
                 cur_start = datetime.datetime.now()
+            if dt > datetime.timedelta(seconds=timeout):
+                break
         if sub_start:
             self.unsubscribe()
         return self.msg
