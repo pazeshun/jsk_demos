@@ -83,13 +83,15 @@ def send_robot(send_time=10.0, move=False):
         time.sleep(1.0)
 
 
-def move_box(send_time=10.0, move=False):
+def move_box(send_time=10.0, move=False, step_by_step=True):
     robot_model.init_pose()
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
     robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-70))
     robot_model.LARM_JOINT0.joint_angle(np.deg2rad(30))
     robot_model.LARM_JOINT1.joint_angle(np.deg2rad(70))
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
+    if move and step_by_step:
+        input('Send Angle vector? [Enter]')
     send_robot(send_time=send_time, move=move)
 
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
@@ -101,6 +103,8 @@ def move_box(send_time=10.0, move=False):
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-90))
     pre_hook_pose = robot_model.angle_vector()
+    if move and step_by_step:
+        input('Send Angle vector? [Enter]')
     send_robot(send_time=send_time, move=move)
 
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(0))
@@ -111,6 +115,8 @@ def move_box(send_time=10.0, move=False):
     robot_model.LARM_JOINT1.joint_angle(np.deg2rad(0))
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-90))
+    if move and step_by_step:
+        input('Send Angle vector? [Enter]')
     send_robot(send_time=send_time, move=move)
 
     hook_pose = robot_model.angle_vector()
@@ -126,12 +132,18 @@ def move_box(send_time=10.0, move=False):
         stop=100,
         rotation_axis='x',
         revert_if_fail=False)
+    if move and step_by_step:
+        input('Send Angle vector? [Enter]')
     send_robot(send_time=send_time, move=move)
 
     robot_model.angle_vector(hook_pose)
+    if move and step_by_step:
+        input('Send Angle vector? [Enter]')
     send_robot(send_time=send_time, move=move)
 
     robot_model.angle_vector(pre_hook_pose)
+    if move and step_by_step:
+        input('Send Angle vector? [Enter]')
     send_robot(send_time=send_time, move=move)
 
 
