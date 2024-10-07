@@ -15,10 +15,10 @@
 
   <arg name="launch_rhand" default="true" />
   <arg name="launch_lhand" default="false" />
-  <arg name="rhand_motor_port" default="/dev/ttyUSB0" />
-  <arg name="rhand_sensor_port" default="/dev/ttyACM0" />
-  <arg name="lhand_motor_port" default="/dev/ttyUSB0" />
-  <arg name="lhand_sensor_port" default="/dev/ttyACM0" />
+  <arg name="rhand_motor_port" default="/dev/rhand_dxhub" />
+  <arg name="rhand_sensor_port" default="/dev/rhand_arduino" />
+  <arg name="lhand_motor_port" default="/dev/lhand_dxhub" />
+  <arg name="lhand_sensor_port" default="/dev/lhand_arduino" />
 
   <include file="$(find vzense_demo)/launch/vzense.launch" >
     <arg name="gui" default="$(arg gui)" />
