@@ -15,10 +15,15 @@ from vzense_demo.k_arm import KARM
 
 class HandInterface(object):
 
-    def __init__(self, hand='rhand'):
-        rospy.loginfo('Waiting {} startup'.format(hand))
-        # self.init_hand(hand)
-        rospy.loginfo('Waiting {} initialization end.'.format(hand))
+    def __init__(self, hand='rhand', use_hand=True):
+        self.hand = hand
+        self.use_hand = use_hand
+        if self.use_hand is False:
+            rospy.logwarn('{} interface is disabled.'.format(self.hand))
+        else:
+            rospy.loginfo('Waiting {} startup'.format(hand))
+            self.init_hand(hand)
+            rospy.loginfo('Waiting {} initialization end.'.format(hand))
 
     def init_hand(self, hand):
         self.hand = hand
@@ -70,6 +75,9 @@ class HandInterface(object):
                 rospy.ServiceProxy(srv_name, Trigger))
 
     def move_hand(self, target_pos, time=1, wait_time=0):
+        if self.use_hand is False:
+            rospy.logwarn('{} interface is disabled.'.format(self.hand))
+            return
         rospy.loginfo('Current joint position: {}'.format(self.jnt_pos))
         rospy.loginfo('Target joint position: {}'.format(target_pos))
         traj_msg = JointTrajectory()
@@ -101,6 +109,9 @@ class HandInterface(object):
         self.move_hand([0, np.deg2rad(150), -np.deg2rad(30), np.deg2rad(130)], wait_time=0)
 
     def servo_on(self):
+        if self.use_hand is False:
+            rospy.logwarn('{} interface is disabled.'.format(self.hand))
+            return
         service_name = "{}/servo_state_manager/servo".format(self.hand)
         rospy.loginfo('{} servo on called. waiting service {}'.format(self.hand, service_name))
         rospy.wait_for_service(service_name)
@@ -110,6 +121,9 @@ class HandInterface(object):
         return ret
 
     def servo_off(self):
+        if self.use_hand is False:
+            rospy.logwarn('{} interface is disabled.'.format(self.hand))
+            return
         service_name = "{}/servo_state_manager/servo".format(self.hand)
         rospy.loginfo('{} servo off called. waiting service {}'.format(self.hand, service_name))
         rospy.wait_for_service(service_name)
@@ -122,8 +136,10 @@ class HandInterface(object):
 class KARMROSRobotInterface(ROSRobotInterfaceBase):
 
     def __init__(self, *args, **kwargs):
+        use_hand = kwargs.pop('use_hand', True)
         super(KARMROSRobotInterface, self).__init__(*args, **kwargs)
-        self.rhand = HandInterface('rhand')
+        self.rhand = HandInterface('rhand', use_hand)
+        self.lhand = HandInterface('lhand', use_hand)
 
     @property
     def rarm_controller(self):

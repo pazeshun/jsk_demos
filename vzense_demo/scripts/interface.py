@@ -48,10 +48,11 @@ viewer.add(larm_target_coords_axis)
 
 
 use_ri = True
+use_hand = True
 send_time = 3
 if use_ri:
     rospy.init_node('k_arm_demo')
-    ri = KARMROSRobotInterface(robot_model)  # 実機との接続処理
+    ri = KARMROSRobotInterface(robot_model, use_hand=use_hand)  # 実機との接続処理
     boxes_sub = BoundingBoxArraySubscriber('/box_fitting_node/output/boxes',
                                            start=False)
     left_boxes_sub = BoundingBoxArraySubscriber('/camera/left_vzense_camera/object_detection/output/boxes',
@@ -96,8 +97,8 @@ def move_box(send_time=10.0, move=False, step_by_step=True):
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     if move and step_by_step:
         input('Send Angle vector? [Enter]')
-    # if move is True:
-    #     ri.rhand.grasp_box_pose()
+    if move is True:
+        ri.rhand.grasp_box_pose()
     send_robot(send_time=send_time, move=move)
 
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
