@@ -159,3 +159,5 @@ robot_model.rarm.angle_vector(np.array(
 robot_model.larm.angle_vector(np.array(
     [0.6, -0.0316071, -1.4665161, -1.9041522], dtype=np.float32))
 viewer.redraw()
+robot_model.angle_vector(ri.angle_vector())  # 実機の姿勢をrobot_modelに反映する
+viewer.redraw()
