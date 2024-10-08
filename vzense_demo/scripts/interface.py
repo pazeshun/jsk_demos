@@ -233,7 +233,7 @@ def left_pick_grape(send_time=10.0, move=False, step_by_step=True):
             break
         rospy.logwarn('Waiting detected boxes from {}'.format(left_boxes_sub.topic_name))
 
-    target_pose = left_boxes[0].copy_worldcoords().translate((0.0, 0, 0.04), wrt='world')
+    target_pose = left_boxes[0].copy_worldcoords().translate((0.0, 0, 0.0), wrt='world')
     ret = robot_model.larm.inverse_kinematics(
         target_pose,
         move_target=robot_model.larm_end_coords,
@@ -264,15 +264,17 @@ def left_pick_grape(send_time=10.0, move=False, step_by_step=True):
     pre_pick_pose = robot_model.angle_vector()
 
     robot_model.angle_vector(pre_pick_pose)
-    ri.lhand.stop_grasp()
+    # ri.lhand.stop_grasp()
+    ri.lhand.move_hand([np.deg2rad(-50), 0, 0, 0])
     calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
     robot_model.angle_vector(pick_pose)
     calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
-    ri.lhand.start_grasp(angle=130, wait_time=5.0)
+    # ri.lhand.start_grasp(angle=130, wait_time=5.0)
+    ri.lhand.move_hand([np.deg2rad(-50), np.deg2rad(130), 0, np.deg2rad(130)])
     robot_model.angle_vector(pre_pick_pose)
     send_robot(send_time=5.0, move=move)
 
 
 def demo(send_time=10.0, move=False, step_by_step=True):
-    left_pick_grape(move=move)
-    left_place(move=move)
+    left_pick_grape(send_time=send_time, move=move, step_by_step=step_by_step)
+    left_place(send_time=send_time, move=move, step_by_step=step_by_step)
