@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8.3)
 project(vzense_demo)
 
 find_package(catkin REQUIRED COMPONENTS
+  actionlib
+  actionlib_msgs
   sensor_msgs
   dynamic_reconfigure
   std_msgs
@@ -20,11 +22,19 @@ add_custom_target(${PROJECT_NAME}_install_trained_data ALL COMMAND python$ENV{RO
 
 catkin_python_setup()
 
+add_action_files(
+  DIRECTORY action
+  FILES PickGrape.action
+)
+
 # Dynamic reconfigure support
 generate_dynamic_reconfigure_options(
   cfg/DrawRects.cfg
   cfg/InstanceSegmentation.cfg
 )
+
+generate_messages(
+  DEPENDENCIES actionlib_msgs std_msgs)
 
 catkin_package(
   # CATKIN_DEPENDS message_runtime
