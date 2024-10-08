@@ -102,8 +102,14 @@ class ObjectDetectionNode(ConnectionBasedTransport):
             msg, desired_encoding='bgr8')
         org_h, org_w = im.shape[:2]
 
+        if self.roi is not None:
+            x_min, y_min, x_max, y_max = self.roi
+            roi_image = im[y_min:y_max, x_min:x_max]
+        else:
+            roi_image = im
+
         with self.lock:
-            results = self.model(im, verbose=False)
+            results = self.model(roi_image, verbose=False)
         if results:
             result = results[0]
         else:
@@ -129,6 +135,13 @@ class ObjectDetectionNode(ConnectionBasedTransport):
                 continue
             if conf < self.score_thresh:
                 continue
+
+            if self.roi is not None:
+                x1 += x_min
+                y1 += y_min
+                x2 += x_min
+                y2 += y_min
+
             valid_indices.append(j)
             rects_msg.rects.append(
                 Rect(x=int(x1), y=int(y1),
@@ -140,13 +153,18 @@ class ObjectDetectionNode(ConnectionBasedTransport):
         lbl_ins = np.zeros((im.shape[0], im.shape[1]), dtype=np.int32)
         if result.masks is not None:
             masks = result.masks.data.cpu().numpy()
-            masks = resize_masks(masks, (org_w, org_h))
+            masks = resize_masks(masks, (roi_image.shape[1], roi_image.shape[0]))
             masks = masks[valid_indices]
             R, H, W = masks.shape
             mask_indices = np.array(
                 np.arange(H * W).reshape(H, W), dtype=np.int32)
+
             for mask in masks:
                 indices = mask_indices[mask > 0]
+
+                if self.roi is not None:
+                    indices = [(i // W + y_min) * org_w + (i % W + x_min) for i in indices]
+
                 indices_msg = PointIndices(header=msg.header, indices=indices)
                 msg_indices.cluster_indices.append(indices_msg)
 
