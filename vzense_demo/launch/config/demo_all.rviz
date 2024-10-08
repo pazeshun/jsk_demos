@@ -7,7 +7,8 @@ Panels:
         - /Global Options1
         - /Status1
         - /TF1/Frames1
-        - /LHhand1
+        - /Lhand1
+        - /Rhand1
       Splitter Ratio: 0.499133437871933
     Tree Height: 727
   - Class: rviz/Selection
@@ -128,6 +129,8 @@ Visualization Manager:
           Value: false
         lhand_thumb_base_horn:
           Value: false
+        lhand_thumb_distal_root_intensity_frame:
+          Value: true
         lhand_thumb_distal_root_tof_frame:
           Value: false
         lhand_thumb_distal_tip_intensity_frame:
@@ -207,6 +210,8 @@ Visualization Manager:
                             lhand_thumb_base_horn:
                               lhand_thumb_base:
                                 lhand_thumb:
+                                  lhand_thumb_distal_root_intensity_frame:
+                                    {}
                                   lhand_thumb_distal_root_tof_frame:
                                     {}
                                   lhand_thumb_distal_tip_intensity_frame:
@@ -602,7 +607,83 @@ Visualization Manager:
           Use rainbow: true
           Value: true
       Enabled: true
-      Name: LHhand
+      Name: Lhand
+    - Class: rviz/Group
+      Displays:
+        - Class: rviz/MarkerArray
+          Enabled: true
+          Marker Topic: /rhand/free_cells_vis_array
+          Name: MarkerArray
+          Namespaces:
+            {}
+          Queue Size: 100
+          Value: true
+        - Class: rviz/MarkerArray
+          Enabled: true
+          Marker Topic: /rhand/occupied_cells_vis_array
+          Name: MarkerArray
+          Namespaces:
+            {}
+          Queue Size: 100
+          Value: true
+        - Alpha: 1
+          Autocompute Intensity Bounds: true
+          Autocompute Value Bounds:
+            Max Value: 10
+            Min Value: -10
+            Value: true
+          Axis: Z
+          Channel Name: intensity
+          Class: rviz/PointCloud2
+          Color: 255; 255; 255
+          Color Transformer: Intensity
+          Decay Time: 0
+          Enabled: true
+          Invert Rainbow: false
+          Max Color: 255; 255; 255
+          Min Color: 0; 0; 0
+          Name: PointCloud2
+          Position Transformer: XYZ
+          Queue Size: 10
+          Selectable: true
+          Size (Pixels): 3
+          Size (m): 0.009999999776482582
+          Style: Flat Squares
+          Topic: /rhand/index/distal/tip/wrpps_pointcloud/pointcloud
+          Unreliable: false
+          Use Fixed Frame: true
+          Use rainbow: true
+          Value: true
+        - Alpha: 1
+          Autocompute Intensity Bounds: true
+          Autocompute Value Bounds:
+            Max Value: 10
+            Min Value: -10
+            Value: true
+          Axis: Z
+          Channel Name: intensity
+          Class: rviz/PointCloud2
+          Color: 255; 255; 255
+          Color Transformer: Intensity
+          Decay Time: 0
+          Enabled: true
+          Invert Rainbow: false
+          Max Color: 255; 255; 255
+          Min Color: 0; 0; 0
+          Name: PointCloud2
+          Position Transformer: XYZ
+          Queue Size: 10
+          Selectable: true
+          Size (Pixels): 3
+          Size (m): 0.009999999776482582
+          Style: Flat Squares
+          Topic: /rhand/thumb/distal/tip/wrpps_pointcloud/pointcloud
+          Unreliable: false
+          Use Fixed Frame: true
+          Use rainbow: true
+          Value: true
+      Enabled: true
+      Name: Rhand
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -631,7 +712,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.016753673553467
+      Distance: 3.1369717121124268
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -647,9 +728,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.294796347618103
+      Pitch: -0.23520377278327942
       Target Frame: <Fixed Frame>
-      Yaw: 2.618597984313965
+      Yaw: 1.4535980224609375
     Saved: ~
 Window Geometry:
   Displays:
