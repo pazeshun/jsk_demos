@@ -15,6 +15,11 @@
       <arg name="device" default="$(arg device)" />
       <arg name="model_file" default="$(arg model_file)" />
       <arg name="score_thresh" default="$(arg score_thresh)" />
+
+      <arg name="roi_x_min" default="361" />
+      <arg name="roi_x_max" default="980" />
+      <arg name="roi_y_min" default="299" />
+      <arg name="roi_y_max" default="844" />
     </include>
   </group>
 
@@ -28,6 +33,11 @@
       <arg name="device" default="$(arg device)" />
       <arg name="model_file" default="$(arg model_file)" />
       <arg name="score_thresh" default="$(arg score_thresh)" />
+
+      <arg name="roi_x_min" default="677" />
+      <arg name="roi_x_max" default="1383" />
+      <arg name="roi_y_min" default="293" />
+      <arg name="roi_y_max" default="657" />
     </include>
   </group>
 
