@@ -81,6 +81,8 @@ class ObjectDetectionNode(ConnectionBasedTransport):
         self.score_thresh = config.score_thresh
         self.nms_thresh = config.nms_thresh
         self.max_det = config.max_det
+        self.roi = (config.roi_x_min, config.roi_y_min,
+                    config.roi_x_max, config.roi_y_max)
         return config
 
     def subscribe(self):
