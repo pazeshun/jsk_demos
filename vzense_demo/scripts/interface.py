@@ -46,7 +46,7 @@ viewer.add(rarm_target_coords_axis)
 larm_target_coords_axis = Axis()
 viewer.add(larm_target_coords_axis)
 
-use_ri = False
+use_ri = True
 use_hand = True
 send_time = 3
 if use_ri:
@@ -100,11 +100,11 @@ def send_robot(send_time=10.0, move=False, arm=None):
 
 
 def servo_off_pose(send_time=10.0, move=False, arm=None):
-    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(50))
     robot_model.RARM_JOINT1.joint_angle(np.deg2rad(5))
     robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
     robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-90))
-    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(50))
     robot_model.LARM_JOINT1.joint_angle(np.deg2rad(-5))
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-90))
@@ -112,11 +112,11 @@ def servo_off_pose(send_time=10.0, move=False, arm=None):
 
 
 def servo_off_pose_to_init_pose(send_time=10.0, move=False, arm=None):
-    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(50))
     robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-90))
     robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
     robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-90))
-    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(50))
     robot_model.LARM_JOINT1.joint_angle(np.deg2rad(90))
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-90))
@@ -150,11 +150,11 @@ def move_box(send_time=10.0, move=False, step_by_step=True):
         ri.lhand.move_hand([0, np.deg2rad(140), -np.deg2rad(30), np.deg2rad(120)], wait_time=0)
     # send_robot(send_time=send_time, move=move)
 
-    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(50))
     robot_model.RARM_JOINT1.joint_angle(np.deg2rad(0))
     robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
     robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-90))
-    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(30))
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(50))
     robot_model.LARM_JOINT1.joint_angle(np.deg2rad(0))
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-90))
@@ -205,12 +205,12 @@ def move_box(send_time=10.0, move=False, step_by_step=True):
 
 def recognition_pose(send_time=10.0, move=False, step_by_step=True):
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(-20))
-    robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-80))
+    robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-90))
     robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
     robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-150))
 
     robot_model.LARM_JOINT0.joint_angle(np.deg2rad(-20))
-    robot_model.LARM_JOINT1.joint_angle(np.deg2rad(80))
+    robot_model.LARM_JOINT1.joint_angle(np.deg2rad(90))
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-150))
     send_robot(send_time=send_time, move=move)
