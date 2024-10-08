@@ -1,0 +1,10 @@
+<launch>
+
+  <include file="$(find vzense_demo)/launch/republish.launch" />
+
+  <node name="$(anon rviz)"
+        pkg="rviz" type="rviz"
+        args="-d $(find vzense_demo)/launch/config/demo_all.rviz" >
+  </node>
+
+</launch>
