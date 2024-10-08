@@ -219,8 +219,6 @@ viewer.redraw()
 
 
 def left_pick_grape(send_time=10.0, move=False, step_by_step=True):
-    move = False
-    move = True
     recognition_pose()
     calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
 
