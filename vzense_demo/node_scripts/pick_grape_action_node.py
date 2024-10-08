@@ -68,8 +68,10 @@ def pick_grape(ri, robot_model, send_time=10.0, move=False, step_by_step=True,
                topic_name='/camera/left_vzense_camera/object_detection/output/boxes'):
     if 'left' in topic_name:
         hand = ri.lhand
+        arm = robot_model.larm
     else:
         hand = ri.rhand
+        arm = robot_model.rarm
 
     boxes_sub = BoundingBoxArraySubscriber(topic_name, start=True)  # ぶどうの認識器
     recognition_pose(robot_model)
@@ -86,30 +88,30 @@ def pick_grape(ri, robot_model, send_time=10.0, move=False, step_by_step=True,
     # offset量(この値を調整する)
     target_pose = left_boxes[0].copy_worldcoords().translate((0.0, 0, -0.06), wrt='world')
 
-    ret = robot_model.larm.inverse_kinematics(
+    ret = arm.inverse_kinematics(
         target_pose,
-        move_target=robot_model.larm_end_coords,
+        move_target=arm.end_coords,
         stop=100,
         rotation_axis=False)
     if ret is None:
         rospy.logwarn('Could not solve ik. try force ik if failed.')
-        ret = robot_model.larm.inverse_kinematics(
+        ret = arm.inverse_kinematics(
             target_pose,
-            move_target=robot_model.larm_end_coords,
+            move_target=arm.end_coords,
             stop=100,
             rotation_axis=False,
             revert_if_fail=False)
     pick_pose = robot_model.angle_vector()
-    robot_model.larm.inverse_kinematics(
-        robot_model.larm_end_coords.copy_worldcoords().translate((0.01, 0, -0.02), wrt='world'),
-        move_target=robot_model.larm_end_coords,
+    arm.inverse_kinematics(
+        arm.end_coords.copy_worldcoords().translate((0.01, 0, -0.02), wrt='world'),
+        move_target=arm.end_coords,
         stop=100,
         rotation_axis=False,
         revert_if_fail=False)
     pick_pose = robot_model.angle_vector()
-    robot_model.larm.inverse_kinematics(
-        robot_model.larm_end_coords.copy_worldcoords().translate((-0.1, 0, 0)),
-        move_target=robot_model.larm_end_coords,
+    arm.inverse_kinematics(
+        arm.end_coords.copy_worldcoords().translate((-0.1, 0, 0)),
+        move_target=arm.end_coords,
         stop=100,
         rotation_axis=False,
         revert_if_fail=False)
