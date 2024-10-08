@@ -233,7 +233,7 @@ def left_pick_grape(send_time=10.0, move=False, step_by_step=True):
             break
         rospy.logwarn('Waiting detected boxes from {}'.format(left_boxes_sub.topic_name))
 
-    target_pose = left_boxes[0].copy_worldcoords().translate((0.0, 0, -0.03), wrt='world')
+    target_pose = left_boxes[0].copy_worldcoords().translate((0.0, 0, -0.06), wrt='world')
     ret = robot_model.larm.inverse_kinematics(
         target_pose,
         move_target=robot_model.larm_end_coords,
@@ -269,6 +269,13 @@ def left_pick_grape(send_time=10.0, move=False, step_by_step=True):
     calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
     robot_model.angle_vector(pick_pose)
     calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
+
+    # octomapのために止める処理
+    ri.lhand.move_hand([np.deg2rad(-50), np.deg2rad(60), 0, np.deg2rad(60)])
+    rospy.sleep(5.0)
+    ri.lhand.init_octomap()
+    rospy.sleep(5.0)
+    ri.lhand.stop_octomap()
     # ri.lhand.start_grasp(angle=130, wait_time=5.0)
     # ri.lhand.move_hand([np.deg2rad(-50), np.deg2rad(130), 0, np.deg2rad(130)])
     ri.lhand.move_hand([np.deg2rad(-50), np.deg2rad(160), 0, np.deg2rad(160)])
@@ -278,5 +285,7 @@ def left_pick_grape(send_time=10.0, move=False, step_by_step=True):
 
 
 def demo(send_time=10.0, move=False, step_by_step=True):
+    ri.lhand.reset_octomap()
+    ri.rhand.reset_octomap()
     left_pick_grape(send_time=send_time, move=move, step_by_step=step_by_step)
     left_place(send_time=send_time, move=move, step_by_step=step_by_step)

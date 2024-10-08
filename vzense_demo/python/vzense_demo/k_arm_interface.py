@@ -4,6 +4,7 @@ from std_msgs.msg import Bool
 from std_srvs.srv import Trigger
 from std_srvs.srv import SetBool
 from std_srvs.srv import SetBoolRequest
+from std_srvs.srv import Empty
 
 import rospy
 import numpy as np
@@ -74,6 +75,15 @@ class HandInterface(object):
             self.set_init_i_srvs.append(
                 rospy.ServiceProxy(srv_name, Trigger))
 
+        cloud_req_srv_name = '{}/wrpps_pointcloud_passthrough/request'.format(
+            self.hand)
+        rospy.wait_for_service(cloud_req_srv_name)
+        self.cloud_req_srv = rospy.ServiceProxy(cloud_req_srv_name, Empty)
+        cloud_stop_srv_name = '{}/wrpps_pointcloud_passthrough/stop'.format(
+            self.hand)
+        rospy.wait_for_service(cloud_stop_srv_name)
+        self.cloud_stop_srv = rospy.ServiceProxy(cloud_stop_srv_name, Empty)
+
     def move_hand(self, target_pos, time=1, wait_time=0):
         if self.use_hand is False:
             rospy.logwarn('{} interface is disabled.'.format(self.hand))
@@ -93,6 +103,29 @@ class HandInterface(object):
         if wait_time > 0:
             rospy.sleep(wait_time)
 
+    def init_octomap(self):
+        # handの間にのがない状態を確認して実行
+        self.enable_int_pubs[1].publish(Bool(data=False))
+        self.enable_int_pubs[3].publish(Bool(data=False))
+        self.enable_tof_pubs[1].publish(Bool(data=False))
+        self.enable_tof_pubs[3].publish(Bool(data=False))
+        rospy.sleep(0.1)
+
+        # Initialize intensity_model_acquisition
+        for srv in self.set_init_i_srvs:
+            srv()
+
+        self.cloud_req_srv()
+
+    def stop_octomap(self):
+        self.cloud_stop_srv()
+
+        # Re-enable all sensors
+        self.enable_int_pubs[1].publish(Bool(data=True))
+        self.enable_int_pubs[3].publish(Bool(data=True))
+        self.enable_tof_pubs[1].publish(Bool(data=True))
+        self.enable_tof_pubs[3].publish(Bool(data=True))
+
     def start_grasp(self, time=1, wait_time=0,
                     angle=90):
         angle = max(min(angle, 130), 0)
@@ -107,6 +140,18 @@ class HandInterface(object):
         self.move_hand([0, 0, -np.deg2rad(30), 0], wait_time=5)
         # self.move_hand([0, np.deg2rad(150), -np.deg2rad(30), np.deg2rad(0)], wait_time=4)
         self.move_hand([0, np.deg2rad(150), -np.deg2rad(30), np.deg2rad(130)], wait_time=0)
+
+    def reset_octomap(self):
+        if self.use_hand is False:
+            rospy.logwarn('{} interface is disabled.'.format(self.hand))
+            return
+        service_name = "{}/octomap_server/reset".format(self.hand)
+        rospy.loginfo('{} reset_octomap called. waiting service {}'.format(self.hand, service_name))
+        rospy.wait_for_service(service_name)
+        service = rospy.ServiceProxy(service_name, Empty)
+        ret = service()
+        rospy.loginfo('{} octomap successfully called'.format(self.hand))
+        return ret
 
     def servo_on(self):
         if self.use_hand is False:
