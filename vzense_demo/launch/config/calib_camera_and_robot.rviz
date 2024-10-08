@@ -12,6 +12,7 @@ Panels:
         - /Points1
         - /Points1/RightPoints1
         - /Points1/LeftPoints1
+        - /BoundingBoxArray1
       Splitter Ratio: 0.5
     Tree Height: 384
   - Class: rviz/Selection
@@ -62,10 +63,10 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: jsk_rviz_plugin/OverlayImage
-      Enabled: true
+      Enabled: false
       Name: RightColorCamera
       Topic: /remote/left_vzense_camera/color/image_raw
-      Value: true
+      Value: false
       alpha: 1
       height: 128
       keep aspect ratio: true
@@ -78,7 +79,7 @@ Visualization Manager:
       Background Alpha: 0.800000011920929
       Background Color: 0; 0; 0
       Class: jsk_rviz_plugin/OverlayText
-      Enabled: true
+      Enabled: false
       Foreground Alpha: 0.800000011920929
       Foreground Color: 25; 255; 240
       Invert Shadow: false
@@ -87,7 +88,7 @@ Visualization Manager:
       Overtake FG Color Properties: true
       Overtake Position Properties: false
       Topic: /rviz_overlay_text
-      Value: true
+      Value: false
       font: DejaVu Sans Mono
       height: 128
       left: 0
@@ -96,10 +97,10 @@ Visualization Manager:
       top: 0
       width: 128
     - Class: jsk_rviz_plugin/OverlayImage
-      Enabled: true
+      Enabled: false
       Name: LeftColorCamera
       Topic: /rarm_hand_camera/color/image_raw
-      Value: true
+      Value: false
       alpha: 1
       height: 128
       keep aspect ratio: true
@@ -109,10 +110,10 @@ Visualization Manager:
       transport hint: compressed
       width: 640
     - Class: jsk_rviz_plugin/PieChart
-      Enabled: true
+      Enabled: false
       Name: Num Images
       Topic: /num_calib_images
-      Value: true
+      Value: false
       auto color change: false
       background color: 0; 0; 0
       backround alpha: 0
@@ -132,76 +133,12 @@ Visualization Manager:
       text size: 14
       top: 400
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Filter (blacklist): ""
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        BODY:
-          Value: true
-        LARM_LINK0:
-          Value: true
-        LARM_LINK1:
-          Value: true
-        LARM_LINK2:
-          Value: true
-        LARM_LINK3:
-          Value: true
-        LARM_LINK4:
-          Value: true
-        LARM_LINK5:
-          Value: true
-        LARM_LINK6:
-          Value: true
-        RARM_LINK0:
-          Value: true
-        RARM_LINK1:
-          Value: true
-        RARM_LINK2:
-          Value: true
-        RARM_LINK3:
-          Value: true
-        RARM_LINK4:
-          Value: true
-        RARM_LINK5:
-          Value: true
-        RARM_LINK6:
-          Value: true
-        camera_mid_frame:
-          Value: true
-        left_vzense_camera_color_frame:
-          Value: false
-        left_vzense_camera_depth_frame:
-          Value: false
-        left_vzense_camera_frame:
-          Value: true
-        left_vzense_camera_transformedColor_frame:
-          Value: false
-        left_vzense_camera_transformedDepth_frame:
-          Value: false
-        rarm_hand_camera_aligned_depth_to_color_frame:
-          Value: true
-        rarm_hand_camera_color_frame:
-          Value: true
-        rarm_hand_camera_color_optical_frame:
-          Value: true
-        rarm_hand_camera_depth_frame:
-          Value: true
-        rarm_hand_camera_depth_optical_frame:
-          Value: true
-        rarm_hand_camera_link:
-          Value: true
-        right_vzense_camera_color_frame:
-          Value: false
-        right_vzense_camera_depth_frame:
-          Value: false
-        right_vzense_camera_frame:
-          Value: true
-        right_vzense_camera_transformedColor_frame:
-          Value: false
-        right_vzense_camera_transformedDepth_frame:
-          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -209,50 +146,9 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        left_vzense_camera_frame:
-          BODY:
-            LARM_LINK0:
-              LARM_LINK1:
-                LARM_LINK2:
-                  LARM_LINK3:
-                    LARM_LINK4:
-                      LARM_LINK5:
-                        LARM_LINK6:
-                          {}
-            RARM_LINK0:
-              RARM_LINK1:
-                RARM_LINK2:
-                  RARM_LINK3:
-                    RARM_LINK4:
-                      RARM_LINK5:
-                        RARM_LINK6:
-                          {}
-                    rarm_hand_camera_link:
-                      rarm_hand_camera_aligned_depth_to_color_frame:
-                        rarm_hand_camera_color_optical_frame:
-                          {}
-                      rarm_hand_camera_color_frame:
-                        {}
-                      rarm_hand_camera_depth_frame:
-                        rarm_hand_camera_depth_optical_frame:
-                          {}
-          camera_mid_frame:
-            {}
-          left_vzense_camera_color_frame:
-            left_vzense_camera_depth_frame:
-              left_vzense_camera_transformedColor_frame:
-                {}
-            left_vzense_camera_transformedDepth_frame:
-              {}
-          right_vzense_camera_frame:
-            right_vzense_camera_color_frame:
-              right_vzense_camera_depth_frame:
-                right_vzense_camera_transformedColor_frame:
-                  {}
-              right_vzense_camera_transformedDepth_frame:
-                {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Class: rviz/Group
       Displays:
         - Alpha: 1
@@ -404,11 +300,24 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: jsk_rviz_plugin/BoundingBoxArray
+      Enabled: true
+      Name: BoundingBoxArray
+      Queue Size: 10
+      Topic: /camera/left_vzense_camera/object_detection/output/boxes
+      Unreliable: false
+      Value: true
+      alpha: 0.800000011920929
+      color: 25; 255; 0
+      coloring: Auto
+      line width: 0.004999999888241291
+      only edge: true
+      show coords: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: left_vzense_camera_frame
+    Fixed Frame: BODY_world
     Frame Rate: 30
   Name: root
   Tools:
@@ -432,7 +341,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.317782878875732
+      Distance: 0.8685076236724854
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -440,17 +349,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 1.0957162380218506
-        Y: 0.47012102603912354
-        Z: 1.6766109466552734
+        X: -0.20404386520385742
+        Y: 0.6148014068603516
+        Z: 0.8280525207519531
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -0.6047964096069336
+      Pitch: 0.7502038478851318
       Target Frame: <Fixed Frame>
-      Yaw: 4.017207622528076
+      Yaw: 2.7321996688842773
     Saved: ~
 Window Geometry:
   Displays:
