@@ -139,10 +139,10 @@ class ObjectDetectionNode(ConnectionBasedTransport):
                 continue
 
             if self.roi is not None:
-                x1 += x_min
-                y1 += y_min
-                x2 += x_min
-                y2 += y_min
+                x1 = x1 + x_min
+                y1 = y1 + y_min
+                x2 = x2 + x_min
+                y2 = y2 + y_min
 
             valid_indices.append(j)
             rects_msg.rects.append(
