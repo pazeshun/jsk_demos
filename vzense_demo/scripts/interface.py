@@ -83,11 +83,12 @@ def calibrated_angle_vector(target_angles, time=10.0, move=False):
         ri.wait_interpolation()  # ロボットの関節指令の補間が終わるまで待つ。
 
 
-def send_robot(send_time=10.0, move=False):
+def send_robot(send_time=10.0, move=False, controller_type=None):
     viewer.redraw()
     if move is True:
-        ri.angle_vector(robot_model.angle_vector(), send_time)
-        ri.wait_interpolation()
+        ri.angle_vector(robot_model.angle_vector(), send_time,
+                        controller_type=controller_type)
+        ri.wait_interpolation(controller_type=controller_type)
     else:
         time.sleep(1.0)
 
@@ -172,7 +173,8 @@ def recognition_pose():
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-150))
 
 
-def left_place(send_time=10.0, move=False, step_by_step=True):
+def left_place(send_time=10.0, move=False, step_by_step=True,
+               controller_type=ri.larm_controller):
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(40))
     robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-80))
     robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
@@ -185,7 +187,7 @@ def left_place(send_time=10.0, move=False, step_by_step=True):
 
     if move and step_by_step:
         input('Send Angle vector? [Enter]')
-    send_robot(send_time=send_time, move=move)
+    send_robot(send_time=send_time, move=move, controller_type=controller_type)
 
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(40))
     robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-80))
@@ -199,7 +201,7 @@ def left_place(send_time=10.0, move=False, step_by_step=True):
 
     if move and step_by_step:
         input('Send Angle vector? [Enter]')
-    send_robot(send_time=send_time, move=move)
+    send_robot(send_time=send_time, move=move, controller_type=controller_type)
     if move is True:
         ri.lhand.stop_grasp()
 
