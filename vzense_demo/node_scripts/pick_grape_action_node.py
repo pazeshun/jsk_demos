@@ -145,19 +145,26 @@ class PickGrapeActionServer(object):
         self.robot_model = KARM()
 
         # 関節速度を制限する設定。早く動かしたい場合は上限を緩和する
-        for j in self.robot_arm.joint_list:
+        for j in self.robot_model.joint_list:
             if j.max_joint_velocity == 0.0:
                 j.max_joint_velocity = np.deg2rad(5)
 
-        self.robot_arm.init_pose()
-        self.robot_arm.rotate(- np.pi / 2.0, 'y')
+        self.topic_name = rospy.get_param('~topic_name',
+                                          '/camera/left_vzense_camera/object_detection/output/boxes')
+
+        self.robot_model.init_pose()
+        self.robot_model.rotate(- np.pi / 2.0, 'y')
         self.viewer = PyrenderViewer()  # viewer
-        self.viewer.add(self.robot_arm)
+        if 'left' in self.topic_name:
+            self.viewer.viewer_flags['window_title'] = 'pick left'
+        else:
+            self.viewer.viewer_flags['window_title'] = 'pick right'
+        self.viewer.add(self.robot_model)
         self.viewer.show()
 
-        rarm_end_coords_axis = Axis.from_coords(self.robot_arm.rarm_end_coords)
+        rarm_end_coords_axis = Axis.from_coords(self.robot_model.rarm_end_coords)
         self.viewer.add(rarm_end_coords_axis)
-        larm_end_coords_axis = Axis.from_coords(self.robot_arm.larm_end_coords)
+        larm_end_coords_axis = Axis.from_coords(self.robot_model.larm_end_coords)
         self.viewer.add(larm_end_coords_axis)
 
         self._action_name = name
