@@ -52,6 +52,7 @@ use_hand = True
 send_time = 3
 if use_ri:
     rospy.init_node('k_arm_demo')
+    rospy.sleep(3.0)
     ri = KARMROSRobotInterface(robot_model, use_hand=use_hand)  # 実機との接続処理
     boxes_sub = BoundingBoxArraySubscriber('/box_fitting_node/output/boxes',
                                            start=False)
@@ -67,14 +68,17 @@ def ri2ir():
 
 
 def calibrated_angle_vector(target_angles, time=10.0, move=False):
+    rospy.loginfo('calibrated_angle_vector called')
     target_angles = np.array(target_angles)
     robot_model.angle_vector(target_angles)
     if move is True:
+        rospy.loginfo('send first angle vector')
         ri.angle_vector(robot_model.angle_vector(), time)
         ri.wait_interpolation()
     current_angles = ri.angle_vector()
     target_angles += target_angles - current_angles
     if move is True:
+        rospy.loginfo('send second angle vector')
         ri.angle_vector(target_angles, time)  # robot_modelの姿勢を関節角度指令として実機に送る。
         ri.wait_interpolation()  # ロボットの関節指令の補間が終わるまで待つ。
 
@@ -156,6 +160,49 @@ def move_box(send_time=10.0, move=False, step_by_step=True):
         input('Send Angle vector? [Enter]')
     send_robot(send_time=send_time, move=move)
 
+def recognition_pose():
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(-20))
+    robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-80))
+    robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
+    robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-150))
+
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(-20))
+    robot_model.LARM_JOINT1.joint_angle(np.deg2rad(80))
+    robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
+    robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-150))
+
+
+def left_place(send_time=10.0, move=False, step_by_step=True):
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(40))
+    robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-80))
+    robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
+    robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-150))
+
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(-20))
+    robot_model.LARM_JOINT1.joint_angle(np.deg2rad(80))
+    robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
+    robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-150))
+
+    if move and step_by_step:
+        input('Send Angle vector? [Enter]')
+    send_robot(send_time=send_time, move=move)
+
+    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(40))
+    robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-80))
+    robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
+    robot_model.RARM_JOINT3.joint_angle(np.deg2rad(-150))
+
+    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(-60))
+    robot_model.LARM_JOINT1.joint_angle(np.deg2rad(80))
+    robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
+    robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-150))
+
+    if move and step_by_step:
+        input('Send Angle vector? [Enter]')
+    send_robot(send_time=send_time, move=move)
+    if move is True:
+        ri.lhand.stop_grasp()
+
 
 viewer.redraw()  # viewerを更新する（viewerをクリックしても更新される)
 
@@ -169,3 +216,63 @@ robot_model.larm.angle_vector(np.array(
 viewer.redraw()
 robot_model.angle_vector(ri.angle_vector())  # 実機の姿勢をrobot_modelに反映する
 viewer.redraw()
+
+
+def left_pick_grape(send_time=10.0, move=False, step_by_step=True):
+    move = False
+    move = True
+    recognition_pose()
+    calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
+
+    rate = rospy.Rate(10)
+    while not rospy.is_shutdown():
+        left_boxes = left_boxes_sub.to_coords()
+        rate.sleep()
+        if left_boxes is not None and len(left_boxes) > 0:
+            rospy.loginfo('Detected boxes from {}'.format(left_boxes_sub.topic_name))
+            break
+        rospy.logwarn('Waiting detected boxes from {}'.format(left_boxes_sub.topic_name))
+
+    target_pose = left_boxes[0].copy_worldcoords().translate((0.0, 0, 0.04), wrt='world')
+    ret = robot_model.larm.inverse_kinematics(
+        target_pose,
+        move_target=robot_model.larm_end_coords,
+        stop=1000,
+        rotation_axis=False)
+    if ret is None:
+        rospy.logwarn('Could not solve ik. try force ik if failed.')
+        ret = robot_model.larm.inverse_kinematics(
+            target_pose,
+            move_target=robot_model.larm_end_coords,
+            stop=1000,
+            rotation_axis=False,
+            revert_if_fail=False)
+    pick_pose = robot_model.angle_vector()
+    robot_model.larm.inverse_kinematics(
+        robot_model.larm_end_coords.copy_worldcoords().translate((0.05, 0, 0)),
+        move_target=robot_model.larm_end_coords,
+        stop=1000,
+        rotation_axis=False,
+        revert_if_fail=False)
+    pick_pose = robot_model.angle_vector()
+    robot_model.larm.inverse_kinematics(
+        robot_model.larm_end_coords.copy_worldcoords().translate((-0.1, 0, 0)),
+        move_target=robot_model.larm_end_coords,
+        stop=1000,
+        rotation_axis=False,
+        revert_if_fail=False)
+    pre_pick_pose = robot_model.angle_vector()
+
+    robot_model.angle_vector(pre_pick_pose)
+    ri.lhand.stop_grasp()
+    calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
+    robot_model.angle_vector(pick_pose)
+    calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
+    ri.lhand.start_grasp(angle=130, wait_time=5.0)
+    robot_model.angle_vector(pre_pick_pose)
+    send_robot(send_time=5.0, move=move)
+
+
+def demo(send_time=10.0, move=False, step_by_step=True):
+    left_pick_grape(move=move)
+    left_place(move=move)
