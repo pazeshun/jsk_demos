@@ -7,7 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /TF1/Frames1
-        - /LHhand1/PointCloud21
+        - /LHhand1
       Splitter Ratio: 0.499133437871933
     Tree Height: 727
   - Class: rviz/Selection
@@ -176,6 +176,8 @@ Visualization Manager:
           Value: false
         right_vzense_camera_transformedDepth_frame:
           Value: false
+        virtual_camera_frame:
+          Value: false
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -250,7 +252,8 @@ Visualization Manager:
           camera_mid_frame:
             {}
           dummy_frame:
-            {}
+            virtual_camera_frame:
+              {}
           left_vzense_camera_color_frame:
             left_vzense_camera_depth_frame:
               left_vzense_camera_transformedColor_frame:
@@ -506,10 +509,10 @@ Visualization Manager:
       only edge: true
       show coords: true
     - Class: jsk_rviz_plugin/OverlayImage
-      Enabled: false
+      Enabled: true
       Name: LeftVzenseRecognition
       Topic: /camera/left_vzense_camera/object_detection/output
-      Value: false
+      Value: true
       alpha: 1
       height: 128
       keep aspect ratio: true
@@ -519,10 +522,10 @@ Visualization Manager:
       transport hint: raw
       width: 400
     - Class: jsk_rviz_plugin/OverlayImage
-      Enabled: false
+      Enabled: true
       Name: RightVzenseRecognition
       Topic: /camera/right_vzense_camera/object_detection/output
-      Value: false
+      Value: true
       alpha: 1
       height: 128
       keep aspect ratio: true
@@ -538,7 +541,7 @@ Visualization Manager:
           Marker Topic: /lhand/free_cells_vis_array
           Name: MarkerArray
           Namespaces:
-            {}
+            lhand_base: true
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
@@ -546,7 +549,7 @@ Visualization Manager:
           Marker Topic: /lhand/occupied_cells_vis_array
           Name: MarkerArray
           Namespaces:
-            {}
+            lhand_base: true
           Queue Size: 100
           Value: true
         - Alpha: 1
@@ -635,7 +638,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.653623342514038
+      Distance: 2.016753673553467
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -651,7 +654,7 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9197955131530762
+      Pitch: 1.294796347618103
       Target Frame: <Fixed Frame>
       Yaw: 2.618597984313965
     Saved: ~
