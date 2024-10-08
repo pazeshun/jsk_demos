@@ -20,43 +20,50 @@
   <arg name="lhand_motor_port" default="/dev/lhand_dxhub" />
   <arg name="lhand_sensor_port" default="/dev/lhand_arduino" />
 
-  <include file="$(find vzense_demo)/launch/vzense.launch" >
-    <arg name="gui" default="$(arg gui)" />
-    <arg name="right_camera_ip" default="$(arg right_camera_ip)" />
-    <arg name="left_camera_ip" default="$(arg left_camera_ip)" />
-  </include>
+  <arg name="hand_only" default="false" />
+  <arg name="without_hand" default="false" />
 
-  <include file="$(find vzense_demo)/launch/detection.launch" >
-    <arg name="gui" default="$(arg gui)" />
-    <arg name="device" default="$(arg device)" />
-    <arg name="model_file" default="$(arg model_file)" />
-    <arg name="score_thresh" default="$(arg score_thresh)" />
-  </include>
+  <group if="$(eval not hand_only)">
+    <include file="$(find vzense_demo)/launch/vzense.launch" >
+      <arg name="gui" default="$(arg gui)" />
+      <arg name="right_camera_ip" default="$(arg right_camera_ip)" />
+      <arg name="left_camera_ip" default="$(arg left_camera_ip)" />
+    </include>
 
-  <include file="$(find vzense_demo)/launch/viz_robot.launch" >
-    <arg name="gui" default="$(arg gui)" />
-  </include>
+    <include file="$(find vzense_demo)/launch/detection.launch" >
+      <arg name="gui" default="$(arg gui)" />
+      <arg name="device" default="$(arg device)" />
+      <arg name="model_file" default="$(arg model_file)" />
+      <arg name="score_thresh" default="$(arg score_thresh)" />
+    </include>
 
-  <include file="$(find vzense_demo)/launch/box_fitting.launch" >
-    <arg name="gui" default="$(arg gui)" />
-  </include>
+    <include file="$(find vzense_demo)/launch/viz_robot.launch" >
+      <arg name="gui" default="$(arg gui)" />
+    </include>
 
-  <group if="$(arg launch_rhand)" >
-    <include file="$(find rmmf_hand_ros)/launch/model_0.launch" >
-      <arg name="hand" default="rhand" />
-      <arg name="motor_port" default="$(arg rhand_motor_port)" />
-      <arg name="sensor_port" default="$(arg rhand_sensor_port)" />
-      <arg name="hand_serial" default="1" />
+    <include file="$(find vzense_demo)/launch/box_fitting.launch" >
+      <arg name="gui" default="$(arg gui)" />
     </include>
   </group>
 
-  <group if="$(arg launch_lhand)" >
-    <include file="$(find rmmf_hand_ros)/launch/model_0.launch" >
-      <arg name="hand" default="lhand" />
-      <arg name="motor_port" default="$(arg lhand_motor_port)" />
-      <arg name="sensor_port" default="$(arg lhand_sensor_port)" />
-      <arg name="hand_serial" default="2" />
-    </include>
+  <group if="$(eval not without_hand)">
+    <group if="$(arg launch_rhand)" >
+      <include file="$(find rmmf_hand_ros)/launch/model_0.launch" >
+        <arg name="hand" default="rhand" />
+        <arg name="motor_port" default="$(arg rhand_motor_port)" />
+        <arg name="sensor_port" default="$(arg rhand_sensor_port)" />
+        <arg name="hand_serial" default="1" />
+      </include>
+    </group>
+
+    <group if="$(arg launch_lhand)" >
+      <include file="$(find rmmf_hand_ros)/launch/model_0.launch" >
+        <arg name="hand" default="lhand" />
+        <arg name="motor_port" default="$(arg lhand_motor_port)" />
+        <arg name="sensor_port" default="$(arg lhand_sensor_port)" />
+        <arg name="hand_serial" default="2" />
+      </include>
+    </group>
   </group>
 
 </launch>
