@@ -53,6 +53,7 @@
         <arg name="motor_port" default="$(arg rhand_motor_port)" />
         <arg name="sensor_port" default="$(arg rhand_sensor_port)" />
         <arg name="hand_serial" default="1" />
+        <arg name="with_arm" default="true" />
       </include>
 
       <include file="$(find rmmf_hand_ros)/launch/model_0_octomap.launch" >
@@ -67,6 +68,7 @@
         <arg name="motor_port" default="$(arg lhand_motor_port)" />
         <arg name="sensor_port" default="$(arg lhand_sensor_port)" />
         <arg name="hand_serial" default="2" />
+        <arg name="with_arm" default="true" />
       </include>
 
       <include file="$(find rmmf_hand_ros)/launch/model_0_octomap.launch" >
