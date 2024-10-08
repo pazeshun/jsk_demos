@@ -6,15 +6,14 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /RightColorCamera1
         - /LeftColorCamera1
+        - /Num Images1
         - /TF1/Frames1
         - /Points1
         - /Points1/RightPoints1
         - /Points1/LeftPoints1
-        - /RobotModel1
       Splitter Ratio: 0.5
-    Tree Height: 458
+    Tree Height: 384
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -32,7 +31,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: RightPoints
   - Class: jsk_rviz_plugin/RobotCommandInterfaceAction
     Name: RobotCommandInterfaceAction
   - Class: jsk_rviz_plugin/RobotCommandInterfaceAction
@@ -62,6 +61,19 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
+    - Class: jsk_rviz_plugin/OverlayImage
+      Enabled: true
+      Name: RightColorCamera
+      Topic: /remote/left_vzense_camera/color/image_raw
+      Value: true
+      alpha: 1
+      height: 128
+      keep aspect ratio: true
+      left: 640
+      overwrite alpha value: false
+      top: 0
+      transport hint: raw
+      width: 640
     - Align Bottom: false
       Background Alpha: 0.800000011920929
       Background Color: 0; 0; 0
@@ -83,6 +95,19 @@ Visualization Manager:
       text size: 12
       top: 0
       width: 128
+    - Class: jsk_rviz_plugin/OverlayImage
+      Enabled: true
+      Name: LeftColorCamera
+      Topic: /rarm_hand_camera/color/image_raw
+      Value: true
+      alpha: 1
+      height: 128
+      keep aspect ratio: true
+      left: 0
+      overwrite alpha value: false
+      top: 0
+      transport hint: compressed
+      width: 640
     - Class: jsk_rviz_plugin/PieChart
       Enabled: true
       Name: Num Images
@@ -105,33 +130,7 @@ Visualization Manager:
       show caption: true
       size: 128
       text size: 14
-      top: 128
-    - Class: jsk_rviz_plugin/OverlayImage
-      Enabled: true
-      Name: RightColorCamera
-      Topic: /remote/right_vzense_camera/color/image_raw
-      Value: true
-      alpha: 1
-      height: 128
-      keep aspect ratio: true
-      left: 640
-      overwrite alpha value: false
-      top: 0
-      transport hint: raw
-      width: 640
-    - Class: jsk_rviz_plugin/OverlayImage
-      Enabled: true
-      Name: LeftColorCamera
-      Topic: /rarm_hand_camera/color/image_raw
-      Value: true
-      alpha: 1
-      height: 128
-      keep aspect ratio: true
-      left: 0
-      overwrite alpha value: false
-      top: 0
-      transport hint: compressed
-      width: 640
+      top: 400
     - Class: rviz/TF
       Enabled: true
       Filter (blacklist): ""
@@ -210,33 +209,33 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        BODY:
-          LARM_LINK0:
-            LARM_LINK1:
-              LARM_LINK2:
-                LARM_LINK3:
-                  LARM_LINK4:
-                    LARM_LINK5:
-                      LARM_LINK6:
-                        {}
-          RARM_LINK0:
-            RARM_LINK1:
-              RARM_LINK2:
-                RARM_LINK3:
-                  RARM_LINK4:
-                    RARM_LINK5:
-                      RARM_LINK6:
-                        {}
-                  rarm_hand_camera_link:
-                    rarm_hand_camera_aligned_depth_to_color_frame:
-                      rarm_hand_camera_color_optical_frame:
-                        {}
-                    rarm_hand_camera_color_frame:
-                      {}
-                    rarm_hand_camera_depth_frame:
-                      rarm_hand_camera_depth_optical_frame:
-                        {}
         left_vzense_camera_frame:
+          BODY:
+            LARM_LINK0:
+              LARM_LINK1:
+                LARM_LINK2:
+                  LARM_LINK3:
+                    LARM_LINK4:
+                      LARM_LINK5:
+                        LARM_LINK6:
+                          {}
+            RARM_LINK0:
+              RARM_LINK1:
+                RARM_LINK2:
+                  RARM_LINK3:
+                    RARM_LINK4:
+                      RARM_LINK5:
+                        RARM_LINK6:
+                          {}
+                    rarm_hand_camera_link:
+                      rarm_hand_camera_aligned_depth_to_color_frame:
+                        rarm_hand_camera_color_optical_frame:
+                          {}
+                      rarm_hand_camera_color_frame:
+                        {}
+                      rarm_hand_camera_depth_frame:
+                        rarm_hand_camera_depth_optical_frame:
+                          {}
           camera_mid_frame:
             {}
           left_vzense_camera_color_frame:
@@ -279,7 +278,7 @@ Visualization Manager:
           Size (Pixels): 1
           Size (m): 0.009999999776482582
           Style: Points
-          Topic: /camera/right_vzense_camera/extract_indices/output
+          Topic: /remote/left_vzense_camera/transformedDepth/points
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
@@ -307,12 +306,12 @@ Visualization Manager:
           Size (Pixels): 1
           Size (m): 0.009999999776482582
           Style: Points
-          Topic: /camera/left_vzense_camera/extract_indices/output
+          Topic: /remote/right_vzense_camera/transformedDepth/points
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
-      Enabled: false
+      Enabled: true
       Name: Points
     - Alpha: 1
       Class: rviz/RobotModel
@@ -399,74 +398,8 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        lhand_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lhand_index:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lhand_index_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lhand_index_base_horn:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        lhand_thumb:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lhand_thumb_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lhand_thumb_base_horn:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rhand_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rhand_index:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rhand_index_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rhand_index_base_horn:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rhand_thumb:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rhand_thumb_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rhand_thumb_base_horn:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: RobotModel
-      Robot Description: robot_description_viz
+      Robot Description: robot_description
       TF Prefix: ""
       Update Interval: 0
       Value: true
@@ -499,7 +432,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.710387706756592
+      Distance: 4.317782878875732
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -515,17 +448,17 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -0.8647973537445068
+      Pitch: -0.6047964096069336
       Target Frame: <Fixed Frame>
-      Yaw: 4.577217102050781
+      Yaw: 4.017207622528076
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1136
+  Height: 1016
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000027a000003d2fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000255000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000360052006f0062006f00740043006f006d006d0061006e00640049006e00740065007200660061006300650041006300740069006f006e0200000048000002f80000015600000157fb000000360052006f0062006f00740043006f006d006d0061006e00640049006e00740065007200660061006300650041006300740069006f006e0100000298000001770000004000ffffff000000010000010f000003d2fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000003d2000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007380000003efc0100000002fb0000000800540069006d0065010000000000000738000003bc00fffffffb0000000800540069006d00650100000000000004500000000000000000000004b8000003d200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000027a0000035afc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000020b000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000360052006f0062006f00740043006f006d006d0061006e00640049006e00740065007200660061006300650041006300740069006f006e0200000048000002e10000015600000157fb000000360052006f0062006f00740043006f006d006d0061006e00640049006e00740065007200660061006300650041006300740069006f006e010000024e000001490000004000ffffff000000010000010f000003d2fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003d000003d2000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007380000003efc0100000002fb0000000800540069006d0065010000000000000738000003bc00fffffffb0000000800540069006d00650100000000000004500000000000000000000004b80000035a00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RobotCommandInterfaceAction:
     collapsed: false
   Selection:

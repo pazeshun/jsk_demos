@@ -1,7 +1,8 @@
 <launch>
-  <node name="left_vzense_camera_frame_to_BODY_static_transform_publisher"
-        pkg="tf" type="static_transform_publisher"
-        args="0.5905714471829283 0.14565252603459133 0.5257687522624588
-              -0.6081168776786382 0.6613420238163544 -0.02169547794539331 0.438577114409783
-              left_vzense_camera_frame BODY 100" />
+  <node name="set_left_vzense_camera_frame_to_BODY_tf"
+        pkg="dynamic_tf_publisher" type="tf_set.py"
+        args="0.6065453871716502 0.1453537188976831 0.4766339829464945
+              -0.5996904205573586 0.7417858839463499 -0.0565187722986737 0.294840159991588
+              left_vzense_camera_frame BODY 100"
+        output="screen" clear_params="true" />
 </launch>
