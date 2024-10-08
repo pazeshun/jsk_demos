@@ -131,13 +131,15 @@ def move_box(send_time=10.0, move=False, step_by_step=True):
     # robot_model.LARM_JOINT1.joint_angle(np.deg2rad(70))
     # robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
 
-    recognition_pose()
-    calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
+    # recognition_pose()
+    # calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
 
-    robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
-    robot_model.LARM_JOINT0.joint_angle(np.deg2rad(30))
+    # robot_model.RARM_JOINT0.joint_angle(np.deg2rad(30))
+    # robot_model.LARM_JOINT0.joint_angle(np.deg2rad(30))
 
-    calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
+    # calibrated_angle_vector(robot_model.angle_vector().copy(), time=5.0, move=move)
+
+    servo_off_pose(move=False)
 
     if move and step_by_step:
         input('Send Angle vector? [Enter]')
@@ -157,9 +159,9 @@ def move_box(send_time=10.0, move=False, step_by_step=True):
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-90))
     pre_hook_pose = robot_model.angle_vector()
-    if move and step_by_step:
-        input('Send Angle vector? [Enter]')
-    send_robot(send_time=send_time, move=move)
+    # if move and step_by_step:
+    #     input('Send Angle vector? [Enter]')
+    # send_robot(send_time=send_time, move=move)
 
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(0))
     robot_model.RARM_JOINT1.joint_angle(np.deg2rad(0))
@@ -201,7 +203,7 @@ def move_box(send_time=10.0, move=False, step_by_step=True):
     send_robot(send_time=send_time, move=move)
 
 
-def recognition_pose():
+def recognition_pose(send_time=10.0, move=False, step_by_step=True):
     robot_model.RARM_JOINT0.joint_angle(np.deg2rad(-20))
     robot_model.RARM_JOINT1.joint_angle(np.deg2rad(-80))
     robot_model.RARM_JOINT2.joint_angle(np.deg2rad(90))
@@ -211,6 +213,7 @@ def recognition_pose():
     robot_model.LARM_JOINT1.joint_angle(np.deg2rad(80))
     robot_model.LARM_JOINT2.joint_angle(np.deg2rad(-90))
     robot_model.LARM_JOINT3.joint_angle(np.deg2rad(-150))
+    send_robot(send_time=send_time, move=move)
 
 
 def left_place(send_time=10.0, move=False, step_by_step=True):
@@ -272,7 +275,7 @@ def right_place(send_time=10.0, move=False, step_by_step=True):
 
     if move and step_by_step:
         input('Send Angle vector? [Enter]')
-    send_robot(send_time=send_time, move=move, arm='rarm')
+        send_robot(send_time=send_time, move=move, arm='rarm')
     if move is True:
         ri.lhand.stop_grasp()
 
@@ -359,3 +362,12 @@ def demo(send_time=10.0, move=False, step_by_step=True):
     ri.rhand.reset_octomap()
     left_pick_grape(send_time=send_time, move=move, step_by_step=step_by_step)
     left_place(send_time=send_time, move=move, step_by_step=step_by_step)
+
+
+
+def box_demo(send_time=10.0, move=False, step_by_step=False):
+    servo_off_pose(send_time=send_time, move=move)
+    servo_off_pose_to_init_pose(send_time=send_time, move=move)
+    recognition_pose(send_time=send_time, move=move)
+    servo_off_pose_to_init_pose(send_time=send_time, move=move)
+    move_box(send_time=send_time, move=move, step_by_step=step_by_step)
