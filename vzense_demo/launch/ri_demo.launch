@@ -1,0 +1,19 @@
+<launch>
+
+  <node name="left_arm_pick_grape_node"
+        pkg="vzense_demo" type="pick_grape_action_node.py"
+        output="screen" respawn="true" >
+    <rosparam subst_value="true" >
+      topic_name: /camera/left_vzense_camera/object_detection/output/boxes
+    </rosparam>
+  </node>
+
+  <node name="right_arm_pick_grape_node"
+        pkg="vzense_demo" type="pick_grape_action_node.py"
+        output="screen" respawn="true" >
+    <rosparam subst_value="true" >
+      topic_name: /camera/right_vzense_camera/object_detection/output/boxes
+    </rosparam>
+  </node>
+
+</launch>
