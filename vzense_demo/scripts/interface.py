@@ -89,9 +89,9 @@ def send_robot(send_time=10.0, move=False, arm=None):
     if move is True:
         controller_type = None
         if arm == 'left' or arm == 'larm':
-            controller_type = ri.larm_controller
+            controller_type = 'larm_controller'
         elif arm == 'right' or arm == 'rarm':
-            controller_type = ri.rarm_controller
+            controller_type = 'rarm_controller'
         ri.angle_vector(robot_model.angle_vector(), send_time,
                         controller_type=controller_type)
         ri.wait_interpolation(controller_type=controller_type)
