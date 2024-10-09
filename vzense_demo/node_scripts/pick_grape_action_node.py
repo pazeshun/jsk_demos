@@ -167,6 +167,8 @@ class PickGrapeActionServer(object):
         larm_end_coords_axis = Axis.from_coords(self.robot_model.larm_end_coords)
         self.viewer.add(larm_end_coords_axis)
 
+        self.ri = KARMROSRobotInterface(self.robot_model, use_hand=False)  # 実機との接続処理
+
         self._action_name = name
         self._as = actionlib.SimpleActionServer(
             self._action_name,
