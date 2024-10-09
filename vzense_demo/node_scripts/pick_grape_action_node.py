@@ -180,14 +180,30 @@ class PickGrapeActionServer(object):
         rospy.loginfo('%s: Executing, picking grape with send_time = %f, move = %s' %
                       (self._action_name, goal.send_time, goal.move))
 
-        try:
-            pick_grape(self.ri, self.robot_model,
-                       send_time=goal.send_time, move=goal.move,
-                       step_by_step=False, topic_name=self.topic_name)
-            result.success = True
-        except Exception as e:
-            rospy.logerr("Error during left_pick_grape execution: %s" % str(e))
-            result.success = False
+        ########
+        ######## 以下でロボットを動かすコードを実行。
+        ######## 右手のみ左手のみのを動かすようにcontroller_typeをlarm_controllerもしくはrarm_contlrolerを指定すると指定した方の腕のみ動く
+
+        # 実機を反映してRARM_JOINT3だけ５度動かすサンプル
+        # self.robot_model.angle_vector(self.ri.angle_vector())
+        # if 'left' in self.topic_name:
+        #     self.robot_model.LARM_JOINT3.joint_angle(np.deg2rad(5), relative=True)
+        #     self.ri.angle_vector(self.robot_model.angle_vector(), 10,
+        #                          controller_type='larm_controller')
+        # else:
+        #     self.robot_model.RARM_JOINT3.joint_angle(np.deg2rad(5), relative=True)
+        #     self.ri.angle_vector(self.robot_model.angle_vector(), 10,
+        #                          controller_type='rarm_controller')
+
+        # 以下は本番環境で調整する想定なのでサンプルを試す場合には上の部分だけコメントイン
+        # try:
+        #     pick_grape(self.ri, self.robot_model,
+        #                send_time=goal.send_time, move=goal.move,
+        #                step_by_step=False, topic_name=self.topic_name)
+        #     result.success = True
+        # except Exception as e:
+        #     rospy.logerr("Error during left_pick_grape execution: %s" % str(e))
+        #     result.success = False
 
         if result.success:
             feedback.feedback = "Grape picked successfully"
