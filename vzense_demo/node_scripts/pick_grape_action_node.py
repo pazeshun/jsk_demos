@@ -188,10 +188,12 @@ class PickGrapeActionServer(object):
         # self.robot_model.angle_vector(self.ri.angle_vector())
         # if 'left' in self.topic_name:
         #     self.robot_model.LARM_JOINT3.joint_angle(np.deg2rad(5), relative=True)
+        #     self.viewer.redraw()
         #     self.ri.angle_vector(self.robot_model.angle_vector(), 10,
         #                          controller_type='larm_controller')
         # else:
         #     self.robot_model.RARM_JOINT3.joint_angle(np.deg2rad(5), relative=True)
+        #     self.viewer.redraw()
         #     self.ri.angle_vector(self.robot_model.angle_vector(), 10,
         #                          controller_type='rarm_controller')
 
